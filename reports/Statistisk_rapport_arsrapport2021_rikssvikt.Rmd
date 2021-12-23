@@ -1,0 +1,731 @@
+---
+title: 'Statistisk rapport: Årsrapport RiksSvikt 2021'
+subtitle: DRAFT
+author: 'Statistiker: Lina Benson'
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    latex_engine: xelatex
+    fig_caption: yes
+    fig_height: 6
+    fig_width: 6
+    number_sections: yes
+urlcolor: blue
+linkcolor: black
+header-includes: 
+  - \usepackage{draftwatermark}
+  - \usepackage{subfig}
+  - \usepackage[swedish]{babel}
+  - \usepackage{fontspec}
+  - \usepackage{fancyhdr} 
+  - \pagestyle{fancy} 
+  - \fancyhf{} 
+  - \fancyfoot[LE, RO]{\thepage} 
+  - \fancyfoot[RE, LO]{Årsrapport RiksSvikt 2021} 
+  - \renewcommand{\headrulewidth}{0pt}
+  - \renewcommand{\footrulewidth}{1pt}
+---
+
+\newpage 
+\tableofcontents 
+\newpage
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE, include = TRUE, comment = "",
+  warning = FALSE, message = FALSE, fig.pos = "H",
+  fig.path = "../output/figs/"
+)
+options(knitr.kable.NA = "")
+```
+
+```{r adjust_directory_if_needed, include=FALSE}
+# Uncomment lines below if rmd file is placed in a subdirectory
+knitr::opts_knit$set(root.dir = normalizePath("../"))
+```
+
+```{r load_project}
+# 1. Set options in config/global.dcf
+# 2. Load packages listed in config/global.dcf
+# 3. Import functions and code in lib directory
+
+ProjectTemplate::reload.project()
+
+cacheon <- FALSE
+```             
+
+# Data
+
+Datauttag från UCR 2021-12-10. 
+
+# Generellt
+
+Enheter med färre än 10 patienter i nämnaren redovisas ej. 
+
+I redovisningarna per center redovisas enbart sjukhus (ej enskilda primärvårdsenheter). 
+De fristående enheterna grupperas ihop och redovisas som ETT center men redovisas under sjukhus på den övre nivån. Dock, har inte gjort så. Är du säker att du vill gruppera ihop fristånde enheter i grafer, om de nu är som sjukhus varför ska de inte få visas som alla sjukhus? Vissa har ju tg på 100% (gör jättebra jobb med inmatning), ska inte det få premieras?
+
+Redovisas uppdelat på region (ej sjukvårdsregion). Någon måste i så fall gå igenom center i Halland och ange vilka som är i Västra och Södra sjukvårdsregionen. Dessutom, kartan i tidigare årsrapport är på region, ej sjukvårdsregion. Se skillnad region och sjukvårdsregion; https://sv.wikipedia.org/wiki/Sjukv%C3%A5rdsregion
+
+Center är enligt den övre nivån som finns hos UCR. Bör kategoriseras annorlunda? 
+
+När EF är ett kriterie för att vara med i indikatorn (för behandlingsvariablerna) räknas LÄGSTA EF vid antingen index eller uppföljningsbesöket. 
+
+I indikatorn crt och icd är NYHA, QRS, LBBB i första hand det som registrerats vid uppföljningsbesöket (för uppf besöket), i andra hand, om det saknas, det som registrerats vid index. 
+
+I det fall det finns > 1 årlig registrering / patient har enbart den första redovisats. 
+
+Datum utgår från det datum som patienten skrevs in/besöksdatum (alltså inte datum för klarmarkering i RiksSvikt).
+
+YEARLY_FOLLOWUP är indelat i 1års uppföljning (inom 1.5 år från indexbesöket) och 2+års uppföljning (efter 1.5 år från indexbesöket). 
+
+Får välja antingen kurvor över tid eller staplar med 2 år bakåt? Annars blir det samma info presenterat på olika sätt. 
+
+# Anslutningsgrad Vad är skillnad mot täckningsgrad??? Slå ihop?
+
+# Täckningsgrad
+
+Föreslår även lista på tg på sjukhusnivå (lista alla sjukhus även de som inte är anslutna). 
+
+```{r, child = "../src/tg.Rmd"}
+
+```
+
+\clearpage
+
+# Registrering
+
+```{r, child = "../src/regovertime.Rmd"}
+
+```
+
+\clearpage
+
+```{r, child = "../src/tabs.Rmd"}
+
+```
+
+\clearpage
+
+```{r nyha, cache = cacheon, fig.cap = "NYHA vid index"}
+piefuncpdf(var = "FUNCTION_CLASS_NYHA")
+```             
+
+```{r ef, cache = cacheon, fig.cap = "EF vid index"}
+piefuncpdf(var = "ef_cat3")
+```             
+
+```{r type, cache = cacheon, fig.cap = "Registrerande enhet", fig.show='hold', out.width="25%", fig.subcap=c('Index', '6v-6mån uppföljning', '1års uppföljning', '2+års uppföljning'), fig.ncol=4}
+piefuncpdf(var = "vtype", type = c("Index"))
+piefuncpdf(var = "vtype", type = c("6v-6mån uppföljning"))
+piefuncpdf(var = "vtype", type = c("1års uppföljning"))
+piefuncpdf(var = "vtype", type = c("2+års uppföljning"))
+# piefuncpdf(var = "vtype", type = c("Index", "Uppföljning", "Årlig #uppföljning"), bytype = T)
+```             
+
+\clearpage
+
+# Kvalitetsindikatorer
+
+## Sammanfattning alla kvalitetsindikatorer - kommer
+
+\clearpage
+
+## LVEF, Vänsterkammarfunktion uppmätt
+
+Täljare: LVEF har angetts, antingen semikvantitativt eller i procent, vid indexbesöket. 
+
+Nämnare: Alla indexbesök.
+
+```{r lvef, cache = cacheon, fig.cap = "LVEF - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_lvef", type = "Index", ll = 0.8, ul = 0.9)
+```             
+
+```{r lvefreg, cache = cacheon, fig.cap = "LVEF - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_lvef", type = "Index", ll = 0.8, ul = 0.9, unit = "region")
+```             
+
+```{r lveftime, cache = cacheon, fig.cap = "LVEF över tid", fig.width=8, fig.height=7}
+timefuncpdf(qi = "qi_lvef", ll = 0.8, ul = 0.9, onlyindex = TRUE)
+```             
+
+\clearpage
+
+## NT-proBNP
+
+Täljare: NT-proBNP har angetts. För slutenvårdspatienter kan detta vara 
+antingen vid inskrivning eller 24H. OBS! Detta skiljer sig från UCRs defintion. 
+Där räknas INTE 24H och det kan vara antingen NT-proBNP ELLER BNP. 
+
+Nämnare: Alla indexbesök.
+
+```{r ntprobnp, cache = cacheon, fig.cap = "NT-proBNP - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_ntprobnp", type = "Index", ll = 0.7, ul = 0.8)
+```             
+
+```{r ntprobnpreg, cache = cacheon, fig.cap = "NT-proBNP - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_ntprobnp", type = "Index", ll = 0.7, ul = 0.8, unit = "region")
+```             
+
+```{r ntprobnptime, cache = cacheon, fig.cap = "NT-proBNP över tid", fig.width=8, fig.height=7}
+timefuncpdf(qi = "qi_ntprobnp", ll = 0.7, ul = 0.8, onlyindex = TRUE)
+```             
+
+\clearpage
+
+## NYHA
+
+Täljare: NYHA class har angetts. 
+
+Nämnare: Alla indexbesök.
+
+```{r qinyha, cache = cacheon, fig.cap = "NYHA - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_nyha", type = "Index", ll = 0.9, ul = 0.95, data = rsdata)
+```             
+
+```{r qinyhareg, cache = cacheon, fig.cap = "NYHA - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_nyha", type = "Index", ll = 0.9, ul = 0.95, unit = "region")
+```             
+
+```{r nyhatime, cache = cacheon, fig.cap = "NYHA över tid", fig.width=8, fig.height=7}
+timefuncpdf(qi = "qi_nyha", ll = 0.9, ul = 0.95, onlyindex = TRUE)
+```             
+
+\clearpage
+
+## Hälsotillstånd
+
+Täljare: LIFEQUALITY har angetts. OBS! UCR använder en annan variabel (som jag ej har). 
+
+Nämnare: Alla indexbesök.
+
+```{r qol, cache = cacheon, fig.cap = "Hälsotillstånd - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_qol", type = "Index", ll = 0.7, ul = 0.8, data = rsdata)
+```             
+
+```{r qolreg, cache = cacheon, fig.cap = "Hälsotillstånd - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_qol", type = "Index", ll = 0.7, ul = 0.8, unit = "region")
+```             
+
+```{r qoltime, cache = cacheon, fig.cap = "Hälsotillstånd över tid", fig.width=8, fig.height=7}
+timefuncpdf(qi = "qi_qol", ll = 0.7, ul = 0.8, onlyindex = TRUE)
+```             
+
+\clearpage
+
+## Uppföljning hjärtsviktsmottagning
+
+Täljare: Patienter som planeras att följas upp på en hjärtsviktsmottagning
+
+Nämnare: Alla indexbesök utom avlidna.
+
+```{r uppfhf, cache = cacheon, fig.cap = "Uppföljning HF mottagning - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_uppfhf", type = "Index", ll = 0.8, ul = 0.9, data = rsdata)
+```             
+
+```{r uppfhfreg, cache = cacheon, fig.cap = "Uppföljning HF mottagning - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_uppfhf", type = "Index", ll = 0.8, ul = 0.9, unit = "region")
+```             
+
+```{r uppfhftime, cache = cacheon, fig.cap = "Uppföljning HF mottagning över tid", fig.width=8, fig.height=7}
+timefuncpdf(qi = "qi_uppfhf", ll = 0.8, ul = 0.9, onlyindex = TRUE)
+```             
+
+\clearpage
+
+## RAS-blockad
+
+Täljare: Patienter med RAS (ACE, ARB, ARNi). OBS kolla! skillnad mot UCR och årsrapport, 
+jag kräver att man ska ha värden på acei, arb, arni (annar möter man inte om pat har ras, utan om de registrerat också i samma indikator). 
+
+Nämnare: EF < 40% utom avlidna. OK med utom avlidna så räknar ej UCR, de tar alla???
+
+```{r rassum, cache = cacheon, fig.cap = "RAS över tid staplar", fig.show='hold', out.width="33%", fig.subcap=c('Riket', 'Sjukhus', 'Primärvård'), fig.ncol=3}
+barsummary(qi = "qi_ras", ll = 0.8, ul = 0.9, unit = c("Sjukhus", "Primärvård"))
+barsummary(qi = "qi_ras", ll = 0.8, ul = 0.9, unit = "Sjukhus")
+barsummary(qi = "qi_ras", ll = 0.8, ul = 0.9, unit = "Primärvård")
+```             
+
+```{r ras, cache = cacheon, fig.cap = "RAS Index - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_ras", type = "Index", ll = 0.8, ul = 0.9, data = rsdata)
+```             
+
+```{r ras6m, cache = cacheon, fig.cap = "RAS 6v-6mån uppföljning - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_ras", type = "6v-6mån uppföljning", ll = 0.8, ul = 0.9, data = rsdata)
+```             
+
+```{r ras1a, cache = cacheon, fig.cap = "RAS 1års uppföljning - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_ras", type = "1års uppföljning", ll = 0.8, ul = 0.9, data = rsdata)
+```             
+
+```{r ras2a, cache = cacheon, fig.cap = "RAS 2+års uppföljning - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_ras", type = "2+års uppföljning", ll = 0.8, ul = 0.9, data = rsdata)
+```             
+
+```{r rasindexreg, cache = cacheon, fig.cap = "RAS Index - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_ras", type = "Index", ll = 0.8, ul = 0.9, unit = "region")
+```             
+
+```{r ras6mreg, cache = cacheon, fig.cap = "RAS 6v-6mån uppföljning - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_ras", type = "6v-6mån uppföljning", ll = 0.8, ul = 0.9, unit = "region")
+```             
+
+```{r ras1areg, cache = cacheon, fig.cap = "RAS 1års uppföljning - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_ras", type = "1års uppföljning", ll = 0.8, ul = 0.9, unit = "region")
+```             
+
+```{r ras2areg, cache = cacheon, fig.cap = "RAS 2+års uppföljning - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_ras", type = "2+års uppföljning", ll = 0.8, ul = 0.9, unit = "region")
+```             
+
+```{r rastime, cache = cacheon, fig.cap = "RAS över tid", fig.width=8, fig.height=7}
+timefuncpdf(qi = "qi_ras", ll = 0.8, ul = 0.9)
+```  
+
+\clearpage
+
+## Andel ARNi av RAS-blockad
+
+Täljare: XXX
+
+Nämnare: XXX
+
+```{r arnisum, cache = cacheon, fig.cap = "Andel ARNI av RAS över tid staplar", fig.show='hold', out.width="33%", fig.subcap=c('Riket', 'Sjukhus', 'Primärvård'), fig.ncol=3}
+barsummary(qi = "qi_arni", ll = 0.1, ul = 0.3, unit = c("Sjukhus", "Primärvård"))
+barsummary(qi = "qi_arni", ll = 0.1, ul = 0.3, unit = "Sjukhus")
+barsummary(qi = "qi_arni", ll = 0.1, ul = 0.3, unit = "Primärvård")
+```             
+
+```{r arniindex, cache = cacheon, fig.cap = "Andel ARNI av RAS Index - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_arni", type = "Index", ll = 0.1, ul = 0.3, data = rsdata)
+```             
+
+```{r arni6m, cache = cacheon, fig.cap = "Andel ARNI av RAS 6v-6mån uppföljning - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_arni", type = "6v-6mån uppföljning", ll = 0.1, ul = 0.3, data = rsdata)
+```             
+
+```{r arni1a, cache = cacheon, fig.cap = "Andel ARNI av RAS 1års uppföljning - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_arni", type = "1års uppföljning", ll = 0.1, ul = 0.3, data = rsdata)
+```             
+
+```{r arni2a, cache = cacheon, fig.cap = "Andel ARNI av RAS 2+års uppföljning - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_arni", type = "2+års uppföljning", ll = 0.1, ul = 0.3, data = rsdata)
+```             
+
+```{r arniindexreg, cache = cacheon, fig.cap = "Andel ARNI av RAS Index - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_arni", type = "Index", ll = 0.1, ul = 0.3, unit = "region")
+```             
+
+```{r arni6mreg, cache = cacheon, fig.cap = "Andel ARNI av RAS 6v-6mån uppföljning - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_arni", type = "6v-6mån uppföljning", ll = 0.1, ul = 0.3, unit = "region")
+```             
+
+```{r arni1areg, cache = cacheon, fig.cap = "Andel ARNI av RAS 1års uppföljning - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_arni", type = "1års uppföljning", ll = 0.1, ul = 0.3, unit = "region")
+```             
+
+```{r arni2areg, cache = cacheon, fig.cap = "Andel ARNI av RAS 2+års uppföljning - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_arni", type = "2+års uppföljning", ll = 0.1, ul = 0.3, unit = "region")
+```             
+
+```{r arnitime, cache = cacheon, fig.cap = "ARNI över tid", fig.width=8, fig.height=7}
+timefuncpdf(qi = "qi_arni", ll = 0.1, ul = 0.3)
+```             
+
+\clearpage
+
+## Betablockad
+
+Täljare: Patienter med Betablockerare 
+
+Nämnare: EF < 40% utom avlidna. OK med utom avlidna så räknar ej UCR, de tar alla???
+
+```{r bblsum, cache = cacheon, fig.cap = "Betablockerare över tid staplar", fig.show='hold', out.width="33%", fig.subcap=c('Riket', 'Sjukhus', 'Primärvård'), fig.ncol=3}
+barsummary(qi = "qi_bbl", ll = 0.8, ul = 0.9, unit = c("Sjukhus", "Primärvård"))
+barsummary(qi = "qi_bbl", ll = 0.8, ul = 0.9, unit = "Sjukhus")
+barsummary(qi = "qi_bbl", ll = 0.8, ul = 0.9, unit = "Primärvård")
+```             
+
+```{r bblindex, cache = cacheon, fig.cap = "Betablockerare Index - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_bbl", type = "Index", ll = 0.8, ul = 0.9, data = rsdata)
+```             
+
+```{r bbl6m, cache = cacheon, fig.cap = "Betablockerare 6v-6mån uppföljning - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_bbl", type = "6v-6mån uppföljning", ll = 0.8, ul = 0.9, data = rsdata)
+```             
+
+```{r bbl1a, cache = cacheon, fig.cap = "Betablockerare 1års uppföljning - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_bbl", type = "1års uppföljning", ll = 0.8, ul = 0.9, data = rsdata)
+```             
+
+```{r bbl2a, cache = cacheon, fig.cap = "Betablockerare 2+års uppföljning - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_bbl", type = "2+års uppföljning", ll = 0.8, ul = 0.9, data = rsdata)
+```             
+
+```{r bblindexreg, cache = cacheon, fig.cap = "Betablockerare Index - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_bbl", type = "Index", ll = 0.8, ul = 0.9, unit = "region")
+```             
+
+```{r bbl6mreg, cache = cacheon, fig.cap = "Betablockerare 6v-6mån uppföljning - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_bbl", type = "6v-6mån uppföljning", ll = 0.8, ul = 0.9, unit = "region")
+```             
+
+```{r bbl1areg, cache = cacheon, fig.cap = "Betablockerare 1års uppföljning - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_bbl", type = "1års uppföljning", ll = 0.8, ul = 0.9, unit = "region")
+```             
+
+```{r bbl2areg, cache = cacheon, fig.cap = "Betablockerare 2+års uppföljning - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_bbl", type = "2+års uppföljning", ll = 0.8, ul = 0.9, unit = "region")
+```             
+
+```{r bbltime, cache = cacheon, fig.cap = "Betablockerare över tid", fig.width=8, fig.height=7}
+timefuncpdf(qi = "qi_bbl", ll = 0.8, ul = 0.9)
+```             
+
+\clearpage
+
+## MRA (jag la till)
+
+Täljare: Patienter med MRA. OBS!! Finns ej sedan tidigare. Satte samma målnivåer som andra meds. 
+
+Nämnare: EF < 40% utom avlidna. OK med utom avlidna så räknar ej UCR, de tar alla???
+
+```{r mrasum, cache = cacheon, fig.cap = "MRA över tid staplar", fig.show='hold', out.width="33%", fig.subcap=c('Riket', 'Sjukhus', 'Primärvård'), fig.ncol=3}
+barsummary(qi = "qi_mra", ll = 0.8, ul = 0.9, unit = c("Sjukhus", "Primärvård"))
+barsummary(qi = "qi_mra", ll = 0.8, ul = 0.9, unit = "Sjukhus")
+barsummary(qi = "qi_mra", ll = 0.8, ul = 0.9, unit = "Primärvård")
+```             
+
+```{r mraindex, cache = cacheon, fig.cap = "MRA Index - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_mra", type = "Index", ll = 0.8, ul = 0.9, data = rsdata)
+```             
+
+```{r mra6m, cache = cacheon, fig.cap = "MRA 6v-6mån uppföljning - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_mra", type = "6v-6mån uppföljning", ll = 0.8, ul = 0.9, data = rsdata)
+```             
+
+```{r mra1a, cache = cacheon, fig.cap = "MRA 1års uppföljning - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_mra", type = "1års uppföljning", ll = 0.8, ul = 0.9, data = rsdata)
+```             
+
+```{r mra2a, cache = cacheon, fig.cap = "MRA 2+års uppföljning - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_mra", type = "2+års uppföljning", ll = 0.8, ul = 0.9, data = rsdata)
+```             
+
+```{r mraindexreg, cache = cacheon, fig.cap = "MRA Index - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_mra", type = "Index", ll = 0.8, ul = 0.9, unit = "region")
+```             
+
+```{r mra6mreg, cache = cacheon, fig.cap = "MRA 6v-6mån uppföljning - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_mra", type = "6v-6mån uppföljning", ll = 0.8, ul = 0.9, unit = "region")
+```             
+
+```{r mra1areg, cache = cacheon, fig.cap = "MRA 1års uppföljning - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_mra", type = "1års uppföljning", ll = 0.8, ul = 0.9, unit = "region")
+```             
+
+```{r mra2areg, cache = cacheon, fig.cap = "MRA 2+års uppföljning - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_mra", type = "2+års uppföljning", ll = 0.8, ul = 0.9, unit = "region")
+```     
+
+```{r mratime, cache = cacheon, fig.cap = "MRA över tid", fig.width=8, fig.height=7}
+timefuncpdf(qi = "qi_mra", ll = 0.8, ul = 0.9)
+```             
+
+\clearpage
+
+## Trippelbehandling (jag tog bort basbehandling)
+
+Täljare: Patienter med RAS, Bbl och MRA. OBS kolla!! Ej samma som UCR. Jag kräver non-missing på alla och inte de?
+
+Nämnare: EF < 40% utom avlidna. OK med utom avlidna så räknar ej UCR, de tar alla???
+
+```{r trippelsum, cache = cacheon, fig.cap = "RAS + Bbl + MRA över tid staplar", fig.show='hold', out.width="33%", fig.subcap=c('Riket', 'Sjukhus', 'Primärvård'), fig.ncol=3}
+barsummary(qi = "qi_trippel", ll = 0.4, ul = 0.5, unit = c("Sjukhus", "Primärvård"))
+barsummary(qi = "qi_trippel", ll = 0.4, ul = 0.5, unit = "Sjukhus")
+barsummary(qi = "qi_trippel", ll = 0.4, ul = 0.5, unit = "Primärvård")
+```             
+
+```{r trippelindex, cache = cacheon, fig.cap = "RAS + Bbl + MRA Index - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_trippel", type = "Index", ll = 0.4, ul = 0.5, data = rsdata)
+```             
+
+```{r trippel6m, cache = cacheon, fig.cap = "RAS + Bbl + MRA 6v-6mån uppföljning - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_trippel", type = "6v-6mån uppföljning", ll = 0.4, ul = 0.5, data = rsdata)
+```             
+
+```{r trippel1a, cache = cacheon, fig.cap = "RAS + Bbl + MRA 1års uppföljning - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_trippel", type = "1års uppföljning", ll = 0.4, ul = 0.5, data = rsdata)
+```             
+
+```{r trippel2a, cache = cacheon, fig.cap = "RAS + Bbl + MRA 2+års uppföljning - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_trippel", type = "2+års uppföljning", ll = 0.4, ul = 0.5, data = rsdata)
+```             
+
+```{r trippelindexreg, cache = cacheon, fig.cap = "RAS + Bbl + MRA Index - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_trippel", type = "Index", ll = 0.4, ul = 0.5, unit = "region")
+```             
+
+```{r trippel6mreg, cache = cacheon, fig.cap = "RAS + Bbl + MRA 6v-6mån uppföljning - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_trippel", type = "6v-6mån uppföljning", ll = 0.4, ul = 0.5, unit = "region")
+```             
+
+```{r trippel1areg, cache = cacheon, fig.cap = "RAS + Bbl + MRA 1års uppföljning - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_trippel", type = "1års uppföljning", ll = 0.4, ul = 0.5, unit = "region")
+```             
+
+```{r trippel2areg, cache = cacheon, fig.cap = "RAS + Bbl + MRA 2+års uppföljning - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_trippel", type = "2+års uppföljning", ll = 0.4, ul = 0.5, unit = "region")
+```     
+
+```{r trippeltime, cache = cacheon, fig.cap = "RAS + Bbl + MRA över tid", fig.width=8, fig.height=7}
+timefuncpdf(qi = "qi_trippel", ll = 0.4, ul = 0.5)
+```             
+
+\clearpage
+
+## SGLT2i (jag la till)
+
+Täljare: Patienter med Sglt2i. OBS! Finns ej sedan tidigare. Satte samma målnivåer som andra meds. Kanske bra med lägre?
+
+Nämnare: Alla utom avlidna.
+
+Kommentar: Sglt2i infördes 2021-04-28 och är därför inte komplett för hela året. 
+
+```{r sglt2index, cache = cacheon, fig.cap = "SGLT2 Index - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_sglt2", type = "Index", ll = 0.8, ul = 0.9, data = rsdata)
+```             
+
+```{r sglt26m, cache = cacheon, fig.cap = "SGLT2 6v-6mån uppföljning - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_sglt2", type = "6v-6mån uppföljning", ll = 0.8, ul = 0.9, data = rsdata)
+```             
+
+```{r sglt21a, cache = cacheon, fig.cap = "SGLT2 1års uppföljning - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_sglt2", type = "1års uppföljning", ll = 0.8, ul = 0.9, data = rsdata)
+```             
+
+```{r sglt22a, cache = cacheon, fig.cap = "SGLT2 2+års uppföljning - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_sglt2", type = "2+års uppföljning", ll = 0.8, ul = 0.9, data = rsdata)
+```       
+
+```{r sglt2indexreg, cache = cacheon, fig.cap = "SGLT2 Index - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_sglt2", type = "Index", ll = 0.8, ul = 0.9, unit = "region")
+```             
+
+```{r sglt26mreg, cache = cacheon, fig.cap = "SGLT2 6v-6mån uppföljning - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_sglt2", type = "6v-6mån uppföljning", ll = 0.8, ul = 0.9, unit = "region")
+```             
+
+```{r sglt21areg, cache = cacheon, fig.cap = "SGLT2 1års uppföljning - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_sglt2", type = "1års uppföljning", ll = 0.8, ul = 0.9, unit = "region")
+```             
+
+```{r sglt22areg, cache = cacheon, fig.cap = "SGLT2 2+års uppföljning - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_sglt2", type = "2+års uppföljning", ll = 0.8, ul = 0.9, unit = "region")
+```        
+
+\clearpage
+
+## CRT (ta bort på sjhnivå?)
+
+Täljare: Patienter med CRT (med eller utan ICD). 
+
+Nämnare: Patienter med EF<=35%/<40. Vid index även duration HF > 6 månader 
+
+Lars förslag: 
+
+crt indikation beror på QRS bredd, LBBB, sinus/FF, och NYHA
+indikationer finns i olika styrkor beroende på kombination av ovan.
+ESC's är striktast
+
+1. ändra till >= 150
+2. lägg till symptom, dvs NYHA II-IV
+3. lägg INTE till sinusrytm krav
+
+OBS! Detta skiljer sig från vad som står i tidigare årsrapport och UCRs defintion (där dessa två sinsemellan skiljer sig åt också). 
+
+```{r crtsum, cache = cacheon, fig.cap = "CRT över tid staplar", fig.show='hold', out.width="33%", fig.subcap=c('Riket', 'Sjukhus', 'Primärvård'), fig.ncol=3}
+barsummary(qi = "qi_crt", ll = 0.5, ul = 0.6, unit = c("Sjukhus", "Primärvård"))
+barsummary(qi = "qi_crt", ll = 0.5, ul = 0.6, unit = "Sjukhus")
+barsummary(qi = "qi_crt", ll = 0.5, ul = 0.6, unit = "Primärvård")
+```             
+
+```{r crtindex, cache = cacheon, fig.cap = "CRT Index - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_crt", type = "Index", ll = 0.5, ul = 0.6, data = rsdata)
+```             
+
+```{r crt6m, cache = cacheon, fig.cap = "CRT 6v-6mån uppföljning - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_crt", type = "6v-6mån uppföljning", ll = 0.5, ul = 0.6, data = rsdata)
+```             
+
+```{r crt1a, cache = cacheon, fig.cap = "CRT 1års uppföljning - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_crt", type = "1års uppföljning", ll = 0.5, ul = 0.6, data = rsdata)
+```             
+
+```{r crt2a, cache = cacheon, fig.cap = "CRT 2+års uppföljning - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_crt", type = "2+års uppföljning", ll = 0.5, ul = 0.6, data = rsdata)
+```       
+
+```{r crtindexreg, cache = cacheon, fig.cap = "CRT Index - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_crt", type = "Index", ll = 0.5, ul = 0.6, unit = "region")
+```             
+
+```{r crt6mreg, cache = cacheon, fig.cap = "CRT 6v-6mån uppföljning - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_crt", type = "6v-6mån uppföljning", ll = 0.5, ul = 0.6, unit = "region")
+```             
+
+```{r crt1areg, cache = cacheon, fig.cap = "CRT 1års uppföljning - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_crt", type = "1års uppföljning", ll = 0.5, ul = 0.6, unit = "region")
+```             
+
+```{r crt2areg, cache = cacheon, fig.cap = "CRT 2+års uppföljning - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_crt", type = "2+års uppföljning", ll = 0.5, ul = 0.6, unit = "region")
+```        
+
+```{r crttime, cache = cacheon, fig.cap = "CRT över tid", fig.width=8, fig.height=7}
+timefuncpdf(qi = "qi_crt", ll = 0.5, ul = 0.6)
+```             
+
+\clearpage
+
+## ICD (ta bort på sjhnivå?)
+
+Täljare: Patienter med ICD (med eller utan CRT). 
+
+Nämnare: Patienter med EF<=35%/<40. Vid index även duration HF > 6 månader. NYHA II, III, IV
+
+```{r icdsum, fig.cap="ICD över tid staplar", fig.ncol=3, fig.show='hold', fig.subcap=c('Riket', 'Sjukhus', 'Primärvård'), cache=FALSE, out.width="33%"}
+barsummary(qi = "qi_icd", ll = 0.5, ul = 0.6, unit = c("Sjukhus", "Primärvård"))
+barsummary(qi = "qi_icd", ll = 0.5, ul = 0.6, unit = "Sjukhus")
+barsummary(qi = "qi_icd", ll = 0.5, ul = 0.6, unit = "Primärvård")
+```             
+
+```{r icdindex, cache = cacheon, fig.cap = "ICD Index - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_icd", type = "Index", ll = 0.5, ul = 0.6, data = rsdata)
+```             
+
+```{r icd6m, cache = cacheon, fig.cap = "ICD 6v-6mån uppföljning - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_icd", type = "6v-6mån uppföljning", ll = 0.5, ul = 0.6, data = rsdata)
+```             
+
+```{r icd1a, cache = cacheon, fig.cap = "ICD 1års uppföljning - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_icd", type = "1års uppföljning", ll = 0.5, ul = 0.6, data = rsdata)
+```             
+
+```{r icd2a, cache = cacheon, fig.cap = "ICD 2+års uppföljning - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_icd", type = "2+års uppföljning", ll = 0.5, ul = 0.6, data = rsdata)
+```       
+
+```{r icdindexreg, cache = cacheon, fig.cap = "ICD Index - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_icd", type = "Index", ll = 0.5, ul = 0.6, unit = "region")
+```             
+
+```{r icd6mreg, cache = cacheon, fig.cap = "ICD 6v-6mån uppföljning - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_icd", type = "6v-6mån uppföljning", ll = 0.5, ul = 0.6, unit = "region")
+```             
+
+```{r icd1areg, cache = cacheon, fig.cap = "ICD 1års uppföljning - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_icd", type = "1års uppföljning", ll = 0.5, ul = 0.6, unit = "region")
+```             
+
+```{r icd2areg, cache = cacheon, fig.cap = "icd 2+års uppföljning - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_icd", type = "2+års uppföljning", ll = 0.5, ul = 0.6, unit = "region")
+```        
+
+```{r icdtime, cache = cacheon, fig.cap = "ICD över tid", fig.width=8, fig.height=7}
+timefuncpdf(qi = "qi_icd", ll = 0.5, ul = 0.6)
+```             
+
+\clearpage
+
+## Fysisk träning
+
+Täljare: Patienter som deltagit i fysisk träning. 
+
+Nämnare: Alla utom avlidna. OBS!! REG_METHOD? Vad är. UCR tar med i nämnare även om missing. 
+
+```{r fysindex, cache = cacheon, fig.cap = "Fysisk träning Index - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_fys", type = "Index", ll = 0.3, ul = 0.4, data = rsdata)
+```             
+
+```{r fys6m, cache = cacheon, fig.cap = "Fysisk träning 6v-6mån uppföljning - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_fys", type = "6v-6mån uppföljning", ll = 0.5, ul = 0.6, data = rsdata)
+```             
+
+```{r fys1a, cache = cacheon, fig.cap = "Fysisk träning 1års uppföljning - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_fys", type = "1års uppföljning", ll = 0.5, ul = 0.6, data = rsdata)
+```             
+
+```{r fys2a, cache = cacheon, fig.cap = "Fysisk träning 2+års uppföljning - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_fys", type = "2+års uppföljning", ll = 0.5, ul = 0.6, data = rsdata)
+```   
+
+```{r fysindexreg, cache = cacheon, fig.cap = "Fysisk träning Index - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_fys", type = "Index", ll = 0.3, ul = 0.4, unit = "region")
+```             
+
+```{r fys6mreg, cache = cacheon, fig.cap = "Fysisk träning 6v-6mån uppföljning - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_fys", type = "6v-6mån uppföljning", ll = 0.5, ul = 0.6, unit = "region")
+```             
+
+```{r fys1areg, cache = cacheon, fig.cap = "Fysisk träning 1års uppföljning - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_fys", type = "1års uppföljning", ll = 0.5, ul = 0.6, unit = "region")
+```             
+
+```{r fys2areg, cache = cacheon, fig.cap = "Fysisk träning 2+års uppföljning - region", fig.width=7, fig.height=8}
+qifuncpdf(qi = "qi_fys", type = "2+års uppföljning", ll = 0.5, ul = 0.6, unit = "region")
+```        
+
+```{r fysuppftime, cache = cacheon, fig.cap = "Fysisk träning över tid", fig.width=8, fig.height=7}
+timefuncpdf(qi = "qi_fys", ll = 0.3, ul = 0.4)
+```             
+
+\clearpage
+
+## Andel genomförda uppföljningsregistreringar
+
+Täljare: Patienter som haft ett uppföljningsbesök. Ska detta vara INOM 6 månaer (finns +/-?)
+
+Nämnare: Alla indexbesök utom avlidna. Tidsintervallet för indexbesöket är 2020-07-01 - 2021-07-01. 
+
+OBS! Förstår ej denna helt. Finns ej hos UCR. Målnivåer behövs.  
+
+```{r followregindex, cache = cacheon, fig.cap = "Uppföljningsbesök - sjukhus", fig.width=7, fig.height=8}
+qifuncpdf(
+  qi = "qi_followreg",
+  startime = ymd(paste0(year(start) - 1, "-07-01")),
+  stoptime = ymd(paste0(year(stop), "-07-01")),
+  type = "Index", ll = 0.7, ul = 0.8, data = rsdata
+)
+```   
+
+```{r followregindexreg, cache = cacheon, fig.cap = "Uppföljningsbesök - region", fig.width=7, fig.height=8}
+qifuncpdf(
+  qi = "qi_followreg",
+  startime = ymd(paste0(year(start) - 1, "-07-01")),
+  stoptime = ymd(paste0(year(stop), "-07-01")),
+  type = "Index", ll = 0.7, ul = 0.8, unit = "region"
+)
+```   
+
+```{r followregtime, cache = cacheon, fig.cap = "Uppföljningsbesök över tid", fig.width=8, fig.height=7}
+timefuncpdf(qi = "qi_followreg", ll = 0.7, ul = 0.8, onlyindex = TRUE)
+```             
+
+\clearpage
+
+# Reproducibility
+
+## R session information {#sessioninfo}
+
+```{r sessinfo}
+sessionInfo()
+```
+
+## R code
+
+The R code for all data handling and statistical analyses are found: 
+https://github.com/KIHeartFailure/arsrapportrikssvikt2021. On publication
+the repository will be made public so as to 
+link to it from the resulting article for increased transparency and code sharing.
+No data or output is stored in the repository. 

@@ -1,0 +1,98 @@
+```{r tabs, cache=cacheon}
+
+tmprsdata <- rsdata %>%
+  filter(indexyear == ar) %>%
+  mutate(
+    FUNCTION_CLASS_NYHA =
+      str_replace(FUNCTION_CLASS_NYHA, "NYHA ", "")
+  )
+
+tab1 <- print(CreateTableOne(
+  vars = c("vtype", "sex", "age", "ef_cat3", "FUNCTION_CLASS_NYHA"),
+  data = tmprsdata,
+  strata = "ttype",
+  includeNA = TRUE,
+  addOverall = TRUE
+),
+missing = FALSE,
+printToggle = FALSE,
+nonnormal = "age",
+catDigits = 1,
+contDigits = 1,
+noSpaces = TRUE,
+explain = FALSE,
+test = FALSE,
+showAllLevels = TRUE
+)
+tab1 <- as_tibble(cbind(var = rownames(tab1), tab1))
+
+tab1 <- tab1 %>%
+  mutate(
+    level = case_when(
+      is.na(level) ~ "Okänt",
+      TRUE ~ level
+    ),
+    var = case_when(
+      var == "n" ~ "Riket",
+      var == "vtype" ~ "Vårdtyp, n (%)",
+      var == "sex" ~ "Kön, n (%)",
+      var == "age" ~ "Ålder (år), median [Q1-Q3]",
+      var == "ef_cat3" ~ "LVEF (%), n (%)",
+      var == "FUNCTION_CLASS_NYHA" ~ "NYHA, n (%)"
+    )
+  )
+## fix in order to use escape = TRUE
+colnames(tab1) <- c(colnames(tab1) <- c("", "", "Totalt", levels(rsdata$ttype)))
+
+default_kable(tab1,
+  font_size = 6,
+  caption = "RiksSvikt registreringar 2021",
+  escape = TRUE
+)
+```
+
+```{r tabssex, cache=cacheon, dependson="tabs"}
+
+tab1 <- print(CreateTableOne(
+  vars = c("vtype", "age", "ef_cat3", "FUNCTION_CLASS_NYHA"),
+  data = tmprsdata,
+  strata = c("sex", "ttype"),
+  includeNA = TRUE
+),
+missing = FALSE,
+printToggle = FALSE,
+nonnormal = "age",
+catDigits = 1,
+contDigits = 1,
+noSpaces = TRUE,
+explain = FALSE,
+test = FALSE,
+showAllLevels = TRUE
+)
+tab1 <- as_tibble(cbind(var = rownames(tab1), tab1))
+
+
+tab1 <- tab1 %>%
+  mutate(
+    level = case_when(
+      is.na(level) ~ "Okänt",
+      TRUE ~ level
+    ),
+    var = case_when(
+      var == "n" ~ "Riket",
+      var == "vtype" ~ "Vårdtyp, n (%)",
+      var == "sex" ~ "Kön, n (%)",
+      var == "age" ~ "Ålder (år), median [Q1-Q3]",
+      var == "ef_cat3" ~ "LVEF (%), n (%)",
+      var == "FUNCTION_CLASS_NYHA" ~ "NYHA, n (%)"
+    )
+  )
+## fix in order to use escape = TRUE
+colnames(tab1) <- c("", "", rep(levels(rsdata$sex), 4))
+
+default_kable(tab1,
+  font_size = 6,
+  caption = "RiksSvikt registreringar 2021 uppdelat på kön",
+  escape = TRUE
+) %>% add_header_above(c(" " = 2, "Index" = 2, "6v-6mån uppföljning" = 2, "1års uppföljning" = 2, "2+års uppföljning" = 2))
+```
