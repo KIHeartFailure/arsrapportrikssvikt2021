@@ -1,17 +1,11 @@
-barsummary <- function(qi,
-                       startime = ar - 2, stoptime = ar,
-                       ll = NULL, ul = NULL,
+barsummary <- function(qi = qitmp,
+                       starttime = ar - 2, stoptime = ar,
+                       ll = lltmp, ul = ultmp,
                        unit,
                        data = rsdata) {
   tmp <- data %>%
-    filter(indexyear >= startime &
-      indexyear <= stoptime &
-      !is.na(!!sym(qi)) &
-      vtype %in% unit) %>%
-    mutate(
-      indexyear = factor(indexyear),
-      !!sym(qi) := factor(!!sym(qi))
-    )
+    filter(!is.na(!!sym(qi)) &
+      vtype %in% unit)
 
   all <- tmp %>%
     group_by(ttype, indexyear, .drop = F) %>%
@@ -21,26 +15,28 @@ barsummary <- function(qi,
       percent = as.numeric(fn(n / tot * 100, 0))
     ) %>%
     ungroup() %>%
-    filter(!!sym(qi) == 1)
+    filter(!!sym(qi) == 1 & 
+           indexyear %in% paste(seq(starttime, stoptime, 1)))
 
   all <- all %>%
     mutate(
       cols = case_when(
-        indexyear == startime ~ "grey75",
-        indexyear == startime + 1 ~ "grey55",
+        indexyear == starttime ~ "grey75",
+        indexyear == starttime + 1 ~ "grey55",
         TRUE ~ global_cols[2]
       ),
       ntot = paste0(n, " av ", tot),
       per = paste0(percent, "%"),
-      per = if_else(n < 10, "", per),
-      ntot = if_else(n < 10, "", ntot),
-      percent = if_else(n < 10, 0, percent),
-      row = 1:n()
+      per = if_else(tot < 10, "", per),
+      ntot = if_else(tot < 10, "", ntot),
+      percent = if_else(tot < 10, 0, percent),
+      row = 1:n(),
+      indexyear = as.character(indexyear)
     )
 
-  cexmy <- .75
+  cexmy <- .9
   # c(bottom, left, top, right)
-  par(mar = c(3, 4, 3, 0) + 0.1)
+  par(mar = c(3.5, 4, 4.7, 0) + 0.1)
 
   b <- barplot(percent ~ indexyear + ttype,
     data = all,
@@ -60,9 +56,9 @@ barsummary <- function(qi,
   abline(h = ll * 100, col = "#FFCA02", lty = 2, lwd = 1)
   abline(h = ul * 100, col = "#61A60F", lty = 2, lwd = 1)
 
-  axis(1, at = b, labels = all$indexyear, line = 0, tick = FALSE, cex.axis = cexmy, gap.axis = -10000000)
+  axis(1, at = b, labels = all$indexyear, line = -.5, tick = FALSE, cex.axis = cexmy, gap.axis = -10000000, las = 2)
 
-  axis(3, at = b, labels = all$per, line = 0, tick = FALSE, cex.axis = cexmy, hadj = 0.5, gap.axis = -10000000)
+  axis(3, at = b, labels = all$ntot, line = -0.6, tick = FALSE, cex.axis = cexmy, hadj = 0, gap.axis = -10000000, las = 2)
 
-  axis(1, at = b[2, ], labels = levels(all$ttype), line = 1, tick = FALSE, cex.axis = cexmy, gap.axis = -10000000)
+  axis(1, at = b[2, ], labels = shortttype, line = 1.75, tick = FALSE, cex.axis = cexmy, gap.axis = -10000000)
 }

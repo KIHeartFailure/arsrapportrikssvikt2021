@@ -62,16 +62,16 @@ Datauttag 2021-12-10 (prel siffror, finalt uttag görs 2022-03-01). Täckningsgr
 
 Om inget annat anges är de redovisade siffrorna från 2021. Datum utgår från det datum som patienten skrevs in/besöksdatum.
 
-Enheter med färre än 10 patienter i nämnaren redovisas ej.
-
-Registreringar i primärvården redovisas totalt, men inte som separata center enheter. De ingår inte heller i de regionsuppdelade redovisningarna. 
-
 Med index avses första gången en patient registreras i RiksSvikt, detta behöver dock inte vara en nydiagnostiserad hjärtsvikt. 
 
 Årlig uppföljning är indelat i 1 års uppföljning (inom 1.5 år från index) och 2+ års uppföljning (efter 1.5 år från index). 
 
 I det fall det finns mer än en årlig registrering / patient har alla poster redovisats. 
-För 2+ årlig uppföljning finns därmed XXX poster för XXX unika patienter.  
+För 2+ årlig uppföljning finns XXX poster för XXX unika patienter för 2021.  
+
+Registreringar i primärvården redovisas totalt, men inte som separata center enheter. De ingår inte heller i de regionsuppdelade redovisningarna. 
+
+Enheter med färre än 10 registreringar i nämnaren redovisas ej.
 
 R koden som genererat årsrapporten finns: https://github.com/KIHeartFailure/arsrapportrikssvikt2021.
 
@@ -79,16 +79,16 @@ R koden som genererat årsrapporten finns: https://github.com/KIHeartFailure/ars
 
 # Täckningsgrad
 
-Täljare prevalent täckningsgrad: Individer registrerade i RiksSvikt, fyllda 18 år vid tillfället, vid liv per första januari det aktuella året och registrerade i RiksSvikt någon gång under perioden från och med registrets start 2003 till och med sista december det aktuella året. För de år som uppgift om registreringsdatum finns i RiksSvikt, dvs. från och med 2017 och framåt, inkluderas bara de registreringar som inkommit fram till och med 31 mars året efter det aktuella prevalensåret.
+**Täljare prevalent täckningsgrad:** Individer registrerade i RiksSvikt, fyllda 18 år vid tillfället, vid liv per första januari det aktuella året och registrerade i RiksSvikt någon gång under perioden från och med registrets start 2003 till och med sista december det aktuella året. För de år som uppgift om registreringsdatum finns i RiksSvikt, dvs. från och med 2017 och framåt, inkluderas bara de registreringar som inkommit fram till och med 31 mars året efter det aktuella prevalensåret.
 
-Nämnare prevalent täckningsgrad: Individer fyllda 18 år och vid liv första januari det aktuella året, med någon registrering med hjärtsvikt som huvuddiagnos (I11.0, I13.0, I13.2, I25.5, I42.0, I42.6, I42.7, I50.0, I50.1, I50.9) i patientregistret fram till och med sista december det aktuella året.
+**Nämnare prevalent täckningsgrad:** Individer fyllda 18 år och vid liv första januari det aktuella året, med någon registrering med hjärtsvikt som huvuddiagnos (I11.0, I13.0, I13.2, I25.5, I42.0, I42.6, I42.7, I50.0, I50.1, I50.9) i patientregistret fram till och med sista december det aktuella året.
 
-Täljare incident täckningsgrad: Individer i RiksSvikt, fyllda 18 år och med första registrering under det aktuella året eller med första registrering inom 1 år från första hjärtsviktdiagnos i patientregistret.
+**Täljare incident täckningsgrad:** Individer i RiksSvikt, fyllda 18 år och med första registrering under det aktuella året eller med första registrering inom 1 år från första hjärtsviktdiagnos i patientregistret.
 
-Nämnare incident täckningsgrad: Individer som registrerats med hjärtsvikt (I11.0, I13.0, I13.2, I25.5, I42.0, I42.6, I42.7, I50.0, I50.1, I50.9) 
+**Nämnare incident täckningsgrad:** Individer som registrerats med hjärtsvikt (I11.0, I13.0, I13.2, I25.5, I42.0, I42.6, I42.7, I50.0, I50.1, I50.9) 
 för första gången under det aktuella året, antingen i RiksSvikt eller i patientregistret.
 
-*Täckningsgraden för 2021 baseras på icke kvalitetsgranskade uppgifter från Socialstyrelsen. Definitionen av täckningsgraden tillåter registreringar i RiksSvikt  tom ett år efter registrering i patientregistret så täckningsraden är därmed inte komplett. Därför bör täckningsgraden för 2021 betraktas som preliminär.* 
+*Täckningsgraden för 2021 baseras på icke kvalitetsgranskade uppgifter från Socialstyrelsen. Definitionen av täckningsgraden tillåter registreringar i RiksSvikt  tom ett år efter registrering i patientregistret så täckningsraden är därmed inte komplett för 2021. Därför bör täckningsgraden för 2021 betraktas som preliminär.* 
 
 ```{r, child = "../src/tg.Rmd"}
 
@@ -123,11 +123,11 @@ piefunc(var = "FUNCTION_CLASS_NYHA")
 piefunc(var = "ef_cat3")
 ```             
 
-```{r, cache = cacheon, fig.cap = "Registrerande enheter 2021", fig.show='hold', out.width="25%", fig.subcap=c('Index', '6 v-6 mån uppföljning', '1 års uppföljning', '2+ års uppföljning'), fig.ncol=4}
+```{r, cache = cacheon, fig.cap = "Registrerande enheter 2021", fig.show='hold', out.width="25%", fig.subcap=c('Index', 'Uppföljning 6 v-6 mån', 'Uppföljning 1 år', 'Uppföljning 2+ år'), fig.ncol=4}
 piefunc(var = "vtype", type = c("Index"))
-piefunc(var = "vtype", type = c("6 v-6 mån"))
-piefunc(var = "vtype", type = c("1 år"))
-piefunc(var = "vtype", type = c("2+ år"))
+piefunc(var = "vtype", type = c("Uppföljning 6 v-6 mån"))
+piefunc(var = "vtype", type = c("Uppföljning 1 år"))
+piefunc(var = "vtype", type = c("Uppföljning 2+ år"))
 ```     
 
 \elandscape
@@ -135,6 +135,8 @@ piefunc(var = "vtype", type = c("2+ år"))
 \clearpage
 
 # Kvalitetsindikatorer
+
+Kvalitetsindikatorerna LVEF, NT-proBNP, NYHA klass och Hälsotillstånd rapporterat och planerad uppföljning vid hjärtsviktsmottagning är definerat vid indextillfället. Behandlingsvariabler, inklusive fysisk träning, är definerat vid uppföljningsbesöket vid 6 veckor - 6 månader efter index. 
 
 \clearpage
 
@@ -151,11 +153,11 @@ ultmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(ul)
 qinametmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(qiname)
 ```             
 
-## RiksSvikt kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
+## Kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
 
-Täljare: LVEF har angetts, antingen semikvantitativt eller i procent, vid indextillfället. 
+**Täljare:** LVEF har angetts, antingen semikvantitativt eller i procent, vid indextillfället. 
 
-Nämnare: Alla patienter med ett indextillfälle.
+**Nämnare:** Alla patienter med ett indextillfälle.
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " över tid"), fig.width=9, fig.height=7}
 timefunc(onlyindex = TRUE)
@@ -178,13 +180,13 @@ ultmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(ul)
 qinametmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(qiname)
 ```             
 
-## RiksSvikt kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
+## Kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
 
-Täljare: NT-proBNP har angetts vid indextillfället. För slutenvårdspatienter kan detta vara 
-antingen vid inskrivning eller 24H. 
+**Täljare:** NT-proBNP har angetts vid indextillfället. För slutenvårdspatienter kan detta vara 
+antingen vid inskrivning eller efter 24 timmar. 
 *OBS! Detta skiljer sig från UCRs definition. Där räknas INTE 24H och det kan vara antingen NT-proBNP ELLER BNP. Ändra?*
 
-Nämnare: Alla patienter med ett indextillfälle.
+**Nämnare:** Alla patienter med ett indextillfälle.
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " över tid"), fig.width=9, fig.height=7}
 timefunc(onlyindex = TRUE)
@@ -207,11 +209,11 @@ ultmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(ul)
 qinametmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(qiname)
 ```             
 
-## RiksSvikt kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
+## Kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
 
-Täljare: NYHA klass I, II, III eller IV har angetts vid indextillfället. 
+**Täljare:** NYHA klass I, II, III eller IV har angetts vid indextillfället. 
 
-Nämnare: Alla patienter med ett indextillfälle.
+**Nämnare:** Alla patienter med ett indextillfälle.
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " över tid"), fig.width=9, fig.height=7}
 timefunc(onlyindex = TRUE, adjtext = c(0, -0.6))
@@ -234,11 +236,11 @@ ultmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(ul)
 qinametmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(qiname)
 ```             
 
-## RiksSvikt kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
+## Kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
 
-Täljare: Total livskvalitetscore har angetts vid indextillfället.  
+**Täljare:** Total livskvalitetscore har angetts vid indextillfället.  
 
-Nämnare: Alla patienter med ett indextillfälle.
+**Nämnare:** Alla patienter med ett indextillfälle.
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " över tid"), fig.width=9, fig.height=7}
 timefunc(onlyindex = TRUE)
@@ -261,11 +263,11 @@ ultmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(ul)
 qinametmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(qiname)
 ```             
 
-## RiksSvikt kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
+## Kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
 
-Täljare: De som vid indextillfället planeras att följas upp vid en hjärtsviktsmottagning. 
+**Täljare:** De som vid indextillfället planeras att följas upp vid en hjärtsviktsmottagning. 
 
-Nämnare: Alla indextillfällen där patienten lever vid utskrivning. 
+**Nämnare:** Alla indextillfällen där patienten lever vid utskrivning. 
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " över tid"), fig.width=9, fig.height=7}
 timefunc(onlyindex = TRUE)
@@ -288,45 +290,16 @@ ultmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(ul)
 qinametmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(qiname)
 ```             
 
-## RiksSvikt kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
+## Kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
 
-Täljare: Patienter som har ett registrerat uppföljningsbesök 6 veckor - 6 månader efter indextillfället. 
+**Täljare:** Patienter som har ett registrerat uppföljningsbesök 6 veckor - 6 månader efter indextillfället. 
 
-Nämnare: Alla indextillfällen där patienten lever vid utskrivning. 
+**Nämnare:** Alla indextillfällen där patienten lever vid utskrivning. 
 
 *Tidsintervallet för indexbesöket är 2020-07-01 - 2021-07-01.*
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " över tid"), fig.width=9, fig.height=7}
 timefunc(onlyindex = TRUE)
-```  
-
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid Index uppdelat på region"), fig.width=7, fig.height=8}
-qifunc(type = "Index", unit = "region")
-```             
-
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid Index uppdelat på sjukhus"), fig.width=7, fig.height=8}
-qifunc(type = "Index")
-```             
-
-\clearpage
-
-```{r, cache = cacheon}
-qitmp <- "qi_followreg1a"
-lltmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(ll)
-ultmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(ul)
-qinametmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(qiname)
-```             
-
-## RiksSvikt kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
-
-Täljare: Patienter som har ett registrerat uppföljningsbesök vid 1 år efter indextillfället.  
-
-Nämnare: Alla indextillfället där patienten lever vid utskrivning. 
-
-*Tidsintervallet för indexbesöket är 2020-01-01 - 2020-12-31.*
-
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " över tid"), fig.width=9, fig.height=7}
-timefunc(onlyindex = TRUE, adjtext = c(0.4, -0.4))
 ```  
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid Index uppdelat på region"), fig.width=7, fig.height=8}
@@ -346,16 +319,16 @@ ultmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(ul)
 qinametmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(qiname)
 ```             
 
-## RiksSvikt kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
+## Kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
 
-Täljare: ACE-hämmare, A2-blockerare/ARB eller ARNI har använts. 
-*OBS skillnad mot UCR och årsrapport, jag kräver att man ska ha värden på acei, arb, arni (annars möter man inte om pat har ras, utan om de registrerat också i samma indikator). Samma gäller övriga behandlings indikatorer* 
+**Täljare:** ACE-hämmare, A2-blockerare/ARB eller ARNI har använts. 
+*OBS skillnad mot UCR, jag kräver att man ska ha värden på acei, arb, arni (annars mäter man inte om pat har ras, utan om de registrerat också i samma indikator). Samma gäller övriga behandlings indikatorer* 
 
-Nämnare: Patienter där LVEF < 40% och som lever vid utskrivning och där uppgift 
+**Nämnare:** Patienter där LVEF < 40% och som lever vid utskrivning och där uppgift 
 om användning av ACE-hämmare, A2-blockerare/ARB och ARNI har rapporterats. 
 LVEF definieras som det lägst uppmätta, antingen vid aktuellt tillfälle eller vid indextillfället. *OBS! Skillnad mot UCR, de har även avlidna i nämnaren. Ändra?. Samma gäller övriga behandlings indikatorer*
 
-*Kvalitetsindikatorn är definierad vid 6 veckor - 6 månaders uppföljningen.*
+*Kvalitetsindikatorn är definierad vid uppföljningen vid 6 veckor - 6 månader efter index.*
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " över tid"), fig.width=9, fig.height=7}
 timefunc()
@@ -373,32 +346,32 @@ barsummary(unit = "Primärvård")
 qifunc(type = "Index", unit = "region")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljning uppdelat på region"), fig.width=7, fig.height=8}
-qifunc(type = "6 v-6 mån", unit = "region")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljningen uppdelat på region"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 6 v-6 mån", unit = "region")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljning uppdelat på region"), fig.width=7, fig.height=8}
-qifunc(type = "1 år", unit = "region")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljningen uppdelat på region"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 1 år", unit = "region")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljning uppdelat på region"), fig.width=7, fig.height=8}
-qifunc(type = "2+ år", unit = "region")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljningen uppdelat på region"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 2+ år", unit = "region")
 ```        
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid Index uppdelat på sjukhus"), fig.width=7, fig.height=8}
 qifunc(type = "Index")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljning uppdelat på sjukhus"), fig.width=7, fig.height=8}
-qifunc(type = "6 v-6 mån")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljningen uppdelat på sjukhus"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 6 v-6 mån")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljning uppdelat på sjukhus"), fig.width=7, fig.height=8}
-qifunc(type = "1 år")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljningen uppdelat på sjukhus"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 1 år")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljning uppdelat på sjukhus"), fig.width=7, fig.height=8}
-qifunc(type = "2+ år")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljningen uppdelat på sjukhus"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 2+ år")
 ```        
 
 \clearpage
@@ -410,15 +383,15 @@ ultmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(ul)
 qinametmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(qiname)
 ```             
 
-## RiksSvikt kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
+## Kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
 
-Täljare: ARNI har använts. 
+**Täljare:** ARNI har använts. 
 
-Nämnare: Patienter där LVEF < 40% och som lever vid utskrivning och 
+**Nämnare:** Patienter där LVEF < 40% och som lever vid utskrivning och 
 där ACE-hämmare, A2-blockerare/ARB eller ARNI har använts. 
 LVEF definieras som det lägst uppmätta, antingen vid aktuellt tillfälle eller vid indextillfället. 
 
-*Kvalitetsindikatorn är definierad vid 6 veckor - 6 månaders uppföljningen.*
+*Kvalitetsindikatorn är definierad vid uppföljningen vid 6 veckor - 6 månader efter index.*
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " över tid"), fig.width=9, fig.height=7}
 timefunc()
@@ -436,32 +409,32 @@ barsummary(unit = "Primärvård")
 qifunc(type = "Index", unit = "region")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljning uppdelat på region"), fig.width=7, fig.height=8}
-qifunc(type = "6 v-6 mån", unit = "region")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljningen uppdelat på region"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 6 v-6 mån", unit = "region")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljning uppdelat på region"), fig.width=7, fig.height=8}
-qifunc(type = "1 år", unit = "region")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljningen uppdelat på region"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 1 år", unit = "region")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljning uppdelat på region"), fig.width=7, fig.height=8}
-qifunc(type = "2+ år", unit = "region")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljningen uppdelat på region"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 2+ år", unit = "region")
 ```        
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid Index uppdelat på sjukhus"), fig.width=7, fig.height=8}
 qifunc(type = "Index")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljning uppdelat på sjukhus"), fig.width=7, fig.height=8}
-qifunc(type = "6 v-6 mån")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljningen uppdelat på sjukhus"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 6 v-6 mån")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljning uppdelat på sjukhus"), fig.width=7, fig.height=8}
-qifunc(type = "1 år")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljningen uppdelat på sjukhus"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 1 år")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljning uppdelat på sjukhus"), fig.width=7, fig.height=8}
-qifunc(type = "2+ år")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljningen uppdelat på sjukhus"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 2+ år")
 ```        
 
 \clearpage
@@ -473,15 +446,15 @@ ultmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(ul)
 qinametmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(qiname)
 ```             
 
-## RiksSvikt kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
+## Kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
 
-Täljare: Betablockerare har använts.
+**Täljare:** Betablockerare har använts.
 
-Nämnare: Patienter där LVEF < 40% och som lever vid utskrivning och där uppgift 
+**Nämnare:** Patienter där LVEF < 40% och som lever vid utskrivning och där uppgift 
 om användning av Betablockerare har rapporterats. 
 LVEF definieras som det lägst uppmätta, antingen vid aktuellt tillfälle eller vid indextillfället. 
 
-*Kvalitetsindikatorn är definierad vid 6 veckor - 6 månaders uppföljningen.*
+*Kvalitetsindikatorn är definierad vid uppföljningen vid 6 veckor - 6 månader efter index.*
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " över tid"), fig.width=9, fig.height=7}
 timefunc()
@@ -499,32 +472,32 @@ barsummary(unit = "Primärvård")
 qifunc(type = "Index", unit = "region")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljning uppdelat på region"), fig.width=7, fig.height=8}
-qifunc(type = "6 v-6 mån", unit = "region")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljningen uppdelat på region"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 6 v-6 mån", unit = "region")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljning uppdelat på region"), fig.width=7, fig.height=8}
-qifunc(type = "1 år", unit = "region")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljningen uppdelat på region"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 1 år", unit = "region")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljning uppdelat på region"), fig.width=7, fig.height=8}
-qifunc(type = "2+ år", unit = "region")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljningen uppdelat på region"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 2+ år", unit = "region")
 ```        
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid Index uppdelat på sjukhus"), fig.width=7, fig.height=8}
 qifunc(type = "Index")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljning uppdelat på sjukhus"), fig.width=7, fig.height=8}
-qifunc(type = "6 v-6 mån")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljningen uppdelat på sjukhus"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 6 v-6 mån")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljning uppdelat på sjukhus"), fig.width=7, fig.height=8}
-qifunc(type = "1 år")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljningen uppdelat på sjukhus"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 1 år")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljning uppdelat på sjukhus"), fig.width=7, fig.height=8}
-qifunc(type = "2+ år")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljningen uppdelat på sjukhus"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 2+ år")
 ```        
 
 \clearpage
@@ -536,15 +509,17 @@ ultmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(ul)
 qinametmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(qiname)
 ```             
 
-## RiksSvikt kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
+## Kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
 
-Täljare: MRA har använts. *OBS!! Finns ej sedan tidigare. Jag la till*
+*OBS!! Finns ej sedan tidigare. Jag la till*
 
-Nämnare: Patienter där LVEF < 40% och som lever vid utskrivning och där uppgift 
+**Täljare:** MRA har använts. 
+
+**Nämnare:** Patienter där LVEF < 40% och som lever vid utskrivning och där uppgift 
 om användning av MRA har rapporterats. 
 LVEF definieras som det lägst uppmätta, antingen vid aktuellt tillfälle eller vid indextillfället. 
 
-*Kvalitetsindikatorn är definierad vid 6 veckor - 6 månaders uppföljningen.*
+*Kvalitetsindikatorn är definierad vid uppföljningen vid 6 veckor - 6 månader efter index.*
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " över tid"), fig.width=9, fig.height=7}
 timefunc(adjtext = c(0, 0.2, -0.2, 0))
@@ -562,32 +537,32 @@ barsummary(unit = "Primärvård")
 qifunc(type = "Index", unit = "region")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljning uppdelat på region"), fig.width=7, fig.height=8}
-qifunc(type = "6 v-6 mån", unit = "region")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljningen uppdelat på region"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 6 v-6 mån", unit = "region")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljning uppdelat på region"), fig.width=7, fig.height=8}
-qifunc(type = "1 år", unit = "region")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljningen uppdelat på region"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 1 år", unit = "region")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljning uppdelat på region"), fig.width=7, fig.height=8}
-qifunc(type = "2+ år", unit = "region")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljningen uppdelat på region"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 2+ år", unit = "region")
 ```        
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid Index uppdelat på sjukhus"), fig.width=7, fig.height=8}
 qifunc(type = "Index")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljning uppdelat på sjukhus"), fig.width=7, fig.height=8}
-qifunc(type = "6 v-6 mån")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljningen uppdelat på sjukhus"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 6 v-6 mån")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljning uppdelat på sjukhus"), fig.width=7, fig.height=8}
-qifunc(type = "1 år")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljningen uppdelat på sjukhus"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 1 år")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljning uppdelat på sjukhus"), fig.width=7, fig.height=8}
-qifunc(type = "2+ år")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljningen uppdelat på sjukhus"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 2+ år")
 ```        
 
 \clearpage
@@ -599,15 +574,17 @@ ultmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(ul)
 qinametmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(qiname)
 ```             
 
-## RiksSvikt kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
+## Kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
 
-Täljare: RAS-blockad, Betablockerare och MRA har använts. *OBS!! Jag tog bort basbehandling*
+*OBS!! Jag tog bort basbehandling*
 
-Nämnare: Patienter där LVEF < 40% och som lever vid utskrivning och där uppgift 
+**Täljare:** RAS-blockad, Betablockerare och MRA har använts. 
+
+**Nämnare:** Patienter där LVEF < 40% och som lever vid utskrivning och där uppgift 
 om användning av RAS-blockad, Betablockerare och MRA har rapporterats. 
 LVEF definieras som det lägst uppmätta, antingen vid aktuellt tillfälle eller vid indextillfället. 
 
-*Kvalitetsindikatorn är definierad vid 6 veckor - 6 månaders uppföljningen.*
+*Kvalitetsindikatorn är definierad vid uppföljningen vid 6 veckor - 6 månader efter index.*
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " över tid"), fig.width=9, fig.height=7}
 timefunc(adjtext = c(-0.75, 0, 0, 0))
@@ -625,32 +602,32 @@ barsummary(unit = "Primärvård")
 qifunc(type = "Index", unit = "region")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljning uppdelat på region"), fig.width=7, fig.height=8}
-qifunc(type = "6 v-6 mån", unit = "region")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljningen uppdelat på region"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 6 v-6 mån", unit = "region")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljning uppdelat på region"), fig.width=7, fig.height=8}
-qifunc(type = "1 år", unit = "region")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljningen uppdelat på region"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 1 år", unit = "region")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljning uppdelat på region"), fig.width=7, fig.height=8}
-qifunc(type = "2+ år", unit = "region")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljningen uppdelat på region"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 2+ år", unit = "region")
 ```        
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid Index uppdelat på sjukhus"), fig.width=7, fig.height=8}
 qifunc(type = "Index")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljning uppdelat på sjukhus"), fig.width=7, fig.height=8}
-qifunc(type = "6 v-6 mån")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljningen uppdelat på sjukhus"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 6 v-6 mån")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljning uppdelat på sjukhus"), fig.width=7, fig.height=8}
-qifunc(type = "1 år")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljningen uppdelat på sjukhus"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 1 år")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljning uppdelat på sjukhus"), fig.width=7, fig.height=8}
-qifunc(type = "2+ år")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljningen uppdelat på sjukhus"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 2+ år")
 ```        
 
 \clearpage
@@ -662,48 +639,50 @@ ultmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(ul)
 qinametmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(qiname)
 ```             
 
-## RiksSvikt kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
+## Kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
 
-Täljare: SGLT-2 hämmare har använts. *OBS!! Jag la till. finns ej tidigare*
+*OBS!! Finns ej sedan tidigare, jag la till*
 
-Nämnare: Patienter där LVEF < 40% och som lever vid utskrivning och där uppgift 
+**Täljare:** SGLT-2 hämmare har använts. 
+
+**Nämnare:** Patienter där LVEF < 40% och som lever vid utskrivning och där uppgift 
 om användning av SGLT-2 hämmare har rapporterats. 
 LVEF definieras som det lägst uppmätta, antingen vid aktuellt tillfälle eller vid indextillfället. 
 
 *SGLT-2 hämmare infördes i RiksSvikt 2021-04-28 och är därför inte komplett för hela året.* 
 
-*Kvalitetsindikatorn är definierad vid 6 veckor - 6 månaders uppföljningen.*
+*Kvalitetsindikatorn är definierad vid uppföljningen vid 6 veckor - 6 månader efter index.*
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid Index uppdelat på region"), fig.width=7, fig.height=8}
 qifunc(type = "Index", unit = "region")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljning uppdelat på region"), fig.width=7, fig.height=8}
-qifunc(type = "6 v-6 mån", unit = "region")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljningen uppdelat på region"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 6 v-6 mån", unit = "region")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljning uppdelat på region"), fig.width=7, fig.height=8}
-qifunc(type = "1 år", unit = "region")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljningen uppdelat på region"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 1 år", unit = "region")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljning uppdelat på region"), fig.width=7, fig.height=8}
-qifunc(type = "2+ år", unit = "region")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljningen uppdelat på region"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 2+ år", unit = "region")
 ```        
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid Index uppdelat på sjukhus"), fig.width=7, fig.height=8}
 qifunc(type = "Index")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljning uppdelat på sjukhus"), fig.width=7, fig.height=8}
-qifunc(type = "6 v-6 mån")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljningen uppdelat på sjukhus"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 6 v-6 mån")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljning uppdelat på sjukhus"), fig.width=7, fig.height=8}
-qifunc(type = "1 år")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljningen uppdelat på sjukhus"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 1 år")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljning uppdelat på sjukhus"), fig.width=7, fig.height=8}
-qifunc(type = "2+ år")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljningen uppdelat på sjukhus"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 2+ år")
 ```        
 
 \clearpage
@@ -715,11 +694,11 @@ ultmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(ul)
 qinametmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(qiname)
 ```             
 
-## RiksSvikt kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
+## Kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
 
-Täljare: CRT (med eller utan ICD) är implanterat. 
+**Täljare:** CRT (med eller utan ICD) är implanterat. 
 
-Nämnare: Patienter där LVEF $<=$ 35% (LVEF i procent rapporterat) eller < 40% (semikvantitativt LVEF rapporterat) och som lever vid utskrivning och där uppgift 
+**Nämnare:** Patienter där LVEF $<=$ 35% (LVEF i procent rapporterat) eller < 40% (semikvantitativt LVEF rapporterat) och som lever vid utskrivning och där uppgift 
 om device har rapporterats. Utöver detta ska vänstergrenblock (LBBB) finnas, EKG-rytm vara sinusrytm och QRS-duration vara > 130. *Hur uttrycker man detta kliniskt???* I nämnaren ingår även personer med CRT implanterat, oavsett värden på övriga variabler. 
 LVEF definieras som det lägst uppmätta, antingen vid aktuellt tillfälle eller vid indextillfället. QRS-duration och LBBB är 
 i första hand det som registrerats vid aktuellt tillfälle, och i andra hand, om det saknas, det som registrerats vid indextillfället. 
@@ -735,7 +714,7 @@ ESC's är striktast
 2. lägg till symptom, dvs NYHA II-IV
 3. lägg INTE till sinusrytm krav
 
-*Kvalitetsindikatorn är definierad vid 6 veckor - 6 månaders uppföljningen.*
+*Kvalitetsindikatorn är definierad vid uppföljningen vid 6 veckor - 6 månader efter index.*
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " över tid"), fig.width=9, fig.height=7}
 timefunc(adjtext = c(-.75, 0.75, 2, 0))
@@ -753,32 +732,32 @@ barsummary(unit = "Primärvård")
 qifunc(type = "Index", unit = "region")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljning uppdelat på region"), fig.width=7, fig.height=8}
-qifunc(type = "6 v-6 mån", unit = "region")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljningen uppdelat på region"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 6 v-6 mån", unit = "region")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljning uppdelat på region"), fig.width=7, fig.height=8}
-qifunc(type = "1 år", unit = "region")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljningen uppdelat på region"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 1 år", unit = "region")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljning uppdelat på region"), fig.width=7, fig.height=8}
-qifunc(type = "2+ år", unit = "region")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljningen uppdelat på region"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 2+ år", unit = "region")
 ```        
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid Index uppdelat på sjukhus"), fig.width=7, fig.height=8}
 qifunc(type = "Index")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljning uppdelat på sjukhus"), fig.width=7, fig.height=8}
-qifunc(type = "6 v-6 mån")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljningen uppdelat på sjukhus"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 6 v-6 mån")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljning uppdelat på sjukhus"), fig.width=7, fig.height=8}
-qifunc(type = "1 år")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljningen uppdelat på sjukhus"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 1 år")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljning uppdelat på sjukhus"), fig.width=7, fig.height=8}
-qifunc(type = "2+ år")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljningen uppdelat på sjukhus"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 2+ år")
 ```        
 
 \clearpage
@@ -790,14 +769,14 @@ ultmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(ul)
 qinametmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(qiname)
 ```             
 
-## RiksSvikt kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
+## Kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
 
-Täljare: ICD (med eller utan CRT) är implanterat. 
+**Täljare:** ICD (med eller utan CRT) är implanterat. 
 
-Nämnare: Patienter där LVEF $<=$ 35% (LVEF i procent rapporterat) eller < 40% (semikvantitativt LVEF rapporterat) och som lever vid utskrivning och där uppgift 
+**Nämnare:** Patienter där LVEF $<=$ 35% (LVEF i procent rapporterat) eller < 40% (semikvantitativt LVEF rapporterat) och som lever vid utskrivning och där uppgift 
 om device har rapporterats. LVEF definieras som det lägst uppmätta, antingen vid aktuellt tillfälle eller vid indextillfället.
 
-*Kvalitetsindikatorn är definierad vid 6 veckor - 6 månaders uppföljningen.*
+*Kvalitetsindikatorn är definierad vid uppföljningen vid 6 veckor - 6 månader efter index.*
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " över tid"), fig.width=9, fig.height=7}
 timefunc()
@@ -815,32 +794,32 @@ barsummary(unit = "Primärvård")
 qifunc(type = "Index", unit = "region")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljning uppdelat på region"), fig.width=7, fig.height=8}
-qifunc(type = "6 v-6 mån", unit = "region")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljningen uppdelat på region"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 6 v-6 mån", unit = "region")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljning uppdelat på region"), fig.width=7, fig.height=8}
-qifunc(type = "1 år", unit = "region")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljningen uppdelat på region"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 1 år", unit = "region")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljning uppdelat på region"), fig.width=7, fig.height=8}
-qifunc(type = "2+ år", unit = "region")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljningen uppdelat på region"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 2+ år", unit = "region")
 ```        
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid Index uppdelat på sjukhus"), fig.width=7, fig.height=8}
 qifunc(type = "Index")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljning uppdelat på sjukhus"), fig.width=7, fig.height=8}
-qifunc(type = "6 v-6 mån")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljningen uppdelat på sjukhus"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 6 v-6 mån")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljning uppdelat på sjukhus"), fig.width=7, fig.height=8}
-qifunc(type = "1 år")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljningen uppdelat på sjukhus"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 1 år")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljning uppdelat på sjukhus"), fig.width=7, fig.height=8}
-qifunc(type = "2+ år")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljningen uppdelat på sjukhus"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 2+ år")
 ```        
 
 \clearpage
@@ -852,14 +831,14 @@ ultmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(ul)
 qinametmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(qiname)
 ```             
 
-## RiksSvikt kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
+## Kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
 
-Täljare: Deltagande i organiserad fysisk träning har skett. 
+**Täljare:** Deltagande i organiserad fysisk träning har skett. 
 
-Nämnare: Patienter som lever vid utskrivning och där uppgift 
+**Nämnare:** Patienter som lever vid utskrivning och där uppgift 
 om deltagande i organiserad fysisk träning har rapporterats. 
 
-*Kvalitetsindikatorn är definierad vid 6 veckor - 6 månaders uppföljningen.*
+*Kvalitetsindikatorn är definierad vid uppföljningen vid 6 veckor - 6 månader efter index.*
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " över tid"), fig.width=9, fig.height=7}
 timefunc()
@@ -877,30 +856,30 @@ barsummary(unit = "Primärvård")
 qifunc(type = "Index", unit = "region")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljning uppdelat på region"), fig.width=7, fig.height=8}
-qifunc(type = "6 v-6 mån", unit = "region")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljningen uppdelat på region"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 6 v-6 mån", unit = "region")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljning uppdelat på region"), fig.width=7, fig.height=8}
-qifunc(type = "1 år", unit = "region")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljningen uppdelat på region"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 1 år", unit = "region")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljning uppdelat på region"), fig.width=7, fig.height=8}
-qifunc(type = "2+ år", unit = "region")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljningen uppdelat på region"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 2+ år", unit = "region")
 ```        
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid Index uppdelat på sjukhus"), fig.width=7, fig.height=8}
 qifunc(type = "Index")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljning uppdelat på sjukhus"), fig.width=7, fig.height=8}
-qifunc(type = "6 v-6 mån")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 6 veckors - 6 månaders uppföljningen uppdelat på sjukhus"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 6 v-6 mån")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljning uppdelat på sjukhus"), fig.width=7, fig.height=8}
-qifunc(type = "1 år")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 1 års uppföljningen uppdelat på sjukhus"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 1 år")
 ```             
 
-```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljning uppdelat på sjukhus"), fig.width=7, fig.height=8}
-qifunc(type = "2+ år")
+```{r, cache = cacheon, fig.cap = paste(qinametmp, " vid 2+ års uppföljningen uppdelat på sjukhus"), fig.width=7, fig.height=8}
+qifunc(type = "Uppföljning 2+ år")
 ```    

@@ -1,13 +1,10 @@
-qifuncpdf <- function(qi, startime = start, stoptime = stop, type, ll = NULL, ul = NULL, data = rsdata, unit = "center") {
+qifunc <- function(qi = qitmp, startime = start, stoptime = stop, type, 
+                      ll = lltmp, ul = ultmp, data = rsdata, unit = "center") {
   tmp <- data %>%
     filter(ttype == type &
       d_DATE_FOR_ADMISSION >= startime &
       d_DATE_FOR_ADMISSION <= stoptime &
-      !is.na(!!sym(qi))) %>%
-    mutate(
-      !!sym(qi) := factor(!!sym(qi)),
-      !!sym(unit) := factor(!!sym(unit))
-    )
+      !is.na(!!sym(qi)))
 
   # riket
   riket <- tmp %>%

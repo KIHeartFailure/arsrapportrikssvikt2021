@@ -1,7 +1,7 @@
-```{r regovertime, cache=cacheon, fig.cap="Årlig registrering i RiksSvikt 2015-2021", fig.width=8, fig.height=7}
+```{r regovertime, cache=cacheon, fig.cap="Årlig registrering", fig.width=9.5, fig.height=7}
 
 tot <- rsdata %>%
-  filter(indexyear >= ar - 6 & indexyear <= ar) %>%
+  filter(indexyear %in% paste(seq((ar - 6), ar, 1))) %>%
   count(indexyear) %>%
   mutate(
     byvar = 5,
@@ -9,7 +9,7 @@ tot <- rsdata %>%
   )
 
 totun <- rsdata %>%
-  filter(indexyear >= ar - 6 & indexyear <= ar) %>%
+  filter(indexyear %in% paste(seq((ar - 6), ar, 1))) %>%
   group_by(PATIENTREFERENCE, indexyear) %>%
   slice(1) %>%
   ungroup() %>%
@@ -20,7 +20,7 @@ totun <- rsdata %>%
   )
 
 type <- rsdata %>%
-  filter(indexyear >= ar - 6 & indexyear <= ar) %>%
+  filter(indexyear %in% paste(seq((ar - 6), ar, 1))) %>%
   group_by(indexyear) %>%
   count(ttype) %>%
   mutate(
@@ -31,7 +31,7 @@ type <- rsdata %>%
   select(-ttype)
 
 hfdur <- rsdata %>%
-  filter(indexyear >= ar - 6 & indexyear <= ar, ttype == "Index") %>%
+  filter(indexyear %in% paste(seq((ar - 6), ar, 1)), ttype == "Index") %>%
   filter(!is.na(hfdur)) %>%
   group_by(indexyear) %>%
   count(hfdur) %>%
@@ -48,70 +48,52 @@ all <- bind_rows(tot, totun, type, hfdur) %>%
   select(-byvar)
 
 plotall <- all %>%
+  mutate(across(where(is.integer), ~ .x / 100)) %>%
   select(-byvarname) %>%
   t()
 
-cexmy <- 0.75
+cexmy <- 1
 # c(bottom, left, top, right) default c(5, 4, 4, 2) + 0.1.
-par(mar = c(4, 4, 0, 11) + 0.1)
+par(mar = c(4, 4, 0.5, 11.5) + 0.1)
 
 matplot(plotall,
-  # type = "b",
-  type = "l",
-  # pch = 16,
-  col = rev(global_colsblue),
+  type = "b",
+  #type = "l",
+  pch = 19,
+  col = c(global_colsblue[1], global_cols[2], global_cols[2], global_colsblue[2:4], global_cols[3], global_cols[3]),
   lty = 1,
   lwd = 3,
   # cex = 1.2,
   axes = FALSE,
   xaxs = "i",
   yaxs = "i",
-  # xlim = c(ar - 6, ar),
-  ylab = "Antal registreringar",
+  xlim = c(1 - 0.2, length((ar - 6):ar) + 0.2),
+  ylab = "Antal registreringar (100-tal)",
   xlab = labnams[1],
   cex.lab = cexmy,
-  ylim = c(0, 18100)
+  ylim = c(0, 18100/100)
 )
 
-axis(2, at = seq(0, 18000, 2000), cex.axis = cexmy, las = 2)
+box(bty = "l")
+
+axis(2, at = seq(0, 18000/100, 2000/100), cex.axis = cexmy, las = 2)
 
 axis(1, at = 1:length((ar - 6):ar), labels = (ar - 6):ar, cex.axis = cexmy)
 
 axis(2,
-  at = all %>% pull(!!sym(paste(ar))),
+  at = all %>% pull(!!sym(paste(ar))) / 100 + c(0, -2.2, 1.5, +1.5, -1.5, +2.2, 0, 0),
   labels = all %>% pull(byvarname),
-  line = -26,
+  line = -33,
   tick = FALSE, cex.axis = cexmy,
   las = 2,
   hadj = 0,
   gap.axis = -10000000
 )
-#
-# mtext(all[1, "byvarname"], side = 1, line = 2, at = -10, adj = 0, cex = 0.5)
-# axis(1, at = 1:length((ar - 6):ar), labels = all[1, paste((ar - 6):ar)], line = 1, tick = FALSE, cex.axis = 0.5)
-#
-# mtext(all[2, "byvarname"], side = 1, line = 3, at = -10, adj = 0, cex = 0.5)
-# axis(1, at = 1:length((ar - 6):ar), labels = all[2, paste((ar - 6):ar)], line = 2, tick = FALSE, cex.axis = 0.5)
-#
-# mtext(all[3, "byvarname"], side = 1, line = 4, at = -10, adj = 0, cex = 0.5)
-# axis(1, at = 1:length((ar - 6):ar), labels = all[3, paste((ar - 6):ar)], line = 3, tick = FALSE, cex.axis = 0.5)
-#
-# mtext(all[4, "byvarname"], side = 1, line = 5, at = -10, adj = 0, cex = 0.5)
-# axis(1, at = 1:length((ar - 6):ar), labels = all[4, paste((ar - 6):ar)], line = 4, tick = FALSE, cex.axis = 0.5)
-#
-# mtext(all[5, "byvarname"], side = 1, line = 6, at = -10, adj = 0, cex = 0.5)
-# axis(1, at = 1:length((ar - 6):ar), labels = all[5, paste((ar - 6):ar)], line = 5, tick = FALSE, cex.axis = 0.5)
-#
-# mtext(all[6, "byvarname"], side = 1, line = 7, at = -10, adj = 0, cex = 0.5)
-# axis(1, at = 1:length((ar - 6):ar), labels = all[6, paste((ar - 6):ar)], line = 6, tick = FALSE, cex.axis = 0.5)
-#
-# mtext(all[7, "byvarname"], side = 1, line = 8, at = -10, adj = 0, cex = 0.5)
-# axis(1, at = 1:length((ar - 6):ar), labels = all[7, paste((ar - 6):ar)], line = 7, tick = FALSE, cex.axis = 0.5)
 ```
 
-```{r regovertimetab, cache=cacheon}
+```{r regovertimetab, cache=cacheon, dependson="regovertime"}
 colnams <- colnames(all)
 colnams[1] <- ""
 colnames(all) <- colnams
-default_kable(all, caption = "Årlig registrering i RiksSvikt 2015-2021")
+default_kable(all, caption = "Årlig registrering")
 ```

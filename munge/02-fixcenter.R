@@ -21,7 +21,8 @@ rsdata <- left_join(rsdata,
     region = str_remove(region, "Region "),
     region = str_remove(region, " län"),
     region = str_remove(region, "sregionen"),
-    region = if_else(region == "Jönköpings", "Jönköping", region)
+    region = if_else(region == "Jönköpings", "Jönköping", region),
+    region = if_else(region == "Sörmanland", "Sörmland", region)
   )
 
 
@@ -30,10 +31,14 @@ rsdata <- left_join(rsdata,
 rsdata <- left_join(rsdata,
   center %>%
     filter(DEPTH == 2) %>%
-    rename(center = ORG_UNIT_NAME) %>%
-    select(ID, center),
+    rename(tmp_center = ORG_UNIT_NAME) %>%
+    select(ID, tmp_center),
   by = c("PARENT2" = "ID")
-)
+) %>%
+  mutate(center = case_when(
+    ORG_UNIT_LEVEL_NAME %in% c("Fristående hjärtmottagning", "Vårdcentral") ~ ORG_UNIT_NAME,
+    TRUE ~ tmp_center
+  ))
 
 
 # Group VC ect ------------------------------------------------------------
@@ -63,4 +68,6 @@ rsdata <- rsdata %>%
   mutate(center = case_when(
     center == "Sahlgrenska Universitetssjukhuset - Sahlgrenska" ~ "Sahlgrenska Universitetssjukhuset",
     TRUE ~ center
-  ))
+  ), 
+  region = factor(region), 
+  center = factor(center))

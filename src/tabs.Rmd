@@ -1,22 +1,33 @@
+```{r tabvarsdef, cache=cacheon}
+tabvars <- c(
+  "vtype", "sex", "age", "ef_cat3", "FUNCTION_CLASS_NYHA",
+  "EARLIER_CARDIAC_ARREST", "REVASCULARIZATION", "HYPERTENSION",
+  "ATRIAL_FIBRILLATION_FLUTTER", "DIABETES",
+  "CHRONIC_LUNG_DISEASE", "HEART_VALVE_DISEASE",
+  "HEART_VALVE_SURGERY", "DILATED_CARDIOMYOPATHY",
+  "PRIMARY_ETIOLOGY",
+  "BP_SYSTOLIC", "BP_DIASTOLIC", "HEART_FREQUENCY", 
+  "B_HB", "S_CREATININE",
+  "S_POTASSIUM", "S_SODIUM", 
+  "NT_PROBNP"
+)
+```
+
 ```{r tabs, cache=cacheon}
 
 tmprsdata <- rsdata %>%
-  filter(indexyear == ar) %>%
-  mutate(
-    FUNCTION_CLASS_NYHA =
-      str_replace(FUNCTION_CLASS_NYHA, "NYHA ", "")
-  )
+  filter(indexyear == ar)
 
 tab1 <- print(CreateTableOne(
-  vars = c("vtype", "sex", "age", "ef_cat3", "FUNCTION_CLASS_NYHA"),
+  vars = tabvars,
   data = tmprsdata,
   strata = "ttype",
-  includeNA = TRUE,
-  addOverall = TRUE
+  # includeNA = TRUE,
+  addOverall = FALSE
 ),
 missing = FALSE,
 printToggle = FALSE,
-nonnormal = "age",
+nonnormal = tabvars,
 catDigits = 1,
 contDigits = 1,
 noSpaces = TRUE,
@@ -24,44 +35,63 @@ explain = FALSE,
 test = FALSE,
 showAllLevels = TRUE
 )
+
 tab1 <- as_tibble(cbind(var = rownames(tab1), tab1))
 
 tab1 <- tab1 %>%
   mutate(
-    level = case_when(
-      is.na(level) ~ "Okänt",
-      TRUE ~ level
-    ),
     var = case_when(
       var == "n" ~ "Riket",
       var == "vtype" ~ "Vårdtyp, n (%)",
       var == "sex" ~ "Kön, n (%)",
       var == "age" ~ "Ålder (år), median [Q1-Q3]",
       var == "ef_cat3" ~ "LVEF (%), n (%)",
-      var == "FUNCTION_CLASS_NYHA" ~ "NYHA, n (%)"
+      var == "FUNCTION_CLASS_NYHA" ~ "NYHA, n (%)",
+      var == "PRIMARY_ETIOLOGY" ~ "Primär etiologi, n (%)",
+      var == "DIABETES" ~ "Diabetes, n (%)",
+      var == "EARLIER_CARDIAC_ARREST" ~ "Tidigare hjärtinfarkt, n (%)",
+      var == "ATRIAL_FIBRILLATION_FLUTTER" ~ "Förmaksflimmer/fladder, n (%)",
+      var == "HYPERTENSION" ~ "Hypertoni, n (%)",
+      var == "DILATED_CARDIOMYOPATHY" ~ "Dilaterad kardiomyopati, n (%)",
+      var == "HEART_VALVE_DISEASE" ~ "Hjärtklaffsjukdom, n (%)",
+      var == "REVASCULARIZATION" ~ "Revaskularisering, n (%)",
+      var == "CHRONIC_LUNG_DISEASE" ~ "Kronisk lungsjukdom, n (%)",
+      var == "HEART_VALVE_SURGERY" ~ "Klaffoperation, n (%)",
+      var == "BP_SYSTOLIC" ~ "BT systoiskt (mmHg), median [Q1-Q3]",
+      var == "BP_DIASTOLIC" ~ "BT diastoliskt (mmHg), median [Q1-Q3]",
+      var == "HEART_FREQUENCY" ~ "Hjärtfrekvens (slag/min), median [Q1-Q3]",
+      var == "NT_PROBNP" ~ "NT-proBNP (pg/m/L), median [Q1-Q3]",
+      var == "S_CREATININE" ~ "S-Kreatinin (umol/L), median [Q1-Q3]",
+      var == "S_POTASSIUM" ~ "P-Kalium (mmol/L), median [Q1-Q3]",
+      var == "S_SODIUM" ~ "S-Natrium (pg/m/L), median [Q1-Q3]",
+      var == "B_HB" ~ "B-HB (g/L), median [Q1-Q3]"
     )
-  )
+  ) %>%
+  mutate(across(everything(), ~str_replace_all(.x, fixed("0 (NaN)"), "")))
+
 ## fix in order to use escape = TRUE
-colnames(tab1) <- c(colnames(tab1) <- c("", "", "Totalt", levels(rsdata$ttype)))
+colnames(tab1) <- c(colnames(tab1) <- c("", "", levels(rsdata$ttype)))
 
 default_kable(tab1,
   font_size = 6,
-  caption = "RiksSvikt registreringar 2021",
+  caption = "Karaktäristika för patienter registrerade med ett index besök under 2021",
   escape = TRUE
 )
 ```
 
+\blandscape
+
 ```{r tabssex, cache=cacheon, dependson="tabs"}
 
 tab1 <- print(CreateTableOne(
-  vars = c("vtype", "age", "ef_cat3", "FUNCTION_CLASS_NYHA"),
+  vars = tabvars[tabvars != "sex"],
   data = tmprsdata,
   strata = c("sex", "ttype"),
-  includeNA = TRUE
+  #includeNA = TRUE
 ),
 missing = FALSE,
 printToggle = FALSE,
-nonnormal = "age",
+nonnormal = tabvars,
 catDigits = 1,
 contDigits = 1,
 noSpaces = TRUE,
@@ -74,25 +104,43 @@ tab1 <- as_tibble(cbind(var = rownames(tab1), tab1))
 
 tab1 <- tab1 %>%
   mutate(
-    level = case_when(
-      is.na(level) ~ "Okänt",
-      TRUE ~ level
-    ),
     var = case_when(
       var == "n" ~ "Riket",
       var == "vtype" ~ "Vårdtyp, n (%)",
       var == "sex" ~ "Kön, n (%)",
       var == "age" ~ "Ålder (år), median [Q1-Q3]",
       var == "ef_cat3" ~ "LVEF (%), n (%)",
-      var == "FUNCTION_CLASS_NYHA" ~ "NYHA, n (%)"
+      var == "FUNCTION_CLASS_NYHA" ~ "NYHA, n (%)",
+      var == "PRIMARY_ETIOLOGY" ~ "Primär etiologi, n (%)",
+      var == "DIABETES" ~ "Diabetes, n (%)",
+      var == "EARLIER_CARDIAC_ARREST" ~ "Tidigare hjärtinfarkt, n (%)",
+      var == "ATRIAL_FIBRILLATION_FLUTTER" ~ "Förmaksflimmer/fladder, n (%)",
+      var == "HYPERTENSION" ~ "Hypertoni, n (%)",
+      var == "DILATED_CARDIOMYOPATHY" ~ "Dilaterad kardiomyopati, n (%)",
+      var == "HEART_VALVE_DISEASE" ~ "Hjärtklaffsjukdom, n (%)",
+      var == "REVASCULARIZATION" ~ "Revaskularisering, n (%)",
+      var == "CHRONIC_LUNG_DISEASE" ~ "Kronisk lungsjukdom, n (%)",
+      var == "HEART_VALVE_SURGERY" ~ "Klaffoperation, n (%)",
+      var == "BP_SYSTOLIC" ~ "BT systoiskt (mmHg), median [Q1-Q3]",
+      var == "BP_DIASTOLIC" ~ "BT diastoliskt (mmHg), median [Q1-Q3]",
+      var == "HEART_FREQUENCY" ~ "Hjärtfrekvens (slag/min), median [Q1-Q3]",
+      var == "NT_PROBNP" ~ "NT-proBNP (pg/m/L), median [Q1-Q3]",
+      var == "S_CREATININE" ~ "S-Kreatinin (umol/L), median [Q1-Q3]",
+      var == "S_POTASSIUM" ~ "P-Kalium (mmol/L), median [Q1-Q3]",
+      var == "S_SODIUM" ~ "S-Natrium (pg/m/L), median [Q1-Q3]",
+      var == "B_HB" ~ "B-HB (g/L), median [Q1-Q3]"
     )
-  )
+  ) %>%
+  mutate(across(everything(), ~str_replace_all(.x, fixed("0 (NaN)"), "")))
+
 ## fix in order to use escape = TRUE
 colnames(tab1) <- c("", "", rep(levels(rsdata$sex), 4))
 
 default_kable(tab1,
   font_size = 6,
-  caption = "RiksSvikt registreringar 2021 uppdelat på kön",
+  caption = "Karaktäristika för patienter registrerade med ett index besök under 2021 uppdelat på kön",
   escape = TRUE
-) %>% add_header_above(c(" " = 2, "Index" = 2, "6v-6mån uppföljning" = 2, "1års uppföljning" = 2, "2+års uppföljning" = 2))
+) %>% add_header_above(c(" " = 2, "Index" = 2, "Uppföljning 6 v-6 mån" = 2, "Uppföljning 1 år" = 2, "Uppföljning 2+ år" = 2))
 ```
+
+\elandscape

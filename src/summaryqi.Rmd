@@ -1,0 +1,122 @@
+
+\blandscape
+
+```{r summaryqi, cache=cacheon, fig.cap="Riket, alla 15 kvalitetsindikatorer", fig.width=9, fig.height=6}
+
+summaryqifunchelper <- function(qi) {
+  if (qiinfo %>% filter(qivar == qi) %>% pull(timepoint) == "Index") {
+    tmp <- rsdata %>%
+      filter(
+        indexyear == ar &
+          !is.na(hfdur) &
+          ttype == "Index"
+      )
+
+    tmp <- tmp %>%
+      filter(!is.na(!!sym(qi))) %>%
+      group_by(hfdur, .drop = F) %>%
+      count(!!sym(qi), .drop = F) %>%
+      mutate(
+        tot = sum(n),
+        percent = as.numeric(fn(n / tot * 100, 0))
+      ) %>%
+      ungroup() %>%
+      filter(!!sym(qi) == 1) %>%
+      mutate(qivar = qi) %>%
+      select(-!!sym(qi))
+  } else {
+    tmp <- rsdata %>%
+      filter(
+        indexyear == ar &
+          ttype == qiinfo %>%
+            filter(qivar == qi) %>%
+            pull(timepoint)
+      )
+
+    tmp <- tmp %>%
+      filter(!is.na(!!sym(qi))) %>%
+      count(!!sym(qi), .drop = F) %>%
+      mutate(
+        tot = sum(n),
+        percent = as.numeric(fn(n / tot * 100, 0))
+      ) %>%
+      ungroup() %>%
+      filter(!!sym(qi) == 1) %>%
+      mutate(qivar = qi) %>%
+      select(-!!sym(qi))
+  }
+}
+
+stat <- lapply(qiinfo$qivar, summaryqifunchelper)
+
+stat2 <- bind_rows(stat)
+
+stat2 <- stat2 %>%
+  mutate(
+    hfdur = replace_na(hfdur, levels(stat2$hfdur)[2]),
+    cols = case_when(
+      hfdur == levels(stat2$hfdur)[1] ~ global_colsblue[2],
+      hfdur == levels(stat2$hfdur)[2] ~ global_colsblue[3],
+      is.na(hfdur) ~ global_colsblue[3]
+    )
+  )
+
+stat2 <- stat2 %>%
+  mutate(
+    ntot = paste0(n, " av ", tot),
+    per = paste0(percent, "%"),
+    per = if_else(tot < 10, "", per),
+    ntot = if_else(tot < 10, "", ntot),
+    percent = if_else(tot < 10, 0, percent),
+    row = 1:n()
+  )
+
+stat2 <- left_join(stat2, qiinfo, by = "qivar")
+
+stat2$qishortname <- forcats::fct_reorder(stat2$qishortname, stat2$row)
+
+cexmy <- 0.9
+# c(bottom, left, top, right)
+par(mar = c(8, 4, 3.7, 0) + 0.1)
+
+
+b <- barplot(stat2$percent,
+  space = c(0, rep(c(0, 1), 6), rep(1, 8)),
+  axes = FALSE,
+  ylab = "Procent",
+  xlab = "",
+  col = stat2$cols,
+  border = "white",
+  # names.arg = rep(NA, nrow(qiinfo)),
+  cex.lab = cexmy,
+  ylim = c(0, 100),
+  las = 2, cex.names = cexmy
+)
+
+axis(2, seq(0, 100, 20), cex.axis = cexmy, las = 2)
+
+for (i in 1:nrow(b)) {
+  lines(
+    x = c(b[i] - 0.5, b[i] + 0.5),
+    y = c(stat2$ll[i], stat2$ll[i]) * 100, col = "#FFCA02", lty = 2, lwd = 1
+  )
+  lines(
+    x = c(b[i] - 0.5, b[i] + 0.5),
+    y = c(stat2$ul[i], stat2$ul[i]) * 100, col = "#61A60F", lty = 2, lwd = 1
+  )
+}
+
+legend("topright", levels(stat2$hfdur), fill = global_colsblue[1:2], border = global_colsblue[1:2], bty = "n", cex = cexmy)
+
+axis(3,
+  at = b,
+  labels = stat2$ntot, line = -1, tick = FALSE, cex.axis = cexmy * 0.8, hadj = 0, gap.axis = -10000000, las = 2
+)
+
+axis(1,
+  at = c(b[1:12][c(TRUE, FALSE)] + .5, b[13:21]),
+  labels = unique(stat2$qishortname), line = -0.5, tick = FALSE, cex.axis = cexmy, gap.axis = -10000000, las = 2
+)
+```
+
+\elandscape

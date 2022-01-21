@@ -22,9 +22,9 @@ save(file = "./data/rawData_rs.RData", list = c(
 ))
 
 # tg
-prevlan <- read.xlsx("./raw-data/tg/10981_2021 RiksSvikt - Prev mot Prev 2010-2019 - Match Huvuddiagnos 2021-05-17 Lev2_klar_LB.xlsx", 
+prevtime <- read.xlsx("./raw-data/tg/10981_2021 RiksSvikt - Prev mot Prev 2010-2019 - Match Huvuddiagnos 2021-05-17 Lev2_klar_LB.xlsx", 
           sheet = "Län per år")
-inclan <- read.xlsx("./raw-data/tg/10981_2021 RiksSvikt - Täckningsgrad 2003-2019 - Registrering inom 1 år 2021-05-24 Lev3_klar_LB.xlsx", 
+inctime <- read.xlsx("./raw-data/tg/10981_2021 RiksSvikt - Täckningsgrad 2003-2019 - Registrering inom 1 år 2021-05-24 Lev3_klar_LB.xlsx", 
                      sheet = "Län per år")
 prev2019 <- read.xlsx("./raw-data/tg/10981_2021 RiksSvikt - Prev mot Prev 2010-2019 - Match Huvuddiagnos 2021-05-17 Lev2_klar_LB.xlsx", 
                       sheet = "2019")
@@ -35,7 +35,7 @@ prev2019 <- prev2019 %>% as_tibble(.name_repair = "unique")
 inc2019 <- inc2019 %>% as_tibble(.name_repair = "unique")
 
 save(file = "./data/rawData_tg.RData", list = c(
-  "prevlan", "inclan", "prev2019", "inc2019" 
+  "prevtime", "inctime", "prev2019", "inc2019" 
 ))
 
 # Get map data ------------------------------------------------------------

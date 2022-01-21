@@ -1,14 +1,14 @@
-```{r tgovertime, cache=cacheon, fig.width=8, fig.height=7, fig.cap="Täckningsgrad 2003-20xx"}
+```{r tgovertime, cache=cacheon, fig.width=6, fig.height=5, fig.cap="Täckningsgrad 2003-2021"}
 
-cexmy <- 1.2
+cexmy <- 0.7
 # c(bottom, left, top, right) default c(5, 4, 4, 2) + 0.1.
-par(mar = c(4, 4, 0, 6) + 0.1)
+par(mar = c(4, 4, 0.5, 6) + 0.1)
 
 plot(tg_overtime$ar,
   tg_overtime$inc,
-  # type = "b",
-  type = "l",
-  # pch = 16,
+  type = "b",
+  #type = "l",
+  pch = 19,
   col = rev(global_cols[1]),
   lty = 1,
   lwd = 3,
@@ -16,20 +16,23 @@ plot(tg_overtime$ar,
   axes = FALSE,
   xaxs = "i",
   yaxs = "i",
-  # xlim = c(ar - 6, ar),
+  xlim = c(min(as.numeric(tg_overtime$ar)) - 0.3, max(as.numeric(tg_overtime$ar)) + 0.3),
   ylab = "Täckningsgrad (%)",
   xlab = labnams[1],
   cex.lab = cexmy,
-  ylim = c(0, 42)
+  ylim = c(0, 40)
 )
 matplot(tg_overtime$ar,
   tg_overtime$prev,
-  type = "l",
+  type = "b",
+  pch = 19,
   col = rev(global_cols[2]),
   lty = 1,
   lwd = 3,
   add = T
 )
+
+box(bty = "l")
 
 axis(2, at = seq(0, 40, 5), cex.axis = cexmy, las = 2)
 
@@ -49,25 +52,25 @@ axis(2,
 ```{r tglan, cache=cacheon}
 
 geo <- tg_lan %>%
-  filter(!is.na(region)) %>%
+  filter(!is.na(region) & region != "Riket") %>%
   mutate(
     prev_cat = case_when(
-      prev <= 5 ~ 1,
-      prev <= 10 ~ 2,
-      prev <= 20 ~ 3,
-      prev <= 30 ~ 4,
-      prev <= 40 ~ 5,
-      prev <= 50 ~ 6,
-      prev <= 60 ~ 7
+      pprev <= 5 ~ 1,
+      pprev <= 10 ~ 2,
+      pprev <= 20 ~ 3,
+      pprev <= 30 ~ 4,
+      pprev <= 40 ~ 5,
+      pprev <= 50 ~ 6,
+      pprev <= 60 ~ 7
     ),
     inc_cat = case_when(
-      inc <= 5 ~ 1,
-      inc <= 10 ~ 2,
-      inc <= 20 ~ 3,
-      inc <= 30 ~ 4,
-      inc <= 40 ~ 5,
-      inc <= 50 ~ 6,
-      inc <= 60 ~ 7
+      pinc <= 5 ~ 1,
+      pinc <= 10 ~ 2,
+      pinc <= 20 ~ 3,
+      pinc <= 30 ~ 4,
+      pinc <= 40 ~ 5,
+      pinc <= 50 ~ 6,
+      pinc <= 60 ~ 7
     ),
     regnums = str_sub(X1, 1, 2),
     region_mapnr = case_when(
@@ -96,7 +99,7 @@ geo <- tg_lan %>%
   )
 ```
 
-```{r geoprevinc, fig.cap="Täckningsgrad per region", cache=cacheon, dependson="tglan", fig.show='hold', out.width="50%", fig.subcap=c('Prevalent', 'Incident'), fig.ncol=2}
+```{r geoprevinc, fig.cap="Täckningsgrad per region (karta)", cache=cacheon, dependson="tglan", fig.show='hold', out.width="50%", fig.subcap=c('Prevalent', 'Incident'), fig.ncol=2}
 
 
 # c(bottom, left, top, right) default c(5, 4, 4, 2) + 0.1.
