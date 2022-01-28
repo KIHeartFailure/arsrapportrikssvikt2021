@@ -106,7 +106,7 @@ for (i in 1:nrow(b)) {
   )
 }
 
-legend("topright", levels(stat2$hfdur), fill = global_colsblue[1:2], border = global_colsblue[1:2], bty = "n", cex = cexmy)
+legend("topright", levels(stat2$hfdur), fill = global_colsblue[2:3], border = global_colsblue[2:3], bty = "n", cex = cexmy)
 
 axis(3,
   at = b,

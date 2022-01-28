@@ -1,6 +1,6 @@
 ```{r tabvarsdef, cache=cacheon}
 tabvars <- c(
-  "vtype", "sex", "age", "ef_cat3", "FUNCTION_CLASS_NYHA",
+  "vtype", "sex", "age", "ef_cat3", "FUNCTION_CLASS_NYHA", "LIFEQUALITY_SCORE", 
   "EARLIER_CARDIAC_ARREST", "REVASCULARIZATION", "HYPERTENSION",
   "ATRIAL_FIBRILLATION_FLUTTER", "DIABETES",
   "CHRONIC_LUNG_DISEASE", "HEART_VALVE_DISEASE",
@@ -47,6 +47,7 @@ tab1 <- tab1 %>%
       var == "age" ~ "Ålder (år), median [Q1-Q3]",
       var == "ef_cat3" ~ "LVEF (%), n (%)",
       var == "FUNCTION_CLASS_NYHA" ~ "NYHA, n (%)",
+      var == "LIFEQUALITY_SCORE" ~ "Total livskvalitetsscore",
       var == "PRIMARY_ETIOLOGY" ~ "Primär etiologi, n (%)",
       var == "DIABETES" ~ "Diabetes, n (%)",
       var == "EARLIER_CARDIAC_ARREST" ~ "Tidigare hjärtinfarkt, n (%)",
@@ -74,7 +75,7 @@ colnames(tab1) <- c(colnames(tab1) <- c("", "", levels(rsdata$ttype)))
 
 default_kable(tab1,
   font_size = 6,
-  caption = "Karaktäristika för patienter registrerade med ett index besök under 2021",
+  caption = "Karaktäristika för patienter registrerade under 2021",
   escape = TRUE
 )
 ```
@@ -111,6 +112,7 @@ tab1 <- tab1 %>%
       var == "age" ~ "Ålder (år), median [Q1-Q3]",
       var == "ef_cat3" ~ "LVEF (%), n (%)",
       var == "FUNCTION_CLASS_NYHA" ~ "NYHA, n (%)",
+      var == "LIFEQUALITY_SCORE" ~ "Total livskvalitetsscore",
       var == "PRIMARY_ETIOLOGY" ~ "Primär etiologi, n (%)",
       var == "DIABETES" ~ "Diabetes, n (%)",
       var == "EARLIER_CARDIAC_ARREST" ~ "Tidigare hjärtinfarkt, n (%)",
@@ -138,7 +140,7 @@ colnames(tab1) <- c("", "", rep(levels(rsdata$sex), 4))
 
 default_kable(tab1,
   font_size = 6,
-  caption = "Karaktäristika för patienter registrerade med ett index besök under 2021 uppdelat på kön",
+  caption = "Karaktäristika för patienter registrerade under 2021 uppdelat på kön",
   escape = TRUE
 ) %>% add_header_above(c(" " = 2, "Index" = 2, "Uppföljning 6 v-6 mån" = 2, "Uppföljning 1 år" = 2, "Uppföljning 2+ år" = 2))
 ```

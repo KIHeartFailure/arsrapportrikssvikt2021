@@ -36,7 +36,7 @@ barsummary <- function(qi = qitmp,
 
   cexmy <- .9
   # c(bottom, left, top, right)
-  par(mar = c(3.5, 4, 4.7, 0) + 0.1)
+  par(mar = c(3.5, 4, 5, 0) + 0.1)
 
   b <- barplot(percent ~ indexyear + ttype,
     data = all,

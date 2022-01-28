@@ -1,5 +1,5 @@
 timefunc <- function(qi = qitmp, starttime = ar - 4, stoptime = ar, ll = lltmp, ul = ultmp,
-                        data = rsdata, ylimmin = NULL, onlyindex = FALSE, adjtext = NULL) {
+                        data = rsdata, ylimmin = c(0, 100), onlyindex = FALSE, adjtext = NULL) {
   
   if (!onlyindex) {
     tmp <- data %>%
@@ -36,7 +36,7 @@ timefunc <- function(qi = qitmp, starttime = ar - 4, stoptime = ar, ll = lltmp, 
 
     cexmy <- 1
     # c(bottom, left, top, right) default c(5, 4, 4, 2) + 0.1.
-    par(mar = c(4, 4, 0.5, 10) + 0.1)
+    par(mar = c(4, 4, .5, 10) + 0.1)
 
     matplot(all,
       type = "b",

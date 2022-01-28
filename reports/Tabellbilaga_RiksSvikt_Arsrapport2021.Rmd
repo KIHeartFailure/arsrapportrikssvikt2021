@@ -189,7 +189,7 @@ antingen vid inskrivning eller efter 24 timmar.
 **Nämnare:** Alla patienter med ett indextillfälle.
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " över tid"), fig.width=9, fig.height=7}
-timefunc(onlyindex = TRUE)
+timefunc(onlyindex = TRUE, adjtext = c(0, 1))
 ```             
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " uppdelat på region"), fig.width=7, fig.height=8}
@@ -216,7 +216,7 @@ qinametmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(qiname)
 **Nämnare:** Alla patienter med ett indextillfälle.
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " över tid"), fig.width=9, fig.height=7}
-timefunc(onlyindex = TRUE, adjtext = c(0, -0.6))
+timefunc(onlyindex = TRUE, adjtext = c(0, -2))
 ```             
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " uppdelat på region"), fig.width=7, fig.height=8}
@@ -243,7 +243,7 @@ qinametmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(qiname)
 **Nämnare:** Alla patienter med ett indextillfälle.
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " över tid"), fig.width=9, fig.height=7}
-timefunc(onlyindex = TRUE)
+timefunc(onlyindex = TRUE) #, ylimmin = c(30, 70))
 ```             
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " uppdelat på region"), fig.width=7, fig.height=8}
@@ -331,7 +331,7 @@ LVEF definieras som det lägst uppmätta, antingen vid aktuellt tillfälle eller
 *Kvalitetsindikatorn är definierad vid uppföljningen vid 6 veckor - 6 månader efter index.*
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " över tid"), fig.width=9, fig.height=7}
-timefunc()
+timefunc(ylimmin = c(70, 100), adjtext = c(0.15, 0, 0, -0.15))
 ```  
 
 \blandscape
@@ -394,7 +394,7 @@ LVEF definieras som det lägst uppmätta, antingen vid aktuellt tillfälle eller
 *Kvalitetsindikatorn är definierad vid uppföljningen vid 6 veckor - 6 månader efter index.*
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " över tid"), fig.width=9, fig.height=7}
-timefunc()
+timefunc(adjtext = c(0, -1, 0, 0))
 ```  
 
 \blandscape
@@ -457,7 +457,7 @@ LVEF definieras som det lägst uppmätta, antingen vid aktuellt tillfälle eller
 *Kvalitetsindikatorn är definierad vid uppföljningen vid 6 veckor - 6 månader efter index.*
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " över tid"), fig.width=9, fig.height=7}
-timefunc()
+timefunc(ylimmin = c(70, 100), adjtext = c(0, 0, -0.9, -0.4))
 ```  
 
 \blandscape
@@ -522,7 +522,7 @@ LVEF definieras som det lägst uppmätta, antingen vid aktuellt tillfälle eller
 *Kvalitetsindikatorn är definierad vid uppföljningen vid 6 veckor - 6 månader efter index.*
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " över tid"), fig.width=9, fig.height=7}
-timefunc(adjtext = c(0, 0.2, -0.2, 0))
+timefunc(adjtext = c(0, 0.2, -1.6, -1.5))
 ```  
 
 \blandscape
@@ -587,7 +587,7 @@ LVEF definieras som det lägst uppmätta, antingen vid aktuellt tillfälle eller
 *Kvalitetsindikatorn är definierad vid uppföljningen vid 6 veckor - 6 månader efter index.*
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " över tid"), fig.width=9, fig.height=7}
-timefunc(adjtext = c(-0.75, 0, 0, 0))
+timefunc(adjtext = c(-1.7, 1.2, 0, 0))
 ```  
 
 \blandscape
@@ -717,7 +717,7 @@ ESC's är striktast
 *Kvalitetsindikatorn är definierad vid uppföljningen vid 6 veckor - 6 månader efter index.*
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " över tid"), fig.width=9, fig.height=7}
-timefunc(adjtext = c(-.75, 0.75, 2, 0))
+timefunc(adjtext = c(-.75, 0.75, 2.5, 0))
 ```  
 
 \blandscape
@@ -779,7 +779,7 @@ om device har rapporterats. LVEF definieras som det lägst uppmätta, antingen v
 *Kvalitetsindikatorn är definierad vid uppföljningen vid 6 veckor - 6 månader efter index.*
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " över tid"), fig.width=9, fig.height=7}
-timefunc()
+timefunc(adjtext = c(-0.5, 0.5, 0, 0))
 ```  
 
 \blandscape
@@ -841,7 +841,7 @@ om deltagande i organiserad fysisk träning har rapporterats.
 *Kvalitetsindikatorn är definierad vid uppföljningen vid 6 veckor - 6 månader efter index.*
 
 ```{r, cache = cacheon, fig.cap = paste(qinametmp, " över tid"), fig.width=9, fig.height=7}
-timefunc()
+timefunc(adjtext = c(0, 0.7, -0.9, 0))
 ```  
 
 \blandscape

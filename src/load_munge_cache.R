@@ -24,5 +24,5 @@ ProjectTemplate::cache("tg_overtime")
 
 labnams <- c("År", "Övre målnivå", "Undre målnivå", "Okänt")
 ProjectTemplate::cache("labnams")
-shortttype <- c("Index", "6v-5 mån", "1 år", "2+ år")
+shortttype <- c("Index", "6v-6 mån", "1 år", "2+ år")
 ProjectTemplate::cache("shortttype")
