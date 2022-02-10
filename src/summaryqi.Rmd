@@ -1,13 +1,13 @@
 
 \blandscape
 
-```{r summaryqi, cache=cacheon, fig.cap="Riket, alla 15 kvalitetsindikatorer", fig.width=9, fig.height=6}
+```{r, cache=cacheon, fig.cap=paste0("Riket, alla ", nrow(qiinfo), " kvalitetsindikatorer ",  global_year), fig.width=9, fig.height=6}
 
 summaryqifunchelper <- function(qi) {
   if (qiinfo %>% filter(qivar == qi) %>% pull(timepoint) == "Index") {
     tmp <- rsdata %>%
       filter(
-        indexyear == ar &
+        indexyear == global_year &
           !is.na(hfdur) &
           ttype == "Index"
       )
@@ -27,7 +27,7 @@ summaryqifunchelper <- function(qi) {
   } else {
     tmp <- rsdata %>%
       filter(
-        indexyear == ar &
+        indexyear == global_year &
           ttype == qiinfo %>%
             filter(qivar == qi) %>%
             pull(timepoint)
@@ -55,7 +55,7 @@ stat2 <- stat2 %>%
   mutate(
     hfdur = replace_na(hfdur, levels(stat2$hfdur)[2]),
     cols = case_when(
-      hfdur == levels(stat2$hfdur)[1] ~ global_colsblue[2],
+      hfdur == levels(stat2$hfdur)[1] ~ global_colsblue[6],
       hfdur == levels(stat2$hfdur)[2] ~ global_colsblue[3],
       is.na(hfdur) ~ global_colsblue[3]
     )
@@ -106,7 +106,7 @@ for (i in 1:nrow(b)) {
   )
 }
 
-legend("topright", levels(stat2$hfdur), fill = global_colsblue[2:3], border = global_colsblue[2:3], bty = "n", cex = cexmy)
+legend("topright", levels(stat2$hfdur), fill = global_colsblue[c(3, 6)], border = global_colsblue[c(3, 6)], bty = "n", cex = cexmy)
 
 axis(3,
   at = b,
@@ -117,6 +117,23 @@ axis(1,
   at = c(b[1:12][c(TRUE, FALSE)] + .5, b[13:21]),
   labels = unique(stat2$qishortname), line = -0.5, tick = FALSE, cex.axis = cexmy, gap.axis = -10000000, las = 2
 )
+
+axis(1,
+  at = b[5] + (b[6] - b[5]) / 2,
+  labels = "Index", line = 6.1, tick = FALSE, cex.axis = cexmy, gap.axis = -10000000, las = 1
+)
+
+axis(1,
+  at = b[17],
+  labels = "3 månaders uppföljningen", line = 6.1, tick = FALSE, cex.axis = cexmy, gap.axis = -10000000, las = 1
+)
+
+posarrow <- -42.3
+arrows(b[1], posarrow, b[3], posarrow, xpd = TRUE, code = 1, length = 0.1)
+arrows(b[7], posarrow, b[10], posarrow, xpd = TRUE, code = 2, length = 0.1)
+
+arrows(b[13], posarrow, b[14], posarrow, xpd = TRUE, code = 1, length = 0.1)
+arrows(b[20], posarrow, b[21], posarrow, xpd = TRUE, code = 2, length = 0.1)
 ```
 
 \elandscape

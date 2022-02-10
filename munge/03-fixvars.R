@@ -84,7 +84,13 @@ rsdata <- rsdata %>%
       LVEF_SEMIQUANTITATIVE %in% c("NORMAL", "MILD") | LVEF_PERCENT > 35 ~ 1,
       LVEF_SEMIQUANTITATIVE %in% c("MODERATE", "SEVERE") | LVEF_PERCENT <= 35 ~ 2
     ), labels = c(">=40/>35", "<40/<=35"), levels = 1:2),
-    FUNCTION_CLASS_NYHA = str_replace(FUNCTION_CLASS_NYHA, "NYHA_", " ")
+    FUNCTION_CLASS_NYHA = str_replace(FUNCTION_CLASS_NYHA, "NYHA_", " "),
+    location = factor(case_when( # YEARLY_FOLLOWUP_TYPE == "SURVEY" ~ "Enkät",
+      # YEARLY_FOLLOWUP_TYPE == "TELEPHONE" ~ "Telefon",
+      vtype == "Primärvård" ~ 3,
+      PROCESS_STEPS_TABLE %in% c("IX_OV", "FO", "YFO") & vtype == "Sjukhus" ~ 2,
+      PROCESS_STEPS_TABLE %in% c("IX_SV") ~ 1
+    ), levels = 1:3, labels = c("Slutenvård", "Öppenvård sjukhus", "Primärvård"))
   )
 
 
@@ -154,7 +160,7 @@ rsdata <- left_join(
     ttype = if_else(tmp_timeadmission >= 1.5 * 365 & TYPE == "YEARLY_FOLLOWUP", 4, ttype),
     ttype = factor(ttype,
       levels = 1:4,
-      labels = c("Index", "Uppföljning 6 v-6 mån", "Uppföljning 1 år", "Uppföljning 2+ år")
+      labels = c("Index", "Uppföljning 3 månader", "Uppföljning 1 år", "Uppföljning 2+ år")
     )
   )
 

@@ -1,22 +1,22 @@
-```{r tabvarsdef, cache=cacheon}
+```{r, cache=cacheon}
 tabvars <- c(
-  "vtype", "sex", "age", "ef_cat3", "FUNCTION_CLASS_NYHA", "LIFEQUALITY_SCORE", 
+  "vtype", "sex", "age", "ef_cat3", "FUNCTION_CLASS_NYHA", "LIFEQUALITY_SCORE",
   "EARLIER_CARDIAC_ARREST", "REVASCULARIZATION", "HYPERTENSION",
   "ATRIAL_FIBRILLATION_FLUTTER", "DIABETES",
   "CHRONIC_LUNG_DISEASE", "HEART_VALVE_DISEASE",
   "HEART_VALVE_SURGERY", "DILATED_CARDIOMYOPATHY",
   "PRIMARY_ETIOLOGY",
-  "BP_SYSTOLIC", "BP_DIASTOLIC", "HEART_FREQUENCY", 
+  "BP_SYSTOLIC", "BP_DIASTOLIC", "HEART_FREQUENCY",
   "B_HB", "S_CREATININE",
-  "S_POTASSIUM", "S_SODIUM", 
+  "S_POTASSIUM", "S_SODIUM",
   "NT_PROBNP"
 )
-```
-
-```{r tabs, cache=cacheon}
 
 tmprsdata <- rsdata %>%
-  filter(indexyear == ar)
+  filter(indexyear == global_year)
+```
+
+```{r, cache=cacheon}
 
 tab1 <- print(CreateTableOne(
   vars = tabvars,
@@ -42,7 +42,7 @@ tab1 <- tab1 %>%
   mutate(
     var = case_when(
       var == "n" ~ "Riket",
-      var == "vtype" ~ "Vårdtyp, n (%)",
+      var == "vtype" ~ "Enhetstyp, n (%)",
       var == "sex" ~ "Kön, n (%)",
       var == "age" ~ "Ålder (år), median [Q1-Q3]",
       var == "ef_cat3" ~ "LVEF (%), n (%)",
@@ -68,27 +68,29 @@ tab1 <- tab1 %>%
       var == "B_HB" ~ "B-HB (g/L), median [Q1-Q3]"
     )
   ) %>%
-  mutate(across(everything(), ~str_replace_all(.x, fixed("0 (NaN)"), "")))
+  mutate(across(everything(), ~ str_replace_all(.x, fixed("0 (NaN)"), "")))
 
 ## fix in order to use escape = TRUE
 colnames(tab1) <- c(colnames(tab1) <- c("", "", levels(rsdata$ttype)))
 
+write.xlsx(tab1, paste0("./output/tabs/karak_", Sys.Date(), ".xlsx"), rowNames = FALSE, overwrite = T)
+
 default_kable(tab1,
   font_size = 6,
-  caption = "Karaktäristika för patienter registrerade under 2021",
+  caption = paste0("Karaktäristika för patienter registrerade under ", global_year),
   escape = TRUE
 )
 ```
 
 \blandscape
 
-```{r tabssex, cache=cacheon, dependson="tabs"}
+```{r, cache=cacheon, dependson="tabs"}
 
 tab1 <- print(CreateTableOne(
   vars = tabvars[tabvars != "sex"],
   data = tmprsdata,
   strata = c("sex", "ttype"),
-  #includeNA = TRUE
+  # includeNA = TRUE
 ),
 missing = FALSE,
 printToggle = FALSE,
@@ -107,7 +109,7 @@ tab1 <- tab1 %>%
   mutate(
     var = case_when(
       var == "n" ~ "Riket",
-      var == "vtype" ~ "Vårdtyp, n (%)",
+      var == "vtype" ~ "Enhetstyp, n (%)",
       var == "sex" ~ "Kön, n (%)",
       var == "age" ~ "Ålder (år), median [Q1-Q3]",
       var == "ef_cat3" ~ "LVEF (%), n (%)",
@@ -133,16 +135,26 @@ tab1 <- tab1 %>%
       var == "B_HB" ~ "B-HB (g/L), median [Q1-Q3]"
     )
   ) %>%
-  mutate(across(everything(), ~str_replace_all(.x, fixed("0 (NaN)"), "")))
+  mutate(across(everything(), ~ str_replace_all(.x, fixed("0 (NaN)"), "")))
 
 ## fix in order to use escape = TRUE
 colnames(tab1) <- c("", "", rep(levels(rsdata$sex), 4))
 
+write.xlsx(tab1, paste0("./output/tabs/karak_kon_", Sys.Date(), ".xlsx"), rowNames = FALSE, overwrite = T)
+
+myHeader <- c(" " = 2, " " = 2, " " = 2, " " = 2, " " = 2)
+names(myHeader) <- c(
+  " ", shortttype[1],
+  paste0("Uppföljning ", shortttype[2]),
+  paste0("Uppföljning ", shortttype[3]),
+  paste0("Uppföljning ", shortttype[4])
+)
+
 default_kable(tab1,
   font_size = 6,
-  caption = "Karaktäristika för patienter registrerade under 2021 uppdelat på kön",
+  caption = paste0("Karaktäristika för patienter registrerade under ", global_year, " uppdelat på kön"),
   escape = TRUE
-) %>% add_header_above(c(" " = 2, "Index" = 2, "Uppföljning 6 v-6 mån" = 2, "Uppföljning 1 år" = 2, "Uppföljning 2+ år" = 2))
+) %>% add_header_above(myHeader)
 ```
 
 \elandscape

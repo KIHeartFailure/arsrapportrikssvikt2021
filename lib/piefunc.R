@@ -1,6 +1,6 @@
 piefunc <- function(var, type = "Index",
-                       startime = start, stoptime = stop,
-                       data = rsdata) {
+                    startime = global_startdtm, stoptime = global_stopdtm,
+                    data = rsdata) {
   tmp <- data %>%
     filter(
       d_DATE_FOR_ADMISSION >= startime &
@@ -19,8 +19,8 @@ piefunc <- function(var, type = "Index",
       !!sym(var) := paste0(!!sym(var), "\n", fn(percent, 0), "%")
     )
 
-  cols <- rev(global_colsblue[1:nrow(riket)])
-  cols[str_detect(riket %>% pull(!!sym(var)), labnams[4])] <- global_colsmiss
+  cols <- rev(global_colsblue[(7 - nrow(riket)):6])
+  cols[str_detect(riket %>% pull(!!sym(var)), labnams[4])] <- global_colsgrey[6]
 
   p <- ggplot(data = riket, aes(x = "", y = percent, fill = !!sym(var))) +
     geom_bar(stat = "identity") +

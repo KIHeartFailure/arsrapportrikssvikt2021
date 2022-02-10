@@ -1,4 +1,4 @@
-```{r tgovertime, cache=cacheon, fig.width=6, fig.height=5, fig.cap="Täckningsgrad 2003-2021"}
+```{r, cache=cacheon, fig.width=6, fig.height=5, fig.cap=paste0("Täckningsgrad 2003-", global_year)}
 
 cexmy <- 0.7
 # c(bottom, left, top, right) default c(5, 4, 4, 2) + 0.1.
@@ -7,9 +7,9 @@ par(mar = c(4, 4, 0.5, 6) + 0.1)
 plot(tg_overtime$ar,
   tg_overtime$inc,
   type = "b",
-  #type = "l",
+  # type = "l",
   pch = 19,
-  col = rev(global_cols[1]),
+  col = rev(global_colsblue[6]),
   lty = 1,
   lwd = 3,
   # cex = 1.2,
@@ -26,7 +26,7 @@ matplot(tg_overtime$ar,
   tg_overtime$prev,
   type = "b",
   pch = 19,
-  col = rev(global_cols[2]),
+  col = global_colsblue[3],
   lty = 1,
   lwd = 3,
   add = T
@@ -49,7 +49,7 @@ axis(2,
 )
 ```
 
-```{r tglan, cache=cacheon}
+```{r, cache=cacheon}
 
 geo <- tg_lan %>%
   filter(!is.na(region) & region != "Riket") %>%
@@ -99,13 +99,13 @@ geo <- tg_lan %>%
   )
 ```
 
-```{r geoprevinc, fig.cap="Täckningsgrad per region (karta)", cache=cacheon, dependson="tglan", fig.show='hold', out.width="50%", fig.subcap=c('Prevalent', 'Incident'), fig.ncol=2}
+```{r, fig.cap=paste0("Täckningsgrad ", global_year, " uppdelat på region (karta)"), cache=cacheon, fig.show='hold', out.width="50%", fig.subcap=c('Prevalent', 'Incident'), fig.ncol=2}
 
 
 # c(bottom, left, top, right) default c(5, 4, 4, 2) + 0.1.
 par(mar = c(0, 0, 0, 0) + 0.1)
 
-mapcols <- rev(c(global_colsblue, "white"))
+mapcols <- rev(global_colsblue)
 
 mapdata <- geo %>%
   arrange(region_mapnr)

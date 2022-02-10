@@ -1,5 +1,5 @@
 barsummary <- function(qi = qitmp,
-                       starttime = ar - 2, stoptime = ar,
+                       starttime = global_year - 2, stoptime = global_year,
                        ll = lltmp, ul = ultmp,
                        unit,
                        data = rsdata) {
@@ -15,15 +15,15 @@ barsummary <- function(qi = qitmp,
       percent = as.numeric(fn(n / tot * 100, 0))
     ) %>%
     ungroup() %>%
-    filter(!!sym(qi) == 1 & 
-           indexyear %in% paste(seq(starttime, stoptime, 1)))
+    filter(!!sym(qi) == 1 &
+      indexyear %in% paste(seq(starttime, stoptime, 1)))
 
   all <- all %>%
     mutate(
       cols = case_when(
-        indexyear == starttime ~ "grey75",
-        indexyear == starttime + 1 ~ "grey55",
-        TRUE ~ global_cols[2]
+        indexyear == starttime ~ global_colsblue[7],
+        indexyear == starttime + 1 ~ global_colsblue[5],
+        TRUE ~ global_colsblue[3]
       ),
       ntot = paste0(n, " av ", tot),
       per = paste0(percent, "%"),

@@ -5,26 +5,42 @@ filter <- dplyr::filter
 mutate <- dplyr::mutate
 complete <- tidyr::complete
 
-# colours
-global_cols <- c(
-  # "#56B4E9",
-  "#88D6EE",
-  "#1D6903",
-  "#FF8702"
-)
+global_colsblue <- rev(c(
+  #"#F0FAFF",
+  #"#D6F0F7",
+  "#9BD4E5",
+  "#70C1DA",
+  "#4FB3D1",
+  "#2F99BA",
+  "#0F83A3",
+  "#006E8A",
+  "#034F69",
+  "#023647"
+))
 
-global_colsblue <- c(
-  "#1E6170",
-  "#397C93",
-  "#4E9FBA",
-  "#88D6EE",
-  "#B7E6F5",
-  "#E5F7FD"
-)
+global_colsgreen <- rev(c(
+  "#C6E59B",
+  "#AEDA70",
+  "#9AD24A",
+  "#78BA1C",
+  "#61A60F",
+  "#408400", 
+  "#1C6603", 
+  "#144702"
+))
 
-global_colsmiss <- "#A9A9A9"
+global_colsgrey <- rev(c(
+  "#C2C2C2",
+  "#A6A6A6",
+  "#8C8C8C",
+  "#666666",
+  "#4D4D4D",
+  "#333333",
+  "#262626",
+  "#1A1A1A"
+))
 
 # year of report
-start <- ymd("2021-01-01")
-stop <- ymd("2021-12-31")
-ar <- 2021
+global_startdtm <- ymd("2021-01-01")
+global_stopdtm <- ymd("2021-12-31")
+global_year <- 2021

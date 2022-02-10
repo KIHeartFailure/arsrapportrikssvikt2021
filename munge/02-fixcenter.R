@@ -48,17 +48,18 @@ rsdata <- rsdata %>%
     vtype = factor(case_when(
       ORG_UNIT_LEVEL_NAME %in% c("Avdelning", "Fristående hjärtmottagning", "Mottagning") ~ 1,
       ORG_UNIT_LEVEL_NAME %in% c("Vårdcentral") ~ 2
-    ), levels = 1:2, labels = c("Sjukhus", "Primärvård")),
-    center = case_when(
-      ORG_UNIT_LEVEL_NAME %in% c("Vårdcentral") ~ "",
+    ), levels = 1:2, labels = c("Sjukhus", "Primärvård"))#,
+    #center = case_when(
+    #  ORG_UNIT_LEVEL_NAME %in% c("Vårdcentral") ~ "",
       # ORG_UNIT_LEVEL_NAME %in% c("Fristående hjärtmottagning") ~ "Fristående enhet",
-      TRUE ~ center
-    ),
+    #  TRUE ~ center
+  #  )#,
     # i regioner ingår ej vc
-    region = case_when(
-      ORG_UNIT_LEVEL_NAME %in% c("Vårdcentral") ~ "",
-      TRUE ~ region
-    )
+    #regionvc = region, 
+    #region = case_when(
+    #  ORG_UNIT_LEVEL_NAME %in% c("Vårdcentral") ~ "",
+    #  TRUE ~ region
+    #)
   )
 
 

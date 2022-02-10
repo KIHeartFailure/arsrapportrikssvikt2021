@@ -77,14 +77,14 @@ rsdata <- rsdata %>%
 # uppföljningar 6v - 6m
 
 follow <- rsdata %>%
-  filter(ttype == "Uppföljning 6 v-6 mån") %>%
+  filter(ttype == "Uppföljning 3 månader") %>%
   mutate(followup = 1) %>%
   select(PATIENTREFERENCE, followup)
 
 rsdata <- left_join(rsdata, follow, by = "PATIENTREFERENCE")
 
 rsdata <- rsdata %>%
-  mutate(qi_followreg6m = case_when(
+  mutate(qi_followreg3m = case_when(
     FOLLOWUP_UNIT == "DECEASED" | TYPE != "INDEX" ~ NA_real_,
     followup == 1 ~ 1,
     TRUE ~ 0
@@ -119,7 +119,7 @@ qiinfo <- qiinfo %>%
       qivar == "qi_crt" ~ "CRT",
       qivar == "qi_icd" ~ "ICD",
       qivar == "qi_fys" ~ "Fysisk träning",
-      qivar == "qi_followreg6m" ~ "Uppföljning 6 v-6 mån"
+      qivar == "qi_followreg3m" ~ "Uppföljning 3 månader"
     ),
     qiname = case_when(
       qivar == "qi_lvef" ~ "LVEF, Vänsterkammarfunktion rapporterat vid index",
@@ -136,7 +136,7 @@ qiinfo <- qiinfo %>%
       qivar == "qi_crt" ~ "CRT",
       qivar == "qi_icd" ~ "ICD",
       qivar == "qi_fys" ~ "Fysisk träning",
-      qivar == "qi_followreg6m" ~ "Uppföljningsbesök vid 6 veckor - 6 månader rapporterat"
+      qivar == "qi_followreg3m" ~ "Uppföljningsbesök vid 3 månader rapporterat"
     ),
     ll = case_when(
       qivar == "qi_lvef" ~ 0.8,
@@ -153,7 +153,7 @@ qiinfo <- qiinfo %>%
       qivar == "qi_crt" ~ 0.5,
       qivar == "qi_icd" ~ 0.5,
       qivar == "qi_fys" ~ 0.3,
-      qivar == "qi_followreg6m" ~ 0.88
+      qivar == "qi_followreg3m" ~ 0.88
     ),
     ul = case_when(
       qivar == "qi_lvef" ~ 0.9,
@@ -170,7 +170,7 @@ qiinfo <- qiinfo %>%
       qivar == "qi_crt" ~ 0.6,
       qivar == "qi_icd" ~ 0.6,
       qivar == "qi_fys" ~ 0.4,
-      qivar == "qi_followreg6m" ~ 0.92
+      qivar == "qi_followreg3m" ~ 0.92
     ),
     timepoint = case_when(
       qivar == "qi_lvef" ~ "Index",
@@ -178,16 +178,16 @@ qiinfo <- qiinfo %>%
       qivar == "qi_nyha" ~ "Index",
       qivar == "qi_qol" ~ "Index",
       qivar == "qi_uppfhf" ~ "Index",
-      qivar == "qi_ras" ~ "Uppföljning 6 v-6 mån",
-      qivar == "qi_arni" ~ "Uppföljning 6 v-6 mån",
-      qivar == "qi_bbl" ~ "Uppföljning 6 v-6 mån",
-      qivar == "qi_mra" ~ "Uppföljning 6 v-6 mån",
-      qivar == "qi_trippel" ~ "Uppföljning 6 v-6 mån",
-      qivar == "qi_sglt2" ~ "Uppföljning 6 v-6 mån",
-      qivar == "qi_crt" ~ "Uppföljning 6 v-6 mån",
-      qivar == "qi_icd" ~ "Uppföljning 6 v-6 mån",
-      qivar == "qi_fys" ~ "Uppföljning 6 v-6 mån",
-      qivar == "qi_followreg6m" ~ "Index"
+      qivar == "qi_ras" ~ "Uppföljning 3 månader",
+      qivar == "qi_arni" ~ "Uppföljning 3 månader",
+      qivar == "qi_bbl" ~ "Uppföljning 3 månader",
+      qivar == "qi_mra" ~ "Uppföljning 3 månader",
+      qivar == "qi_trippel" ~ "Uppföljning 3 månader",
+      qivar == "qi_sglt2" ~ "Uppföljning 3 månader",
+      qivar == "qi_crt" ~ "Uppföljning 3 månader",
+      qivar == "qi_icd" ~ "Uppföljning 3 månader",
+      qivar == "qi_fys" ~ "Uppföljning 3 månader",
+      qivar == "qi_followreg3m" ~ "Index"
     ),
     qino = case_when(
       qivar == "qi_lvef" ~ 1,
@@ -204,7 +204,7 @@ qiinfo <- qiinfo %>%
       qivar == "qi_crt" ~ 13,
       qivar == "qi_icd" ~ 14,
       qivar == "qi_fys" ~ 15,
-      qivar == "qi_followreg6m" ~ 6
+      qivar == "qi_followreg3m" ~ 6
     )
   ) %>%
   arrange(qino)
