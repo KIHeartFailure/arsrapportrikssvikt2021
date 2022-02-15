@@ -4,47 +4,25 @@
 ```{r, cache=cacheon, fig.cap=paste0("Riket, alla ", nrow(qiinfo), " kvalitetsindikatorer ",  global_year), fig.width=9, fig.height=6}
 
 summaryqifunchelper <- function(qi) {
-  if (qiinfo %>% filter(qivar == qi) %>% pull(timepoint) == "Index") {
-    tmp <- rsdata %>%
-      filter(
-        indexyear == global_year &
-          !is.na(hfdur) &
-          ttype == "Index"
-      )
+  tmp <- rsdata %>%
+    filter(
+      indexyear == global_year &
+        !is.na(hfdur) &
+        ttype == "Index"
+    )
 
-    tmp <- tmp %>%
-      filter(!is.na(!!sym(qi))) %>%
-      group_by(hfdur, .drop = F) %>%
-      count(!!sym(qi), .drop = F) %>%
-      mutate(
-        tot = sum(n),
-        percent = as.numeric(fn(n / tot * 100, 0))
-      ) %>%
-      ungroup() %>%
-      filter(!!sym(qi) == 1) %>%
-      mutate(qivar = qi) %>%
-      select(-!!sym(qi))
-  } else {
-    tmp <- rsdata %>%
-      filter(
-        indexyear == global_year &
-          ttype == qiinfo %>%
-            filter(qivar == qi) %>%
-            pull(timepoint)
-      )
-
-    tmp <- tmp %>%
-      filter(!is.na(!!sym(qi))) %>%
-      count(!!sym(qi), .drop = F) %>%
-      mutate(
-        tot = sum(n),
-        percent = as.numeric(fn(n / tot * 100, 0))
-      ) %>%
-      ungroup() %>%
-      filter(!!sym(qi) == 1) %>%
-      mutate(qivar = qi) %>%
-      select(-!!sym(qi))
-  }
+  tmp <- tmp %>%
+    filter(!is.na(!!sym(qi))) %>%
+    group_by(hfdur, .drop = F) %>%
+    count(!!sym(qi), .drop = F) %>%
+    mutate(
+      tot = sum(n),
+      percent = as.numeric(fn(n / tot * 100, 0))
+    ) %>%
+    ungroup() %>%
+    filter(!!sym(qi) == 1) %>%
+    mutate(qivar = qi) %>%
+    select(-!!sym(qi))
 }
 
 stat <- lapply(qiinfo$qivar, summaryqifunchelper)
@@ -77,11 +55,11 @@ stat2$qishortname <- forcats::fct_reorder(stat2$qishortname, stat2$row)
 
 cexmy <- 0.9
 # c(bottom, left, top, right)
-par(mar = c(8, 4, 3.7, 0) + 0.1)
+par(mar = c(10, 4, 3.7, 0) + 0.1)
 
 
 b <- barplot(stat2$percent,
-  space = c(0, rep(c(0, 1), 6), rep(1, 8)),
+  space = c(0, rep(c(0, 1), 14), 0),
   axes = FALSE,
   ylab = "Procent",
   xlab = "",
@@ -95,18 +73,20 @@ b <- barplot(stat2$percent,
 
 axis(2, seq(0, 100, 20), cex.axis = cexmy, las = 2)
 
-for (i in 1:nrow(b)) {
+bplace <- b[c(seq(1, length(b), 2))]
+
+for (i in seq_along(bplace)) {
   lines(
-    x = c(b[i] - 0.5, b[i] + 0.5),
-    y = c(stat2$ll[i], stat2$ll[i]) * 100, col = "#FFCA02", lty = 2, lwd = 1
+    x = c(bplace[i] - 0.5, bplace[i] + 1.5),
+    y = c(qiinfo$ll[i], qiinfo$ll[i]) * 100, col = "#FFCA02", lty = 2, lwd = 1
   )
   lines(
-    x = c(b[i] - 0.5, b[i] + 0.5),
-    y = c(stat2$ul[i], stat2$ul[i]) * 100, col = "#61A60F", lty = 2, lwd = 1
+    x = c(bplace[i] - 0.5, bplace[i] + 1.5),
+    y = c(qiinfo$ul[i], qiinfo$ul[i]) * 100, col = "#61A60F", lty = 2, lwd = 1
   )
 }
 
-legend("topright", levels(stat2$hfdur), fill = global_colsblue[c(3, 6)], border = global_colsblue[c(3, 6)], bty = "n", cex = cexmy)
+legend("topright", levels(stat2$hfdur), fill = global_colsblue[c(6, 3)], border = global_colsblue[c(6, 3)], bty = "n", cex = cexmy)
 
 axis(3,
   at = b,
@@ -114,8 +94,8 @@ axis(3,
 )
 
 axis(1,
-  at = c(b[1:12][c(TRUE, FALSE)] + .5, b[13:21]),
-  labels = unique(stat2$qishortname), line = -0.5, tick = FALSE, cex.axis = cexmy, gap.axis = -10000000, las = 2
+  at = bplace + 0.5,
+  labels = qiinfo$qishortname, line = -0.5, tick = FALSE, cex.axis = cexmy, gap.axis = -10000000, las = 2
 )
 
 axis(1,
@@ -124,16 +104,26 @@ axis(1,
 )
 
 axis(1,
-  at = b[17],
+  at = b[22],
   labels = "3 månaders uppföljningen", line = 6.1, tick = FALSE, cex.axis = cexmy, gap.axis = -10000000, las = 1
 )
 
-posarrow <- -42.3
-arrows(b[1], posarrow, b[3], posarrow, xpd = TRUE, code = 1, length = 0.1)
+posarrow <- -47.5
+arrows(b[1], posarrow, b[4], posarrow, xpd = TRUE, code = 1, length = 0.1)
 arrows(b[7], posarrow, b[10], posarrow, xpd = TRUE, code = 2, length = 0.1)
 
-arrows(b[13], posarrow, b[14], posarrow, xpd = TRUE, code = 1, length = 0.1)
-arrows(b[20], posarrow, b[21], posarrow, xpd = TRUE, code = 2, length = 0.1)
+arrows(b[13], posarrow, b[18], posarrow, xpd = TRUE, code = 1, length = 0.1)
+arrows(b[26], posarrow, b[30], posarrow, xpd = TRUE, code = 2, length = 0.1)
+
+legend("bottom",
+  inset = c(-0, -.65), xpd = NA,
+  legend = labnams[2:3],
+  lty = 2,
+  col = c("#61A60F", "#FFCA02"),
+  bty = "n",
+  cex = cexmy,
+  horiz = TRUE
+)
 ```
 
 \elandscape

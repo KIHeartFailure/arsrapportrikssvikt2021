@@ -5,7 +5,7 @@ and statistical analyses performed for the annual report for SwedeHF.
 
 ## Language 
 
-English (sprinkled with Swedish). 
+Swedish. 
 
 ## Data
 
@@ -21,14 +21,6 @@ management of package dependencies.
 
 Since the data is not available the code can not be run as is. 
 
-Workflow: 
-
-1. Run src/load_munge_cache.R or set loading and munging options in 
-ProjectTemplate::reload.project() to TRUE in 
-reports/Statistical_report_XX.Rmd
-
-2. Knit reports/Statistical_report_XX.Rmd
-
 ## Publication
 
-... 
+https://www.ucr.uu.se/rikssvikt/om-rikssvikt/arsrapporter 

@@ -69,7 +69,8 @@ de fås från Socialstyrelsen i april 2022 (tom 2021).
 Datum utgår från det datum som patienten skrevs in/besöksdatum.
 
 Med index avses första gången en patient registreras i RiksSvikt, detta behöver dock inte vara en nydiagnostiserad hjärtsvikt. 
-Årlig uppföljning är indelat i 1 års uppföljning (inom 1.5 år från index) och 2+ års uppföljning (efter 1.5 år från index). 
+3 månaders uppföljningen kan ske mellan 6 veckor och 6 månader efter index. 
+Årlig uppföljning är indelat i 1 års uppföljning (6 månader till 1,5 år efter index) och 2+ års uppföljning (från 1,5 år efter index). 
 
 I det fall det finns mer än en årlig registrering / patient har alla poster redovisats. 
 För 2+ årlig uppföljning finns `r rsdata %>% filter(ttype == "Uppföljning 2+ år" & indexyear == global_year) %>% nrow()` poster för 
@@ -93,7 +94,7 @@ R koden som genererat årsrapporten finns: https://github.com/KIHeartFailure/ars
 **Nämnare incident täckningsgrad:** Individer som registrerats med hjärtsvikt (I11.0, I13.0, I13.2, I25.5, I42.0, I42.6, I42.7, I50.0, I50.1, I50.9) 
 för första gången under det aktuella året, antingen i RiksSvikt eller i patientregistret.
 
-*Täckningsgraden för 2021 baseras på icke kvalitetsgranskade uppgifter från Socialstyrelsen. Definitionen av täckningsgraden tillåter registreringar i RiksSvikt  tom ett år efter registrering i patientregistret så täckningsraden är därmed inte komplett för 2021. Därför bör täckningsgraden för 2021 betraktas som preliminär.* 
+*Täckningsgraden för 2021 baseras på icke kvalitetsgranskade uppgifter från Socialstyrelsen. Definitionen av den incidenta täckningsgraden tillåter registreringar i RiksSvikt tom 31 mars året efter registrering i patientregistret så täckningsraden är därmed inte komplett för 2021, då täckningraden är baserad på uttag gjort 1 mars 2022. Därför bör täckningsgraden för 2021 betraktas som preliminär.* 
 
 ```{r, child = "../src/tg.Rmd"}
 
@@ -138,11 +139,12 @@ piefunc(var = "vtype", type = c("Uppföljning 2+ år"))
 \elandscape
 
 ```{r, cache = cacheon, fig.cap = paste0("Enhetstyp indexregistreringar ", global_year, " uppdelat på region"), fig.width=7, fig.height=8}
-barfunc(var = "location", type = "Index")
+barfunc(var = "location", type = "Index", mycols = c(global_colsblue[3], global_colsblue[6], global_colsblue[8]))
 ```             
 
 ```{r, cache = cacheon, fig.cap = paste0("Enhetstyp alla registreringar ", global_year, " uppdelat på region"), fig.width=7, fig.height=8}
-barfunc(var = "vtype", type = c("Index", "Uppföljning 3 månader", "Uppföljning 1 år", "Uppföljning 2+ år"))
+barfunc(var = "vtype", type = c("Index", "Uppföljning 3 månader", "Uppföljning 1 år", "Uppföljning 2+ år"), 
+        mycols = c(global_colsblue[4], global_colsblue[8]))
 ```             
 
 \clearpage
@@ -201,7 +203,7 @@ antingen vid inskrivning eller efter 24 timmar.
 **Nämnare:** Alla patienter med ett indextillfälle.
 
 ```{r, cache = cacheon, fig.cap = paste0(qinametmp, " över tid"), fig.width=9, fig.height=7}
-timefunc(onlyindex = TRUE, adjtext = c(0, 1))
+timefunc(onlyindex = TRUE)
 ```             
 
 ```{r, cache = cacheon, fig.cap = paste0(qinametmp, " ", global_year, " uppdelat på region"), fig.width=7, fig.height=8}
@@ -228,7 +230,7 @@ qinametmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(qiname)
 **Nämnare:** Alla patienter med ett indextillfälle.
 
 ```{r, cache = cacheon, fig.cap = paste0(qinametmp, " över tid"), fig.width=9, fig.height=7}
-timefunc(onlyindex = TRUE, adjtext = c(0, -2))
+timefunc(onlyindex = TRUE)
 ```             
 
 ```{r, cache = cacheon, fig.cap = paste0(qinametmp, " ", global_year, " uppdelat på region"), fig.width=7, fig.height=8}
@@ -333,10 +335,10 @@ qinametmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(qiname)
 
 ## Kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
 
-**Täljare:** ACE-hämmare, A2-blockerare/ARB eller ARNI har använts. 
+**Täljare:** ACE-hämmare, A2-blockerare/ARB eller ARNi har använts. 
 
 **Nämnare:** Patienter där LVEF < 40% och som lever vid utskrivning och där uppgift 
-om användning av ACE-hämmare, A2-blockerare/ARB och ARNI har rapporterats. 
+om användning av ACE-hämmare, A2-blockerare/ARB och ARNi har rapporterats. 
 LVEF definieras som det lägst uppmätta, antingen vid aktuellt tillfälle eller vid indextillfället. 
 
 *Kvalitetsindikatorn är definierad vid uppföljningen vid 3 månader efter index.*
@@ -399,7 +401,7 @@ qinametmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(qiname)
 **Täljare:** ARNI har använts. 
 
 **Nämnare:** Patienter där LVEF < 40% och som lever vid utskrivning och 
-där ACE-hämmare, A2-blockerare/ARB eller ARNI har använts. 
+där ACE-hämmare, A2-blockerare/ARB eller ARNi har använts. 
 LVEF definieras som det lägst uppmätta, antingen vid aktuellt tillfälle eller vid indextillfället. 
 
 *Kvalitetsindikatorn är definierad vid uppföljningen vid 3 månader efter index.*
@@ -531,7 +533,7 @@ LVEF definieras som det lägst uppmätta, antingen vid aktuellt tillfälle eller
 *Kvalitetsindikatorn är definierad vid uppföljningen vid 3 månader efter index.*
 
 ```{r, cache = cacheon, fig.cap = paste0(qinametmp, " över tid"), fig.width=9, fig.height=7}
-timefunc(adjtext = c(0, 0.2, -1.6, -1.5))
+timefunc(adjtext = c(0, 0.3, -1.6, -1.5))
 ```  
 
 \blandscape
@@ -585,16 +587,16 @@ qinametmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(qiname)
 
 ## Kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
 
-**Täljare:** RAS-blockad, Betablockerare och MRA har använts. 
+**Täljare:** ACEi/ARB/ARNi, Betablockerare och MRA har använts. 
 
 **Nämnare:** Patienter där LVEF < 40% och som lever vid utskrivning och där uppgift 
-om användning av RAS-blockad, Betablockerare och MRA har rapporterats. 
+om användning av ACEi/ARB/ARNi, Betablockerare och MRA har rapporterats. 
 LVEF definieras som det lägst uppmätta, antingen vid aktuellt tillfälle eller vid indextillfället. 
 
 *Kvalitetsindikatorn är definierad vid uppföljningen vid 3 månader efter index.*
 
 ```{r, cache = cacheon, fig.cap = paste0(qinametmp, " över tid"), fig.width=9, fig.height=7}
-timefunc(adjtext = c(-1.7, 1.2, 0, 0))
+timefunc(adjtext = c(0, 1.2, 0, 0))
 ```  
 
 \blandscape
@@ -712,7 +714,7 @@ i första hand det som registrerats vid aktuellt tillfälle, och i andra hand, o
 *Kvalitetsindikatorn är definierad vid uppföljningen vid 3 månader efter index.*
 
 ```{r, cache = cacheon, fig.cap = paste0(qinametmp, " över tid"), fig.width=9, fig.height=7}
-timefunc(adjtext = c(-.75, 0.75, 2.5, 0))
+timefunc(adjtext = c(-.75, 0.75, 0, 0))
 ```  
 
 \blandscape

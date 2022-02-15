@@ -10,6 +10,8 @@ ProjectTemplate::reload.project(
   munging = FALSE
 )
 
+# Run all files manually due to encoding problemas w Project Template 
+
 # source("./munge/01-clean_missing.R")
 # source("./munge/02-fixcenter.R")
 # source("./munge/03-fixvars.R")

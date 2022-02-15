@@ -21,8 +21,8 @@ qifunc <- function(qi = qitmp, startime = global_startdtm, stoptime = global_sto
 
   # per hf duration
   hfdur <- tmp %>%
-    filter(!is.na(hfdur)) %>%
-    group_by(hfdur, .drop = F) %>%
+    filter(!is.na(hfdurindex)) %>%
+    group_by(hfdurindex, .drop = F) %>%
     count(!!sym(qi), .drop = F) %>%
     mutate(
       tot = sum(n),
@@ -32,8 +32,10 @@ qifunc <- function(qi = qitmp, startime = global_startdtm, stoptime = global_sto
     filter(!!sym(qi) == 1) %>%
     filter(tot >= 10) %>%
     mutate(byvar = 2) %>%
-    rename(unit = hfdur)
+    rename(unit = hfdurindex)
 
+  if (unit == "region") {hfdur <- hfdur %>% mutate(unit = str_replace_all(unit, "Duration HF", "Dur HF"))}
+  
   # per vtyp
   vtype <- tmp %>%
     filter(!is.na(vtype)) %>%
@@ -97,16 +99,16 @@ qifunc <- function(qi = qitmp, startime = global_startdtm, stoptime = global_sto
 
 
   if (unit == "center") {cexmy <- .5} 
-  if (unit == "region") {cexmy <- .75}
+  if (unit == "region") {cexmy <- .72}
   
   # c(bottom, left, top, right)
-  par(mar = c(3, 11, .1, 1.5) + 0.1)
+  par(mar = c(4.1, 11.2, .1, 1.5) + 0.1)
 
   b <- barplot(percent ~ unit,
     data = all,
     horiz = TRUE,
     axes = FALSE,
-    xlab = "Procent",
+    xlab = "",
     ylab = "",
     xaxs = "i", yaxs = "i",
     col = all$cols,
@@ -131,13 +133,23 @@ qifunc <- function(qi = qitmp, startime = global_startdtm, stoptime = global_sto
   }
   
   if (unit == "region"){
-    axis(2, at = b, labels = all$unit, line = 4, tick = FALSE, cex.axis = cexmy, las = 2, gap.axis = -10000000)
+    axis(2, at = b, labels = all$unit, line = 3.2, tick = FALSE, cex.axis = cexmy, las = 2, gap.axis = -10000000)
     
-    axis(2, at = b, labels = all$ntot, line = 1.5, tick = FALSE, cex.axis = cexmy, las = 2, hadj = 0.5, gap.axis = -10000000)
+    axis(2, at = b, labels = all$ntot, line = 1, tick = FALSE, cex.axis = cexmy, las = 2, hadj = 0.5, gap.axis = -10000000)
     
     axis(2, at = b, labels = all$per, line = -24.1, tick = FALSE, cex.axis = cexmy, las = 2, hadj = 0.5, gap.axis = -10000000)
   }
   
   # mtext("n/N", side = 2, line = 1, at = last(b) + diff(tail(b, 2)), adj = 0.5, cex = cexmy, las = 2)
   axis(1, at = 50, cex.axis = cexmy, labels = "Procent", line = 1, tick = FALSE, hadj = .5)
+  
+  legend("bottom",
+         inset = c(-0, -.125), xpd = NA,
+         legend = labnams[2:3],
+         lty = 2,
+         col = c("#61A60F", "#FFCA02"),
+         bty = "n",
+         cex = cexmy,
+         horiz = TRUE
+  )
 }

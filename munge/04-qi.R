@@ -18,7 +18,7 @@ rsdata <- rsdata %>%
       TRUE ~ 0
     ),
     qi_arni = case_when(
-      is.na(qi_ras) ~ NA_real_,
+      is.na(qi_ras) | qi_ras == 0 ~ NA_real_,
       ARNI == "YES" ~ 1,
       TRUE ~ 0
     ),
@@ -110,8 +110,8 @@ qiinfo <- qiinfo %>%
       qivar == "qi_nyha" ~ "NYHA",
       qivar == "qi_qol" ~ "Hälsotillstånd",
       qivar == "qi_uppfhf" ~ "HF-mottagning",
-      qivar == "qi_ras" ~ "RAS-blockad",
-      qivar == "qi_arni" ~ "ARNi",
+      qivar == "qi_ras" ~ "ACEi/ARB/ARNi",
+      qivar == "qi_arni" ~ "Andel ARNi",
       qivar == "qi_bbl" ~ "Betablockad",
       qivar == "qi_mra" ~ "MRA",
       qivar == "qi_trippel" ~ "Trippelbehandling",
@@ -127,8 +127,8 @@ qiinfo <- qiinfo %>%
       qivar == "qi_nyha" ~ "NYHA klass rapporterat vid index",
       qivar == "qi_qol" ~ "Hälsotillstånd rapporterat vid index",
       qivar == "qi_uppfhf" ~ "Planerad uppföljning vid hjärtsviktsmottagning",
-      qivar == "qi_ras" ~ "RAS-blockad",
-      qivar == "qi_arni" ~ "Andel ARNi av RAS-blockad",
+      qivar == "qi_ras" ~ "ACEi/ARB/ARNi",
+      qivar == "qi_arni" ~ "Andel ARNi av ACEi/ARB/ARNi",
       qivar == "qi_bbl" ~ "Betablockad",
       qivar == "qi_mra" ~ "MRA",
       qivar == "qi_trippel" ~ "Trippelbehandling",

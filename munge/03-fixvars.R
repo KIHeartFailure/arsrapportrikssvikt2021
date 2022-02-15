@@ -67,7 +67,7 @@ rsdata <- rsdata %>%
     hfdur = factor(case_when(
       hfdur == "LESS_THAN_6_MONTHS" ~ 1,
       hfdur == "MORE_THAN_6_MONTHS" ~ 2
-    ), levels = 1:2, labels = c("Duration HF < 6 mån", "Duration HF > 6 mån")),
+    ), levels = 1:2, labels = c("Duration HF < 6 mån vid index", "Duration HF > 6 mån vid index")),
     ef_cat = factor(case_when(
       LVEF_SEMIQUANTITATIVE == "NORMAL" | LVEF_PERCENT >= 50 ~ 1,
       LVEF_SEMIQUANTITATIVE == "MILD" | LVEF_PERCENT >= 40 ~ 1,

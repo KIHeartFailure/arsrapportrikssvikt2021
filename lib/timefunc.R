@@ -34,7 +34,7 @@ timefunc <- function(qi = qitmp, starttime = global_year - 4, stoptime = global_
 
     cexmy <- 1
     # c(bottom, left, top, right) default c(5, 4, 4, 2) + 0.1.
-    par(mar = c(4, 4, .5, 10) + 0.1)
+    par(mar = c(5.5, 4, .5, 10) + 0.1)
 
     matplot(all,
       type = "b",
@@ -67,22 +67,6 @@ timefunc <- function(qi = qitmp, starttime = global_year - 4, stoptime = global_
 
     abline(h = ll * 100, col = "#FFCA02", lty = 2, lwd = 1)
     abline(h = ul * 100, col = "#61A60F", lty = 2, lwd = 1)
-    axis(2,
-      at = ll * 100, labels = labnams[3],
-      line = -32.2,
-      tick = FALSE,
-      cex.axis = cexmy,
-      las = 2,
-      hadj = 0
-    )
-    axis(2,
-      at = ul * 100, labels = labnams[2],
-      line = -32.2,
-      tick = FALSE,
-      cex.axis = cexmy,
-      las = 2,
-      hadj = 0
-    )
 
     axis(1, at = 1:(stoptime - starttime + 1), labels = starttime:stoptime, cex.axis = cexmy)
 
@@ -138,7 +122,7 @@ timefunc <- function(qi = qitmp, starttime = global_year - 4, stoptime = global_
 
     cexmy <- 1
     # c(bottom, left, top, right) default c(5, 4, 4, 2) + 0.1.
-    par(mar = c(4, 4, 0.5, 10) + 0.1)
+    par(mar = c(5.5, 4, 0.5, 10) + 0.1)
 
     matplot(all,
       type = "b",
@@ -169,22 +153,6 @@ timefunc <- function(qi = qitmp, starttime = global_year - 4, stoptime = global_
 
     abline(h = ll * 100, col = "#FFCA02", lty = 2, lwd = 1)
     abline(h = ul * 100, col = "#61A60F", lty = 2, lwd = 1)
-    axis(2,
-      at = ll * 100, labels = labnams[3],
-      line = -32.2,
-      tick = FALSE,
-      cex.axis = cexmy,
-      las = 2,
-      hadj = 0
-    )
-    axis(2,
-      at = ul * 100, labels = labnams[2],
-      line = -32.2,
-      tick = FALSE,
-      cex.axis = cexmy,
-      las = 2,
-      hadj = 0
-    )
 
     axis(1, at = 1:(stoptime - starttime + 1), labels = starttime:stoptime, cex.axis = cexmy)
 
@@ -204,4 +172,13 @@ timefunc <- function(qi = qitmp, starttime = global_year - 4, stoptime = global_
       lines(x = c(0, 1), y = c(ylimmin[1] + 0.5, ylimmin[1] + 1))
     }
   }
+  legend("bottom",
+         inset = c(-0, -0.21), xpd = NA,
+         legend = labnams[2:3],
+         lty = 2,
+         col = c("#61A60F", "#FFCA02"),
+         bty = "n",
+         cex = cexmy,
+         horiz = TRUE
+  )
 }

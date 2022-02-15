@@ -1,5 +1,5 @@
 barfunc <- function(var, startime = global_startdtm, stoptime = global_stopdtm, type = "Index",
-                    data = rsdata) {
+                    data = rsdata, mycols) {
   tmp <- data %>%
     filter(ttype %in% type &
       d_DATE_FOR_ADMISSION >= startime &
@@ -55,7 +55,7 @@ barfunc <- function(var, startime = global_startdtm, stoptime = global_stopdtm, 
     xlab = "",
     ylab = "",
     xaxs = "i", yaxs = "i",
-    col = c(global_colsblue[3], global_colsblue[6], global_colsblue[8]),
+    col = mycols,
     width = 0.1,
     border = "white",
     las = 2,
@@ -76,9 +76,9 @@ barfunc <- function(var, startime = global_startdtm, stoptime = global_stopdtm, 
 
   legend("bottom", inset = c(-0, -.14), xpd = NA,
          levels(unitdata$var),
-    fill = c(global_colsblue[3], global_colsblue[6], global_colsblue[8]),
-    col = c(global_colsblue[3], global_colsblue[6], global_colsblue[8]), 
-    border = c(global_colsblue[3], global_colsblue[6], global_colsblue[8]), 
+    fill = mycols,
+    col = mycols, 
+    border = mycols, 
     bty = "n",
     cex = cexmy, 
     horiz = TRUE

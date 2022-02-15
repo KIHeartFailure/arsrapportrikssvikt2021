@@ -1,6 +1,6 @@
 ```{r, cache=cacheon}
 tabvars <- c(
-  "vtype", "sex", "age", "ef_cat3", "FUNCTION_CLASS_NYHA", "LIFEQUALITY_SCORE",
+  "vtype", "sex", "age", "hfdurindex", "ef_cat3", "FUNCTION_CLASS_NYHA", "LIFEQUALITY_SCORE",
   "EARLIER_CARDIAC_ARREST", "REVASCULARIZATION", "HYPERTENSION",
   "ATRIAL_FIBRILLATION_FLUTTER", "DIABETES",
   "CHRONIC_LUNG_DISEASE", "HEART_VALVE_DISEASE",
@@ -45,6 +45,7 @@ tab1 <- tab1 %>%
       var == "vtype" ~ "Enhetstyp, n (%)",
       var == "sex" ~ "Kön, n (%)",
       var == "age" ~ "Ålder (år), median [Q1-Q3]",
+      var == "hfdurindex" ~ "Duration HF vid index",
       var == "ef_cat3" ~ "LVEF (%), n (%)",
       var == "FUNCTION_CLASS_NYHA" ~ "NYHA, n (%)",
       var == "LIFEQUALITY_SCORE" ~ "Total livskvalitetsscore",
@@ -66,8 +67,9 @@ tab1 <- tab1 %>%
       var == "S_POTASSIUM" ~ "P-Kalium (mmol/L), median [Q1-Q3]",
       var == "S_SODIUM" ~ "S-Natrium (pg/m/L), median [Q1-Q3]",
       var == "B_HB" ~ "B-HB (g/L), median [Q1-Q3]"
-    )
-  ) %>%
+    ), 
+    level = str_replace_all(level, fixed("Duration HF "), ""), 
+    level = str_replace_all(level, fixed(" vid index"), "")) %>%
   mutate(across(everything(), ~ str_replace_all(.x, fixed("0 (NaN)"), "")))
 
 ## fix in order to use escape = TRUE
@@ -112,6 +114,7 @@ tab1 <- tab1 %>%
       var == "vtype" ~ "Enhetstyp, n (%)",
       var == "sex" ~ "Kön, n (%)",
       var == "age" ~ "Ålder (år), median [Q1-Q3]",
+      var == "hfdurindex" ~ "Duration HF vid index",
       var == "ef_cat3" ~ "LVEF (%), n (%)",
       var == "FUNCTION_CLASS_NYHA" ~ "NYHA, n (%)",
       var == "LIFEQUALITY_SCORE" ~ "Total livskvalitetsscore",
@@ -133,8 +136,9 @@ tab1 <- tab1 %>%
       var == "S_POTASSIUM" ~ "P-Kalium (mmol/L), median [Q1-Q3]",
       var == "S_SODIUM" ~ "S-Natrium (pg/m/L), median [Q1-Q3]",
       var == "B_HB" ~ "B-HB (g/L), median [Q1-Q3]"
-    )
-  ) %>%
+    ), 
+    level = str_replace_all(level, fixed("Duration HF "), ""), 
+    level = str_replace_all(level, fixed(" vid index"), "")) %>%
   mutate(across(everything(), ~ str_replace_all(.x, fixed("0 (NaN)"), "")))
 
 ## fix in order to use escape = TRUE

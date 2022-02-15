@@ -36,7 +36,7 @@ barsummary <- function(qi = qitmp,
 
   cexmy <- .9
   # c(bottom, left, top, right)
-  par(mar = c(3.5, 4, 5, 0) + 0.1)
+  par(mar = c(5, 4, 5, 0) + 0.1)
 
   b <- barplot(percent ~ indexyear + ttype,
     data = all,
@@ -61,4 +61,14 @@ barsummary <- function(qi = qitmp,
   axis(3, at = b, labels = all$ntot, line = -0.6, tick = FALSE, cex.axis = cexmy, hadj = 0, gap.axis = -10000000, las = 2)
 
   axis(1, at = b[2, ], labels = shortttype, line = 1.75, tick = FALSE, cex.axis = cexmy, gap.axis = -10000000)
+  
+  legend("bottom",
+         inset = c(-0, -.28), xpd = NA,
+         legend = labnams[2:3],
+         lty = 2,
+         col = c("#61A60F", "#FFCA02"),
+         bty = "n",
+         cex = cexmy,
+         horiz = TRUE
+  )
 }
