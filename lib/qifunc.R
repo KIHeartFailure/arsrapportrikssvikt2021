@@ -83,8 +83,8 @@ qifunc <- function(qi = qitmp, startime = global_startdtm, stoptime = global_sto
   all <- all %>%
     mutate(
       cols = case_when(
-        byvar == 4 ~ global_colsblue[6],
-        byvar %in% c(1, 2, 3) ~ global_colsblue[3],
+        byvar == 4 ~ global_colsblue[2],
+        byvar %in% c(1, 2, 3) ~ global_colsblue[5],        
         is.na(byvar) ~ "white"
       ),
       ntot = if_else(!is.na(byvar), paste0(n, " av ", tot), ""),
@@ -121,8 +121,8 @@ qifunc <- function(qi = qitmp, startime = global_startdtm, stoptime = global_sto
 
   axis(1, seq(0, 100, 20), cex.axis = cexmy)
 
-  abline(v = ll * 100, col = "#FFCA02", lty = 2, lwd = 1)
-  abline(v = ul * 100, col = "#61A60F", lty = 2, lwd = 1)
+  abline(v = ll * 100, col = global_colslimit[2], lty = 2, lwd = 1)
+  abline(v = ul * 100, col = global_colslimit[1], lty = 2, lwd = 1)
   
   if (unit == "center"){
   axis(2, at = b, labels = all$unit, line = 1.8, tick = FALSE, cex.axis = cexmy, las = 2, gap.axis = -10000000)
@@ -147,7 +147,7 @@ qifunc <- function(qi = qitmp, startime = global_startdtm, stoptime = global_sto
          inset = c(-0, -.125), xpd = NA,
          legend = labnams[2:3],
          lty = 2,
-         col = c("#61A60F", "#FFCA02"),
+         col = global_colslimit,
          bty = "n",
          cex = cexmy,
          horiz = TRUE

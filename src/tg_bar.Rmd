@@ -20,9 +20,9 @@ tgfunc <- function(tgtype) {
   all <- all %>%
     mutate(
       cols = case_when(
-        region == "Riket" ~ global_colsblue[3],
+        region == "Riket" ~ global_colsblue[5],
         region == "" ~ "white",
-        TRUE ~ global_colsblue[6],
+        TRUE ~ global_colsblue[2],
       ),
       row = 1:n()
     ) %>%

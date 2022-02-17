@@ -7,13 +7,13 @@ summaryqifunchelper <- function(qi) {
   tmp <- rsdata %>%
     filter(
       indexyear == global_year &
-        !is.na(hfdur) &
-        ttype == "Index"
+        !is.na(hfdurindex) &
+        ttype == qiinfo %>% filter(qivar == qi) %>% pull(timepoint)
     )
 
   tmp <- tmp %>%
     filter(!is.na(!!sym(qi))) %>%
-    group_by(hfdur, .drop = F) %>%
+    group_by(hfdurindex, .drop = F) %>%
     count(!!sym(qi), .drop = F) %>%
     mutate(
       tot = sum(n),
@@ -31,11 +31,10 @@ stat2 <- bind_rows(stat)
 
 stat2 <- stat2 %>%
   mutate(
-    hfdur = replace_na(hfdur, levels(stat2$hfdur)[2]),
+    hfdurindex = replace_na(hfdurindex, levels(stat2$hfdurindex)[2]),
     cols = case_when(
-      hfdur == levels(stat2$hfdur)[1] ~ global_colsblue[6],
-      hfdur == levels(stat2$hfdur)[2] ~ global_colsblue[3],
-      is.na(hfdur) ~ global_colsblue[3]
+      hfdurindex == levels(stat2$hfdurindex)[1] ~ global_colsblue[2],
+      hfdurindex == levels(stat2$hfdurindex)[2] ~ global_colsblue[5]
     )
   )
 
@@ -78,15 +77,15 @@ bplace <- b[c(seq(1, length(b), 2))]
 for (i in seq_along(bplace)) {
   lines(
     x = c(bplace[i] - 0.5, bplace[i] + 1.5),
-    y = c(qiinfo$ll[i], qiinfo$ll[i]) * 100, col = "#FFCA02", lty = 2, lwd = 1
+    y = c(qiinfo$ll[i], qiinfo$ll[i]) * 100, col = global_colslimit[2], lty = 2, lwd = 1
   )
   lines(
     x = c(bplace[i] - 0.5, bplace[i] + 1.5),
-    y = c(qiinfo$ul[i], qiinfo$ul[i]) * 100, col = "#61A60F", lty = 2, lwd = 1
+    y = c(qiinfo$ul[i], qiinfo$ul[i]) * 100, col = global_colslimit[1], lty = 2, lwd = 1
   )
 }
 
-legend("topright", levels(stat2$hfdur), fill = global_colsblue[c(6, 3)], border = global_colsblue[c(6, 3)], bty = "n", cex = cexmy)
+legend("topright", levels(stat2$hfdurindex), fill = global_colsblue[c(2, 5)], border = global_colsblue[c(2, 5)], bty = "n", cex = cexmy)
 
 axis(3,
   at = b,
@@ -119,7 +118,7 @@ legend("bottom",
   inset = c(-0, -.65), xpd = NA,
   legend = labnams[2:3],
   lty = 2,
-  col = c("#61A60F", "#FFCA02"),
+  col = global_colslimit,
   bty = "n",
   cex = cexmy,
   horiz = TRUE

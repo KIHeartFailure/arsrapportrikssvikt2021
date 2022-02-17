@@ -123,28 +123,29 @@ för första gången under det aktuella året, antingen i RiksSvikt eller i pati
 \blandscape
 
 ```{r, cache = cacheon, fig.cap = paste0("Karakteristika för patienter med en indexregistrering ", global_year), fig.show='hold', out.width="25%", fig.subcap=c('Kön', 'Ålder', 'NYHA klass', 'LVEF'), fig.ncol=4}
-piefunc(var = "sex", type = c("Index"))
-piefunc(var = "age_cat", type = c("Index"))
-piefunc(var = "FUNCTION_CLASS_NYHA", type = c("Index"))
-piefunc(var = "ef_cat3", type = c("Index"))
+piefunc(var = "sex", type = c("Index"), mycols = c(global_colsblue[2], global_colsblue[5], global_colsgreymiss))
+piefunc(var = "age_cat", type = c("Index"), mycols = c(global_colsblue[3], global_colsblue[4], global_colsblue[5], global_colsblue[6], global_colsgreymiss))
+piefunc(var = "FUNCTION_CLASS_NYHA", type = c("Index"), 
+        mycols = c(global_colsblue[3], global_colsblue[4], global_colsblue[5], global_colsblue[6], global_colsgreymiss))
+piefunc(var = "ef_cat3", type = c("Index"), mycols = c(global_colsblue[3], global_colsblue[4], global_colsblue[5], global_colsgreymiss))
 ```             
 
 ```{r, cache = cacheon, fig.cap = paste0("Enhetstyp ", global_year), fig.show='hold', out.width="25%", fig.subcap=c('Index', 'Uppföljning 3 månader', 'Uppföljning 1 år', 'Uppföljning 2+ år'), fig.ncol=4}
-piefunc(var = "vtype", type = c("Index"))
-piefunc(var = "vtype", type = c("Uppföljning 3 månader"))
-piefunc(var = "vtype", type = c("Uppföljning 1 år"))
-piefunc(var = "vtype", type = c("Uppföljning 2+ år"))
+piefunc(var = "vtype", type = c("Index"), mycols = c(global_colsblue[5], global_colsblue[2], global_colsgreymiss))
+piefunc(var = "vtype", type = c("Uppföljning 3 månader"), mycols = c(global_colsblue[5], global_colsblue[2], global_colsgreymiss))
+piefunc(var = "vtype", type = c("Uppföljning 1 år"), mycols = c(global_colsblue[5], global_colsblue[2], global_colsgreymiss))
+piefunc(var = "vtype", type = c("Uppföljning 2+ år"), mycols = c(global_colsblue[5], global_colsblue[2], global_colsgreymiss))
 ```     
 
 \elandscape
 
 ```{r, cache = cacheon, fig.cap = paste0("Enhetstyp indexregistreringar ", global_year, " uppdelat på region"), fig.width=7, fig.height=8}
-barfunc(var = "location", type = "Index", mycols = c(global_colsblue[3], global_colsblue[6], global_colsblue[8]))
+barfunc(var = "location", type = "Index", mycols = c(global_colsblue[6], global_colsblue[4], global_colsblue[2]))
 ```             
 
 ```{r, cache = cacheon, fig.cap = paste0("Enhetstyp alla registreringar ", global_year, " uppdelat på region"), fig.width=7, fig.height=8}
 barfunc(var = "vtype", type = c("Index", "Uppföljning 3 månader", "Uppföljning 1 år", "Uppföljning 2+ år"), 
-        mycols = c(global_colsblue[4], global_colsblue[8]))
+        mycols = c(global_colsblue[5], global_colsblue[2]))
 ```             
 
 \clearpage

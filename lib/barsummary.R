@@ -21,9 +21,9 @@ barsummary <- function(qi = qitmp,
   all <- all %>%
     mutate(
       cols = case_when(
-        indexyear == starttime ~ global_colsblue[7],
-        indexyear == starttime + 1 ~ global_colsblue[5],
-        TRUE ~ global_colsblue[3]
+        indexyear == starttime ~ global_colsblue[3],
+        indexyear == starttime + 1 ~ global_colsblue[4],
+        TRUE ~ global_colsblue[5]
       ),
       ntot = paste0(n, " av ", tot),
       per = paste0(percent, "%"),
@@ -53,8 +53,8 @@ barsummary <- function(qi = qitmp,
 
   axis(2, seq(0, 100, 20), cex.axis = cexmy, las = 2)
 
-  abline(h = ll * 100, col = "#FFCA02", lty = 2, lwd = 1)
-  abline(h = ul * 100, col = "#61A60F", lty = 2, lwd = 1)
+  abline(h = ll * 100, col = global_colslimit[2], lty = 2, lwd = 1)
+  abline(h = ul * 100, col = global_colslimit[1], lty = 2, lwd = 1)
 
   axis(1, at = b, labels = all$indexyear, line = -.5, tick = FALSE, cex.axis = cexmy, gap.axis = -10000000, las = 2)
 
@@ -66,7 +66,7 @@ barsummary <- function(qi = qitmp,
          inset = c(-0, -.28), xpd = NA,
          legend = labnams[2:3],
          lty = 2,
-         col = c("#61A60F", "#FFCA02"),
+         col = global_colslimit,
          bty = "n",
          cex = cexmy,
          horiz = TRUE

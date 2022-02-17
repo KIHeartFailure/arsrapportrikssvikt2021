@@ -9,7 +9,7 @@ plot(tg_overtime$ar,
   type = "b",
   # type = "l",
   pch = 19,
-  col = rev(global_colsblue[6]),
+  col = global_colsblue[2],
   lty = 1,
   lwd = 3,
   # cex = 1.2,
@@ -26,7 +26,7 @@ matplot(tg_overtime$ar,
   tg_overtime$prev,
   type = "b",
   pch = 19,
-  col = global_colsblue[3],
+  col = global_colsblue[5],
   lty = 1,
   lwd = 3,
   add = T
@@ -105,7 +105,7 @@ geo <- tg_lan %>%
 # c(bottom, left, top, right) default c(5, 4, 4, 2) + 0.1.
 par(mar = c(0, 0, 0, 0) + 0.1)
 
-mapcols <- rev(global_colsblue)
+mapcols <- global_colsblue[1:7]
 
 mapdata <- geo %>%
   arrange(region_mapnr)
