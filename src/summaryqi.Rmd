@@ -4,11 +4,25 @@
 ```{r, cache=cacheon, fig.cap=paste0("Riket, alla ", nrow(qiinfo), " kvalitetsindikatorer ",  global_year), fig.width=9, fig.height=6}
 
 summaryqifunchelper <- function(qi) {
-  tmp <- rsdata %>%
+  if (!!sym(qi) == "qi_followreg3m") {
+    tmp <- rsdata %>%
+      filter(
+        indexdtm >= ymd(paste0(global_year - 1, "-07-01 - ")) &
+          indexdtm <= ymd(paste0(global_year, "-07-01"))
+      )
+  } else {
+    tmp <- rsdata %>%
+      filter(
+        indexdtm >= global_startdtm &
+          indexdtm <= global_stopdtm
+      )
+  }
+  tmp <- tmp %>%
     filter(
-      indexyear == global_year &
-        !is.na(hfdurindex) &
-        ttype == qiinfo %>% filter(qivar == qi) %>% pull(timepoint)
+      !is.na(hfdurindex) &
+        ttype == qiinfo %>%
+          filter(qivar == qi) %>%
+          pull(timepoint)
     )
 
   tmp <- tmp %>%

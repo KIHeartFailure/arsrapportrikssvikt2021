@@ -3,8 +3,8 @@ piefunc <- function(var, type = "Index",
                     data = rsdata, mycols) {
   tmp <- data %>%
     filter(
-      d_DATE_FOR_ADMISSION >= startime &
-        d_DATE_FOR_ADMISSION <= stoptime &
+      indexdtm >= startime &
+        indexdtm <= stoptime &
         ttype %in% type
     )
 
@@ -16,10 +16,10 @@ piefunc <- function(var, type = "Index",
       tot = sum(n),
       percent = n / tot * 100,
       !!sym(var) := replace_na(!!sym(var), labnams[4]),
-      !!sym(var) := paste0(!!sym(var), "\n", fn(percent, 0), "%"), 
+      !!sym(var) := paste0(!!sym(var), "\n", fn(percent, 0), "%"),
       row = 1:n()
-    ) 
-  
+    )
+
   riket <- riket %>%
     mutate(varfac = factor(row, labels = riket %>% pull(!!sym(var))))
 

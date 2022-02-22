@@ -1,4 +1,4 @@
-```{r, cache=cacheon, fig.cap="Årlig registrering", fig.width=9.5, fig.height=7}
+```{r, cache=cacheon, fig.cap="Registrering över tid", fig.width=9.5, fig.height=7}
 
 tot <- rsdata %>%
   filter(indexyear %in% paste(seq((global_year - 6), global_year, 1))) %>%
@@ -81,7 +81,7 @@ axis(2, at = seq(0, 18000 / 100, 2000 / 100), cex.axis = cexmy, las = 2)
 axis(1, at = 1:length((global_year - 6):global_year), labels = (global_year - 6):global_year, cex.axis = cexmy)
 
 axis(2,
-  at = all %>% pull(!!sym(paste(global_year))) / 100 + c(0, -2.2, 1.5, +1.5, -1.5, +2.2, 0, 0),
+  at = all %>% pull(!!sym(paste(global_year))) / 100 + c(0, +2.2, 1.5, +1.5, -1.5, -2.2, 0, 0),
   labels = all %>% pull(byvarname),
   line = -33,
   tick = FALSE, cex.axis = cexmy,
@@ -98,5 +98,5 @@ colnames(all) <- colnams
 
 write.xlsx(all, paste0("./output/tabs/registrering_", Sys.Date(), ".xlsx"), rowNames = FALSE, overwrite = T)
 
-default_kable(all, caption = "Årlig registrering")
+default_kable(all, caption = "Registrering över tid")
 ```

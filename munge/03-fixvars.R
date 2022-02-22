@@ -1,23 +1,22 @@
 
 # sexage <- sexage %>% group_by(patientreference) %>% slice(1) %>% ungroup()
 rsdata <- left_join(rsdata,
-  sexage %>% select(patientreference, SEX, DATE_OF_BIRTH),
+  sexage %>% select(patientreference, SEX, DATE_OF_BIRTH, befdoddtm),
   by = c("PATIENTREFERENCE" = "patientreference")
-) %>%
-  filter(!is.na(SEX))
+)
 
 rsdata <- rsdata %>%
   mutate(
-    d_DATE_FOR_ADMISSION = coalesce(DATE_FOR_ADMISSION, VISIT_DATE),
-    indexyear = factor(year(d_DATE_FOR_ADMISSION)),
-    age = as.numeric(floor((d_DATE_FOR_ADMISSION - DATE_OF_BIRTH) / 365.25)),
+    indexdtm = coalesce(DATE_FOR_ADMISSION, VISIT_DATE),
+    indexyear = factor(year(indexdtm)),
+    age = as.numeric(floor((indexdtm - DATE_OF_BIRTH) / 365.25)),
     age_cat = factor(case_when(
       age < 65 ~ 1,
       age < 75 ~ 2,
       age < 85 ~ 3,
       age >= 85 ~ 4
     ),
-    levels = 1:4, labels = c("<65", "65-75", "75-85", ">=85")
+    levels = 1:4, labels = c("<65", "65-74", "75-84", ">=85")
     ),
     sex = factor(case_when(
       SEX == "FEMALE" ~ "Kvinnna",
@@ -58,7 +57,7 @@ rsdata <- rsdata %>%
     ),
     levels = 1:5, labels = c("Nej", "Aorta", "Mitralis", "Aorta + Mitralis", "Annat")
     ),
-    tmp_timedurationhf = d_DATE_FOR_ADMISSION - DATE_FOR_DIAGNOSIS_HF,
+    tmp_timedurationhf = indexdtm - DATE_FOR_DIAGNOSIS_HF,
     tmp_timedurationhf2 = case_when(
       tmp_timedurationhf < 6 * 30.5 ~ "LESS_THAN_6_MONTHS",
       tmp_timedurationhf >= 6 * 30.5 ~ "MORE_THAN_6_MONTHS"
@@ -85,8 +84,7 @@ rsdata <- rsdata %>%
       LVEF_SEMIQUANTITATIVE %in% c("MODERATE", "SEVERE") | LVEF_PERCENT <= 35 ~ 2
     ), labels = c(">=40/>35", "<40/<=35"), levels = 1:2),
     FUNCTION_CLASS_NYHA = str_replace(FUNCTION_CLASS_NYHA, "NYHA_", " "),
-    location = factor(case_when( # YEARLY_FOLLOWUP_TYPE == "SURVEY" ~ "Enkät",
-      # YEARLY_FOLLOWUP_TYPE == "TELEPHONE" ~ "Telefon",
+    location = factor(case_when(
       vtype == "Primärvård" ~ 3,
       PROCESS_STEPS_TABLE %in% c("IX_OV", "FO", "YFO") & vtype == "Sjukhus" ~ 2,
       PROCESS_STEPS_TABLE %in% c("IX_SV") ~ 1
@@ -115,12 +113,12 @@ rsdata <- rsdata %>%
 rsdataindex <- rsdata %>%
   filter(TYPE == "INDEX") %>%
   group_by(PATIENTREFERENCE) %>%
-  arrange(d_DATE_FOR_ADMISSION) %>%
+  arrange(indexdtm) %>%
   slice(1) %>% # 2 dups
   ungroup() %>%
   transmute(
     PATIENTREFERENCE = PATIENTREFERENCE,
-    d_DATE_FOR_ADMISSIONindex = d_DATE_FOR_ADMISSION,
+    indexdtmindex = indexdtm,
     ef_catindex = ef_cat,
     efcrt_catindex = efcrt_cat,
     FUNCTION_CLASS_NYHAindex = FUNCTION_CLASS_NYHA,
@@ -141,22 +139,20 @@ rsdata <- left_join(
     LEFT_BRANCH_BLOCKimp = coalesce(LEFT_BRANCH_BLOCK, LEFT_BRANCH_BLOCKindex),
     FUNCTION_CLASS_NYHAimp = coalesce(FUNCTION_CLASS_NYHA, FUNCTION_CLASS_NYHAindex),
     EKG_RHYTHMimp = coalesce(EKG_RHYTHM, EKG_RHYTHMindex),
-
+    efcrt_catimp = coalesce(efcrt_cat, efcrt_catindex),
+    
     # smallest ef
     ef_catimp = case_when(
       ef_cat == "<40" | ef_catindex == "<40" ~ "<40",
       ef_cat == ">=40" | ef_catindex == ">=40" ~ ">=40"
     ),
-    efcrt_catimp = case_when(
-      efcrt_cat == "<40/<=35" | efcrt_catindex == "<40/<=35" ~ "<40/<=35",
-      efcrt_cat == ">=40/>35" | efcrt_catindex == ">=40/>35" ~ ">=40/>35"
-    ),
+
     ttype = case_when(
       TYPE == "INDEX" ~ 1,
       TYPE == "FOLLOWUP" ~ 2,
       TYPE == "YEARLY_FOLLOWUP" ~ 3
     ),
-    tmp_timeadmission = as.numeric(d_DATE_FOR_ADMISSION - d_DATE_FOR_ADMISSIONindex),
+    tmp_timeadmission = as.numeric(indexdtm - indexdtmindex),
     ttype = if_else(tmp_timeadmission >= 1.5 * 365 & TYPE == "YEARLY_FOLLOWUP", 4, ttype),
     ttype = factor(ttype,
       levels = 1:4,

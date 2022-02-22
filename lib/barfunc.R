@@ -2,8 +2,8 @@ barfunc <- function(var, startime = global_startdtm, stoptime = global_stopdtm, 
                     data = rsdata, mycols) {
   tmp <- data %>%
     filter(ttype %in% type &
-      d_DATE_FOR_ADMISSION >= startime &
-      d_DATE_FOR_ADMISSION <= stoptime &
+      indexdtm >= startime &
+      indexdtm <= stoptime &
       !is.na(!!sym(var)))
 
   # per region
@@ -29,20 +29,20 @@ barfunc <- function(var, startime = global_startdtm, stoptime = global_stopdtm, 
   unitdata <- unitdata %>%
     mutate(unit = factor(unit, levels = rev(levels(unitdata$unit))))
 
-  percent = unitdata %>% 
+  percent <- unitdata %>%
     group_by(unit) %>%
     arrange(var) %>%
     summarize(percent = paste0(fn(percent, 0), collapse = "/")) %>%
     ungroup() %>%
     mutate(percent = paste0(percent, "%"))
 
-  ntot = unitdata %>% 
+  ntot <- unitdata %>%
     group_by(unit) %>%
     arrange(var) %>%
     summarize(ntot = paste0(n, collapse = "/")) %>%
     ungroup() %>%
     mutate(ntot = paste0(ntot, " av ", unitdata %>% group_by(unit) %>% slice(1) %>% ungroup() %>% pull(tot)))
-  
+
   cexmy <- .75
   # c(bottom, left, top, right)
   par(mar = c(5, 12, .1, 3) + 0.1)
@@ -67,22 +67,23 @@ barfunc <- function(var, startime = global_startdtm, stoptime = global_stopdtm, 
   axis(1, seq(0, 100, 20), cex.axis = cexmy)
 
   axis(2, at = b, labels = unique(unitdata$unit), line = 4.8, tick = FALSE, cex.axis = cexmy, las = 2, gap.axis = -10000000)
-  
+
   axis(2, at = b, labels = ntot$ntot, line = 1.9, tick = FALSE, cex.axis = cexmy, las = 2, hadj = 0.5, gap.axis = -10000000)
 
   axis(2, at = b, labels = percent$percent, line = -22.3, tick = FALSE, cex.axis = cexmy, las = 2, hadj = 0.5, gap.axis = -10000000)
-  
+
   axis(1, at = 50, cex.axis = cexmy, labels = "Procent", line = 1, tick = FALSE, hadj = .5)
 
-  legend("bottom", inset = c(-0, -.14), xpd = NA,
-         levels(unitdata$var),
+  legend("bottom",
+    inset = c(-0, -.14), xpd = NA,
+    levels(unitdata$var),
     fill = mycols,
-    col = mycols, 
-    border = mycols, 
+    col = mycols,
+    border = mycols,
     bty = "n",
-    cex = cexmy, 
+    cex = cexmy,
     horiz = TRUE
   )
 
-  #text(rep(c(97.5, 2.5), length(unitdata$percent) / 2), rep(b, each = 2), paste0(unitdata$percent, "%"), cex = cexmy)
+  # text(rep(c(97.5, 2.5), length(unitdata$percent) / 2), rep(b, each = 2), paste0(unitdata$percent, "%"), cex = cexmy)
 }

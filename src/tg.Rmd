@@ -41,13 +41,15 @@ axis(1, at = 2003:2019, cex.axis = cexmy)
 axis(2,
   at = tg_overtime %>% filter(ar == 2019) %>% select(inc, prev),
   labels = c("Incident", "Prevalent"),
-  line = -31,
+  line = -21,
   tick = FALSE, cex.axis = cexmy,
   las = 2,
   hadj = 0,
   gap.axis = -10000000
 )
 ```
+
+\clearpage
 
 ```{r, cache=cacheon}
 

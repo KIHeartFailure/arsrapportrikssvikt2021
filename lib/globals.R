@@ -16,31 +16,6 @@ global_colsblue <- c(
 "#021447"
 )
 
-# global_colsblue <- rev(c(
-#   #"#F0FAFF",
-#   #"#D6F0F7",
-#   "#9BD4E5",
-#   "#70C1DA",
-#   "#4FB3D1",
-#   "#2F99BA",
-#   "#0F83A3",
-#   "#006E8A",
-#   "#034F69",
-#   "#023647"
-# ))
-# 
- global_colsgreen <- c(
-   "#144702",
-   "#1C6603"
- )
-#   "#9AD24A",
-#   "#78BA1C",
-#   "#61A60F",
-#   "#408400", 
-#   "#1C6603", 
-#   "#144702"
-# ))
-
 global_colsgreymiss <- "#C2C2C2"
 
 global_colslimit <- c("#32a543", "#fdb823")

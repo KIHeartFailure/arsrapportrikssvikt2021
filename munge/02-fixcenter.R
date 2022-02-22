@@ -48,27 +48,29 @@ rsdata <- rsdata %>%
     vtype = factor(case_when(
       ORG_UNIT_LEVEL_NAME %in% c("Avdelning", "Fristående hjärtmottagning", "Mottagning") ~ 1,
       ORG_UNIT_LEVEL_NAME %in% c("Vårdcentral") ~ 2
-    ), levels = 1:2, labels = c("Sjukhus", "Primärvård"))#,
-    #center = case_when(
+    ), levels = 1:2, labels = c("Sjukhus", "Primärvård")) # ,
+    # center = case_when(
     #  ORG_UNIT_LEVEL_NAME %in% c("Vårdcentral") ~ "",
-      # ORG_UNIT_LEVEL_NAME %in% c("Fristående hjärtmottagning") ~ "Fristående enhet",
+    # ORG_UNIT_LEVEL_NAME %in% c("Fristående hjärtmottagning") ~ "Fristående enhet",
     #  TRUE ~ center
-  #  )#,
+    #  )#,
     # i regioner ingår ej vc
-    #regionvc = region, 
-    #region = case_when(
+    # regionvc = region,
+    # region = case_when(
     #  ORG_UNIT_LEVEL_NAME %in% c("Vårdcentral") ~ "",
     #  TRUE ~ region
-    #)
+    # )
   )
 
 
 # Manual hårdkodning ------------------------------------------------------
 
 rsdata <- rsdata %>%
-  mutate(center = case_when(
-    center == "Sahlgrenska Universitetssjukhuset - Sahlgrenska" ~ "Sahlgrenska Universitetssjukhuset",
-    TRUE ~ center
-  ), 
-  region = factor(region), 
-  center = factor(center))
+  mutate(
+    center = case_when(
+      center == "Sahlgrenska Universitetssjukhuset - Sahlgrenska" ~ "Sahlgrenska Universitetssjukhuset",
+      TRUE ~ center
+    ),
+    region = factor(region),
+    center = factor(center)
+  )

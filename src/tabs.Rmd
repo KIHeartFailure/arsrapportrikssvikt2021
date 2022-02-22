@@ -45,10 +45,10 @@ tab1 <- tab1 %>%
       var == "vtype" ~ "Enhetstyp, n (%)",
       var == "sex" ~ "Kön, n (%)",
       var == "age" ~ "Ålder (år), median [Q1-Q3]",
-      var == "hfdurindex" ~ "Duration HF vid index",
+      var == "hfdurindex" ~ "Duration HF vid index (mån), n (%)",
       var == "ef_cat3" ~ "LVEF (%), n (%)",
       var == "FUNCTION_CLASS_NYHA" ~ "NYHA, n (%)",
-      var == "LIFEQUALITY_SCORE" ~ "Total livskvalitetsscore",
+      var == "LIFEQUALITY_SCORE" ~ "Total livskvalitetsscore, median [Q1-Q3]",
       var == "PRIMARY_ETIOLOGY" ~ "Primär etiologi, n (%)",
       var == "DIABETES" ~ "Diabetes, n (%)",
       var == "EARLIER_CARDIAC_ARREST" ~ "Tidigare hjärtinfarkt, n (%)",
@@ -65,11 +65,12 @@ tab1 <- tab1 %>%
       var == "NT_PROBNP" ~ "NT-proBNP (pg/m/L), median [Q1-Q3]",
       var == "S_CREATININE" ~ "S-Kreatinin (umol/L), median [Q1-Q3]",
       var == "S_POTASSIUM" ~ "P-Kalium (mmol/L), median [Q1-Q3]",
-      var == "S_SODIUM" ~ "S-Natrium (pg/m/L), median [Q1-Q3]",
+      var == "S_SODIUM" ~ "S-Natrium (mmol/L), median [Q1-Q3]",
       var == "B_HB" ~ "B-HB (g/L), median [Q1-Q3]"
-    ), 
-    level = str_replace_all(level, fixed("Duration HF "), ""), 
-    level = str_replace_all(level, fixed(" vid index"), "")) %>%
+    ),
+    level = str_replace_all(level, fixed("Duration HF "), ""),
+    level = str_replace_all(level, fixed(" mån vid index"), "")
+  ) %>%
   mutate(across(everything(), ~ str_replace_all(.x, fixed("0 (NaN)"), "")))
 
 ## fix in order to use escape = TRUE
@@ -114,10 +115,10 @@ tab1 <- tab1 %>%
       var == "vtype" ~ "Enhetstyp, n (%)",
       var == "sex" ~ "Kön, n (%)",
       var == "age" ~ "Ålder (år), median [Q1-Q3]",
-      var == "hfdurindex" ~ "Duration HF vid index",
+      var == "hfdurindex" ~ "Duration HF vid index (mån), n (%)",
       var == "ef_cat3" ~ "LVEF (%), n (%)",
       var == "FUNCTION_CLASS_NYHA" ~ "NYHA, n (%)",
-      var == "LIFEQUALITY_SCORE" ~ "Total livskvalitetsscore",
+      var == "LIFEQUALITY_SCORE" ~ "Total livskvalitetsscore, median [Q1-Q3]",
       var == "PRIMARY_ETIOLOGY" ~ "Primär etiologi, n (%)",
       var == "DIABETES" ~ "Diabetes, n (%)",
       var == "EARLIER_CARDIAC_ARREST" ~ "Tidigare hjärtinfarkt, n (%)",
@@ -134,11 +135,12 @@ tab1 <- tab1 %>%
       var == "NT_PROBNP" ~ "NT-proBNP (pg/m/L), median [Q1-Q3]",
       var == "S_CREATININE" ~ "S-Kreatinin (umol/L), median [Q1-Q3]",
       var == "S_POTASSIUM" ~ "P-Kalium (mmol/L), median [Q1-Q3]",
-      var == "S_SODIUM" ~ "S-Natrium (pg/m/L), median [Q1-Q3]",
+      var == "S_SODIUM" ~ "S-Natrium (mmol/L), median [Q1-Q3]",
       var == "B_HB" ~ "B-HB (g/L), median [Q1-Q3]"
-    ), 
-    level = str_replace_all(level, fixed("Duration HF "), ""), 
-    level = str_replace_all(level, fixed(" vid index"), "")) %>%
+    ),
+    level = str_replace_all(level, fixed("Duration HF "), ""),
+    level = str_replace_all(level, fixed(" mån vid index"), "")
+  ) %>%
   mutate(across(everything(), ~ str_replace_all(.x, fixed("0 (NaN)"), "")))
 
 ## fix in order to use escape = TRUE

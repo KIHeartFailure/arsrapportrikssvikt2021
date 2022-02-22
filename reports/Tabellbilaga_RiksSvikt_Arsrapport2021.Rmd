@@ -1,6 +1,5 @@
 ---
 title: 'Tabellbilaga RiksSvikt Årsrapport 2021'
-subtitle: DRAFT
 date: "`r Sys.Date()`"
 output:
   pdf_document:
@@ -12,7 +11,6 @@ output:
 urlcolor: blue
 linkcolor: black
 header-includes: 
-  - \usepackage{draftwatermark}
   - \usepackage{subfig}
   - \usepackage[swedish]{babel}
   - \usepackage{fontspec}
@@ -63,23 +61,22 @@ cacheon <- TRUE
 
 # Information och förklaringar
 
-Datauttag 2021-12-10 (prel siffror, finalt uttag görs 2022-03-01). Täckningsgrader som redovisas är från förra året, 
-de fås från Socialstyrelsen i april 2022 (tom 2021). 
+Uppgifterna som redovisas är baserade på data inrapporterat i RiksSvikt tom 2022-03-01.  
 
-Datum utgår från det datum som patienten skrevs in/besöksdatum.
+Redovisningen utgår från det datum som patienten skrevs in/besöksdatum.
 
-Med index avses första gången en patient registreras i RiksSvikt, detta behöver dock inte vara en nydiagnostiserad hjärtsvikt. 
+Med index avses första gången en patient registreras i RiksSvikt, detta behöver inte vara en nydiagnostiserad hjärtsvikt. 
 3 månaders uppföljningen kan ske mellan 6 veckor och 6 månader efter index. 
 Årlig uppföljning är indelat i 1 års uppföljning (6 månader till 1,5 år efter index) och 2+ års uppföljning (från 1,5 år efter index). 
 
-I det fall det finns mer än en årlig registrering / patient har alla poster redovisats. 
+I de fall det finns mer än en årlig registrering / patient har alla poster redovisats. 
 För 2+ årlig uppföljning finns `r rsdata %>% filter(ttype == "Uppföljning 2+ år" & indexyear == global_year) %>% nrow()` poster för 
 `r rsdata %>% filter(ttype == "Uppföljning 2+ år" & indexyear == global_year) %>% group_by(PATIENTREFERENCE) %>% slice(1) %>% ungroup() %>% nrow()` 
 unika patienter för `r global_year `.  
 
 Enheter med färre än 10 registreringar i nämnaren redovisas ej.
 
-R koden som genererat årsrapporten finns: https://github.com/KIHeartFailure/arsrapportrikssvikt2021.
+R koden som genererat tabellbilagan till årsrapporten finns: https://github.com/KIHeartFailure/arsrapportrikssvikt2021.
 
 \clearpage
 
@@ -94,15 +91,17 @@ R koden som genererat årsrapporten finns: https://github.com/KIHeartFailure/ars
 **Nämnare incident täckningsgrad:** Individer som registrerats med hjärtsvikt (I11.0, I13.0, I13.2, I25.5, I42.0, I42.6, I42.7, I50.0, I50.1, I50.9) 
 för första gången under det aktuella året, antingen i RiksSvikt eller i patientregistret.
 
-*Täckningsgraden för 2021 baseras på icke kvalitetsgranskade uppgifter från Socialstyrelsen. Definitionen av den incidenta täckningsgraden tillåter registreringar i RiksSvikt tom 31 mars året efter registrering i patientregistret så täckningsraden är därmed inte komplett för 2021, då täckningraden är baserad på uttag gjort 1 mars 2022. Därför bör täckningsgraden för 2021 betraktas som preliminär.* 
+*Täckningsgraden för 2021 baseras på icke kvalitetsgranskade uppgifter från Socialstyrelsen. Definitionen av täckningsgraden tillåter förekomst i RiksSvikt efter förekomst i patientregistret vilket medför att täckningsgraden inte är komplett för 2021. Täckningsgraden för 2021 bör därför betraktas som preliminär.* 
 
-```{r, child = "../src/tg.Rmd"}
+TÄCKNINGSGRAD ÄNNU EJ TILLGÄNGLIG. FÅS FRÅN SOCIALSTYRELSEN I APRIL.
 
-```
+#```{r, child = "../src/tg.Rmd"}
 
-```{r, child = "../src/tg_bar.Rmd"}
+#```
 
-```
+#```{r, child = "../src/tg_bar.Rmd"}
+
+#```
 
 \clearpage
 
@@ -152,7 +151,10 @@ barfunc(var = "vtype", type = c("Index", "Uppföljning 3 månader", "Uppföljnin
 
 # Kvalitetsindikatorer
 
-Kvalitetsindikatorerna LVEF, NT-proBNP, NYHA klass och Hälsotillstånd rapporterat och planerad uppföljning vid hjärtsviktsmottagning är definerat vid indextillfället. Behandlingsvariabler, inklusive fysisk träning, är definerat vid uppföljningsbesöket vid 3 månader efter index. 
+Kvalitetsindikatorerna rapporterat LVEF, NT-proBNP, NYHA klass och Hälsotillstånd tillika planerad uppföljning vid hjärtsviktsmottagning är definierat vid indextillfället. Behandlingsindikatorer, inklusive fysisk träning, är definierat vid uppföljningsbesöket vid 3 månader efter index. 
+
+Kvalitetsindikatorn uppföljningsbesök vid 3 månader rapporterat är definierat utifrån indexbesök inom tidspannet `r paste0(global_year - 1, "-07-01 - ", global_year, "-07-01")`.
+  
 
 \clearpage
 
@@ -258,7 +260,7 @@ qinametmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(qiname)
 **Nämnare:** Alla patienter med ett indextillfälle.
 
 ```{r, cache = cacheon, fig.cap = paste0(qinametmp, " över tid"), fig.width=9, fig.height=7}
-timefunc(onlyindex = TRUE) #, ylimmin = c(30, 70))
+timefunc(onlyindex = TRUE)
 ```             
 
 ```{r, cache = cacheon, fig.cap = paste0(qinametmp, " ", global_year, " uppdelat på region"), fig.width=7, fig.height=8}
@@ -280,9 +282,9 @@ qinametmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(qiname)
 
 ## Kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
 
-**Täljare:** De som vid indextillfället planeras att följas upp vid en hjärtsviktsmottagning. 
+**Täljare:** De som, vid indextillfället, har planerad uppföljning vid en hjärtsviktsmottagning. 
 
-**Nämnare:** Alla indextillfällen där patienten lever vid utskrivning. 
+**Nämnare:** Alla indextillfällen där patienten lever vid utskrivning och där uppgift om planerad uppföljning rapporterats. 
 
 ```{r, cache = cacheon, fig.cap = paste0(qinametmp, " över tid"), fig.width=9, fig.height=7}
 timefunc(onlyindex = TRUE)
@@ -309,20 +311,20 @@ qinametmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(qiname)
 
 **Täljare:** Patienter som har ett registrerat uppföljningsbesök vid 3 månader (6 veckor - 6 månader) efter indextillfället. 
 
-**Nämnare:** Alla indextillfällen där patienten lever vid utskrivning. 
+**Nämnare:** Alla indextillfällen där patienten lever vid 3 månader. 
 
-*Tidsintervallet för indexbesöket är `r paste0(global_year - 1, "-07-01 - ", global_year, "-07-01")`.*
+*I figuren där uppföljningsbesök vid 3 månader över tid presenteras ingår endast indexbesök tom `r paste0(global_year, "-07-01")` i `r global_year`. I övriga presentationer är tidsintervallet för indexbesöket `r paste0(global_year - 1, "-07-01 - ", global_year, "-07-01")`.*
 
 ```{r, cache = cacheon, fig.cap = paste0(qinametmp, " över tid"), fig.width=9, fig.height=7}
 timefunc(onlyindex = TRUE)
 ```  
 
-```{r, cache = cacheon, fig.cap = paste0(qinametmp, " ", global_year, " uppdelat på region"), fig.width=7, fig.height=8}
-qifunc(type = "Index", unit = "region")
+```{r, cache = cacheon, fig.cap = paste0(qinametmp, " ", global_year - 1, "/", global_year, " uppdelat på region"), fig.width=7, fig.height=8}
+qifunc(type = "Index", unit = "region", startime = ymd(paste0(global_year - 1, "-07-01 - ")), stoptime = ymd(paste0(global_year, "-07-01")))
 ```             
 
-```{r, cache = cacheon, fig.cap = paste0(qinametmp, " ", global_year, " uppdelat på enhet"), fig.width=7, fig.height=8}
-qifunc(type = "Index")
+```{r, cache = cacheon, fig.cap = paste0(qinametmp, " ", global_year - 1, "/", global_year, " uppdelat på enhet"), fig.width=7, fig.height=8}
+qifunc(type = "Index", startime = ymd(paste0(global_year - 1, "-07-01 - ")), stoptime = ymd(paste0(global_year, "-07-01")))
 ```             
 
 \clearpage
@@ -706,11 +708,13 @@ qinametmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(qiname)
 
 **Täljare:** CRT (med eller utan ICD) är implanterat. 
 
-**Nämnare:** Patienter där LVEF $<=$ 35% (LVEF i procent rapporterat) eller < 40% (semikvantitativt LVEF rapporterat) och som lever vid utskrivning och där uppgift om device har rapporterats. Utöver detta ska vänstergrenblock (LBBB) 
-finnas, EKG-rytm vara sinusrytm och QRS-duration vara > 130. 
-I nämnaren ingår även personer med CRT implanterat, oavsett värden på övriga variabler. 
-LVEF definieras som det lägst uppmätta, antingen vid aktuellt tillfälle eller vid indextillfället. QRS-duration och LBBB är 
-i första hand det som registrerats vid aktuellt tillfälle, och i andra hand, om det saknas, det som registrerats vid indextillfället. 
+**Nämnare:** Patienter där LVEF $<=$ 35% (LVEF i procent rapporterat) eller < 40% (semikvantitativt LVEF rapporterat)
+och där uppgift om device har rapporterats. Utöver detta ska vänstergrenblock (LBBB) 
+finnas och QRS-duration vara > 130. 
+I nämnaren ingår även personer med CRT implanterat, oavsett värden på QRS och LBBB 
+eller om dessa inte är rapporterade, vilket medför att andelen med CRT kan överskattas. 
+LVEF, QRS-duration och LBBB definieras i första hand det som registrerats vid aktuellt tillfälle,
+och i andra hand, om det saknas, det som registrerats vid indextillfället.   
 
 *Kvalitetsindikatorn är definierad vid uppföljningen vid 3 månader efter index.*
 
@@ -772,8 +776,8 @@ qinametmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(qiname)
 **Täljare:** ICD (med eller utan CRT) är implanterat. 
 
 **Nämnare:** Patienter där LVEF $<=$ 35% (LVEF i procent rapporterat) eller < 40% (semikvantitativt LVEF rapporterat) 
-och som lever vid utskrivning och där uppgift 
-om device har rapporterats. LVEF definieras som det lägst uppmätta, antingen vid aktuellt tillfälle eller vid indextillfället.
+och där uppgift om device har rapporterats. LVEF definieras i första hand det som registrerats vid aktuellt tillfälle,
+och i andra hand, om det saknas, det som registrerats vid indextillfället. 
 
 *Kvalitetsindikatorn är definierad vid uppföljningen vid 3 månader efter index.*
 
@@ -834,8 +838,7 @@ qinametmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(qiname)
 
 **Täljare:** Deltagande i organiserad fysisk träning har skett. 
 
-**Nämnare:** Patienter som lever vid utskrivning och där uppgift 
-om deltagande i organiserad fysisk träning har rapporterats. 
+**Nämnare:** Patienter där uppgift om deltagande i organiserad fysisk träning har rapporterats. 
 
 *Kvalitetsindikatorn är definierad vid uppföljningen vid 3 månader efter index.*
 

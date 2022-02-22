@@ -2,8 +2,8 @@ qifunc <- function(qi = qitmp, startime = global_startdtm, stoptime = global_sto
                       ll = lltmp, ul = ultmp, data = rsdata, unit = "center") {
   tmp <- data %>%
     filter(ttype %in% type &
-      d_DATE_FOR_ADMISSION >= startime &
-      d_DATE_FOR_ADMISSION <= stoptime &
+      indexdtm >= startime &
+        indexdtm <= stoptime &
       !is.na(!!sym(qi)))
 
   # riket

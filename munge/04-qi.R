@@ -52,21 +52,24 @@ rsdata <- rsdata %>%
     # crt
     qi_crt = case_when(
       is.na(efcrt_catimp) | efcrt_catimp != "<40/<=35" ~ NA_real_,
-      #is.na(QRS_WIDTHimp) | is.na(LEFT_BRANCH_BLOCKimp) | is.na(EKG_RHYTHMimp) ~ NA_real_,
+      # is.na(QRS_WIDTHimp) | is.na(LEFT_BRANCH_BLOCKimp) | is.na(EKG_RHYTHMimp) ~ NA_real_,
       # FOLLOWUP_UNIT == "DECEASED" ~ NA_real_,
+      is.na(DEVICE_THERAPY) ~ NA_real_,
       DEVICE_THERAPY %in% c("CRT", "CRT_D") ~ 1,
-      QRS_WIDTHimp >= 130 & LEFT_BRANCH_BLOCKimp == "YES" & EKG_RHYTHMimp == "SINUS_RHYTHM" ~ 0
+      QRS_WIDTHimp > 130 & LEFT_BRANCH_BLOCKimp == "YES" ~ 0,
+      TRUE ~ NA_real_
     ),
 
     # icd
     qi_icd = case_when(
       is.na(efcrt_catimp) | efcrt_catimp != "<40/<=35" ~ NA_real_,
       # FOLLOWUP_UNIT == "DECEASED" ~ NA_real_,
+      is.na(DEVICE_THERAPY) ~ NA_real_,
       DEVICE_THERAPY %in% c("ICD", "CRT_D") ~ 1,
       TRUE ~ 0
     ),
     qi_fys = case_when(
-      FOLLOWUP_UNIT == "DECEASED" ~ NA_real_,
+      # FOLLOWUP_UNIT == "DECEASED" ~ NA_real_,
       is.na(PARTICIPATION_HF_TRAINING) ~ NA_real_,
       PARTICIPATION_HF_TRAINING == "YES" ~ 1,
       TRUE ~ 0
@@ -74,7 +77,7 @@ rsdata <- rsdata %>%
   )
 
 
-# uppföljningar 6v - 6m
+# uppföljningar 3 mån
 
 follow <- rsdata %>%
   filter(ttype == "Uppföljning 3 månader") %>%
@@ -84,12 +87,18 @@ follow <- rsdata %>%
 rsdata <- left_join(rsdata, follow, by = "PATIENTREFERENCE")
 
 rsdata <- rsdata %>%
-  mutate(qi_followreg3m = case_when(
-    FOLLOWUP_UNIT == "DECEASED" | TYPE != "INDEX" ~ NA_real_,
-    followup == 1 ~ 1,
-    TRUE ~ 0
-  )) %>%
-  select(-followup)
+  mutate(
+    timedead = as.numeric(befdoddtm - indexdtm),
+    qi_followreg3m = case_when(
+      # FOLLOWUP_UNIT == "DECEASED" |
+      TYPE != "INDEX" ~ NA_real_,
+      timedead < 30.5 * 3 & !is.na(timedead) ~ NA_real_,
+      indexdtm > ymd(paste0(global_year, "-07-01")) ~ NA_real_,
+      followup == 1 ~ 1,
+      TRUE ~ 0
+    )
+  ) %>%
+  select(-followup, -timedead)
 
 
 rsdata <- rsdata %>%
