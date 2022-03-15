@@ -10,7 +10,7 @@ tot <- rsdata %>%
 
 totun <- rsdata %>%
   filter(indexyear %in% paste(seq((global_year - 6), global_year, 1))) %>%
-  group_by(PATIENTREFERENCE, indexyear) %>%
+  group_by(patientreference, indexyear) %>%
   slice(1) %>%
   ungroup() %>%
   count(indexyear) %>%

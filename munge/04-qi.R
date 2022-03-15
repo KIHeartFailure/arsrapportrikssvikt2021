@@ -82,9 +82,9 @@ rsdata <- rsdata %>%
 follow <- rsdata %>%
   filter(ttype == "Uppföljning 3 månader") %>%
   mutate(followup = 1) %>%
-  select(PATIENTREFERENCE, followup)
+  select(patientreference, followup)
 
-rsdata <- left_join(rsdata, follow, by = "PATIENTREFERENCE")
+rsdata <- left_join(rsdata, follow, by = "patientreference")
 
 rsdata <- rsdata %>%
   mutate(

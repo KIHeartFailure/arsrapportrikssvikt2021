@@ -88,13 +88,16 @@ timefunc <- function(qi = qitmp, starttime = global_year - 4, stoptime = global_
     lines(x = c(0.8, 1), y = c(ylimmin[1], ylimmin[1] + 0.5))
     lines(x = c(0.8, 1), y = c(ylimmin[1] + 0.5, ylimmin[1] + 1))
   }
-  legend("bottom",
-    inset = c(-0, -0.21), xpd = NA,
-    legend = labnams[2:3],
-    lty = 2,
-    col = global_colslimit,
-    bty = "n",
-    cex = cexmy,
-    horiz = TRUE
-  )
+
+  if (!is.null(ll)) {
+    legend("bottom",
+      inset = c(-0, -0.21), xpd = NA,
+      legend = labnams[2:3],
+      lty = 2,
+      col = global_colslimit,
+      bty = "n",
+      cex = cexmy,
+      horiz = TRUE
+    )
+  }
 }

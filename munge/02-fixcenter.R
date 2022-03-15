@@ -3,8 +3,8 @@
 
 rsdata <- left_join(rsdata,
   center %>%
-    select(ID, ORG_UNIT_LEVEL_NAME, ORG_UNIT_NAME, PARENT1, PARENT2),
-  by = c("HEALTHCAREUNIT" = "ID")
+    select(ID, ORG_UNIT_NAME, PARENT1, PARENT2),
+  by = c("HEALTH_CARE_UNIT_REFERENCE" = "ID")
 )
 
 

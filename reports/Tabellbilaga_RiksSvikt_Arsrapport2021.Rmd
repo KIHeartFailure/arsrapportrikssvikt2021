@@ -61,17 +61,23 @@ cacheon <- TRUE
 
 # Information och förklaringar
 
-Uppgifterna som redovisas är baserade på data inrapporterat i RiksSvikt tom 2022-03-01.  
+Uppgifterna som redovisas är baserade på data inrapporterat i RiksSvikt tom 2022-02-28.  
 
 Redovisningen utgår från det datum som patienten skrevs in/besöksdatum.
 
 Med index avses första gången en patient registreras i RiksSvikt, detta behöver inte vara en nydiagnostiserad hjärtsvikt. 
-3 månaders uppföljningen kan ske mellan 6 veckor och 6 månader efter index. 
+3 månaders uppföljningen kan ske mellan 6 veckor och 6 månader efter index, medeltiden från index är 
+`r formatC(mean(rsdata %>% filter(ttype == "Uppföljning 3 månader", indexyear == 2021) %>% pull(diff_timeadmission), na.rm = T) / 30.5, format = "f", digits = 1, decimal.mark = ",")` månader 
+för uppföljningar inrapporterade under 2021. 
 Årlig uppföljning är indelat i 1 års uppföljning (6 månader till 1,5 år efter index) och 2+ års uppföljning (från 1,5 år efter index). 
+Medeltiden från index är 
+`r formatC(mean(rsdata %>% filter(ttype == "Uppföljning 1 år", indexyear == 2021) %>% pull(diff_timeadmission), na.rm = T) / 365.25, format = "f", digits = 1, decimal.mark = ",")` respektive 
+`r formatC(mean(rsdata %>% filter(ttype == "Uppföljning 2+ år", indexyear == 2021) %>% pull(diff_timeadmission), na.rm = T) / 365.25, format = "f", digits = 1, decimal.mark = ",")` år 
+för uppföljningar inrapporterade under 2021. 
 
 I de fall det finns mer än en årlig registrering / patient har alla poster redovisats. 
 För 2+ årlig uppföljning finns `r rsdata %>% filter(ttype == "Uppföljning 2+ år" & indexyear == global_year) %>% nrow()` poster för 
-`r rsdata %>% filter(ttype == "Uppföljning 2+ år" & indexyear == global_year) %>% group_by(PATIENTREFERENCE) %>% slice(1) %>% ungroup() %>% nrow()` 
+`r rsdata %>% filter(ttype == "Uppföljning 2+ år" & indexyear == global_year) %>% group_by(patientreference) %>% slice(1) %>% ungroup() %>% nrow()` 
 unika patienter för `r global_year `.  
 
 Enheter med färre än 10 registreringar i nämnaren redovisas ej.
@@ -113,6 +119,12 @@ TÄCKNINGSGRAD ÄNNU EJ TILLGÄNGLIG. FÅS FRÅN SOCIALSTYRELSEN I APRIL.
 
 \clearpage
 
+```{r, child = "../src/regovertimecum.Rmd"}
+
+```
+
+\clearpage
+
 # Beskrivning av patienter
 
 ```{r, child = "../src/tabs.Rmd"}
@@ -145,6 +157,27 @@ barfunc(var = "location", type = "Index", mycols = c(global_colsblue[6], global_
 ```{r, cache = cacheon, fig.cap = paste0("Enhetstyp alla registreringar ", global_year, " uppdelat på region"), fig.width=7, fig.height=8}
 barfunc(var = "vtype", type = c("Index", "Uppföljning 3 månader", "Uppföljning 1 år", "Uppföljning 2+ år"), 
         mycols = c(global_colsblue[5], global_colsblue[2]))
+```             
+
+\clearpage
+
+```{r, cache = cacheon}
+qitmp <- "ferrtrans_available"
+lltmp <- NULL
+ultmp <- NULL
+qinametmp <- "P-Transferrin mättnad och S-Ferritin rapporterat vid index"
+```             
+
+```{r, cache = cacheon, fig.cap = paste0(qinametmp, " över tid"), fig.width=9, fig.height=7}
+timefunc(onlyindex = TRUE, starttime = global_year - 3)
+```             
+
+```{r, cache = cacheon, fig.cap = paste0(qinametmp, " ", global_year, " uppdelat på region"), fig.width=7, fig.height=8}
+qifunc(type = "Index", unit = "region")
+```             
+
+```{r, cache = cacheon, fig.cap = paste0(qinametmp, " ", global_year, " uppdelat på enhet"), fig.width=7, fig.height=8}
+qifunc(type = "Index")
 ```             
 
 \clearpage
@@ -347,7 +380,7 @@ LVEF definieras som det lägst uppmätta, antingen vid aktuellt tillfälle eller
 *Kvalitetsindikatorn är definierad vid uppföljningen vid 3 månader efter index.*
 
 ```{r, cache = cacheon, fig.cap = paste0(qinametmp, " över tid"), fig.width=9, fig.height=7}
-timefunc(ylimmin = c(70, 100), adjtext = c(0.15, 0, 0, -0.15))
+timefunc(ylimmin = c(70, 100), adjtext = c(-0.35, 0, 0, 0.2))
 ```  
 
 \blandscape
@@ -410,7 +443,7 @@ LVEF definieras som det lägst uppmätta, antingen vid aktuellt tillfälle eller
 *Kvalitetsindikatorn är definierad vid uppföljningen vid 3 månader efter index.*
 
 ```{r, cache = cacheon, fig.cap = paste0(qinametmp, " över tid"), fig.width=9, fig.height=7}
-timefunc(adjtext = c(0, -1, 0, 0))
+timefunc(adjtext = c(0, -0.55, 0.55, 0))
 ```  
 
 \blandscape
@@ -473,7 +506,7 @@ LVEF definieras som det lägst uppmätta, antingen vid aktuellt tillfälle eller
 *Kvalitetsindikatorn är definierad vid uppföljningen vid 3 månader efter index.*
 
 ```{r, cache = cacheon, fig.cap = paste0(qinametmp, " över tid"), fig.width=9, fig.height=7}
-timefunc(ylimmin = c(70, 100), adjtext = c(0, 0, -0.9, -0.4))
+timefunc(ylimmin = c(70, 100), adjtext = c(-0.2, 0, -0.9, 0.3))
 ```  
 
 \blandscape
@@ -536,7 +569,7 @@ LVEF definieras som det lägst uppmätta, antingen vid aktuellt tillfälle eller
 *Kvalitetsindikatorn är definierad vid uppföljningen vid 3 månader efter index.*
 
 ```{r, cache = cacheon, fig.cap = paste0(qinametmp, " över tid"), fig.width=9, fig.height=7}
-timefunc(adjtext = c(0, 0.3, -1.6, -1.5))
+timefunc(adjtext = c(0, 0, 2.4, -0.3))
 ```  
 
 \blandscape
@@ -599,7 +632,7 @@ LVEF definieras som det lägst uppmätta, antingen vid aktuellt tillfälle eller
 *Kvalitetsindikatorn är definierad vid uppföljningen vid 3 månader efter index.*
 
 ```{r, cache = cacheon, fig.cap = paste0(qinametmp, " över tid"), fig.width=9, fig.height=7}
-timefunc(adjtext = c(0, 1.2, 0, 0))
+timefunc(adjtext = c(0, 1.4, -0.3, 0))
 ```  
 
 \blandscape
@@ -719,7 +752,7 @@ och i andra hand, om det saknas, det som registrerats vid indextillfället.
 *Kvalitetsindikatorn är definierad vid uppföljningen vid 3 månader efter index.*
 
 ```{r, cache = cacheon, fig.cap = paste0(qinametmp, " över tid"), fig.width=9, fig.height=7}
-timefunc(adjtext = c(-.75, 0.75, 0, 0))
+timefunc(adjtext = c(0, 0, 0, 0))
 ```  
 
 \blandscape
@@ -782,7 +815,7 @@ och i andra hand, om det saknas, det som registrerats vid indextillfället.
 *Kvalitetsindikatorn är definierad vid uppföljningen vid 3 månader efter index.*
 
 ```{r, cache = cacheon, fig.cap = paste0(qinametmp, " över tid"), fig.width=9, fig.height=7}
-timefunc(adjtext = c(-0.5, 0.5, 0, 0))
+timefunc(adjtext = c(-0.2, 0, 0, 0))
 ```  
 
 \blandscape
@@ -843,7 +876,7 @@ qinametmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(qiname)
 *Kvalitetsindikatorn är definierad vid uppföljningen vid 3 månader efter index.*
 
 ```{r, cache = cacheon, fig.cap = paste0(qinametmp, " över tid"), fig.width=9, fig.height=7}
-timefunc(adjtext = c(0, 0.7, -0.9, 0))
+timefunc(adjtext = c(0, 0, -0.4, 0.4))
 ```  
 
 \blandscape

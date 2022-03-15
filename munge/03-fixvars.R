@@ -2,7 +2,7 @@
 # sexage <- sexage %>% group_by(patientreference) %>% slice(1) %>% ungroup()
 rsdata <- left_join(rsdata,
   sexage %>% select(patientreference, SEX, DATE_OF_BIRTH, befdoddtm),
-  by = c("PATIENTREFERENCE" = "patientreference")
+  by = "patientreference"
 )
 
 rsdata <- rsdata %>%
@@ -86,9 +86,10 @@ rsdata <- rsdata %>%
     FUNCTION_CLASS_NYHA = str_replace(FUNCTION_CLASS_NYHA, "NYHA_", " "),
     location = factor(case_when(
       vtype == "Primärvård" ~ 3,
-      PROCESS_STEPS_TABLE %in% c("IX_OV", "FO", "YFO") & vtype == "Sjukhus" ~ 2,
-      PROCESS_STEPS_TABLE %in% c("IX_SV") ~ 1
-    ), levels = 1:3, labels = c("Slutenvård", "Öppenvård sjukhus", "Primärvård"))
+      PROCESS_DEFINITION_REFERENCE %in% c("IX_OV", "FO", "YFO") & vtype == "Sjukhus" ~ 2,
+      PROCESS_DEFINITION_REFERENCE %in% c("IX_SV") ~ 1
+    ), levels = 1:3, labels = c("Slutenvård", "Öppenvård sjukhus", "Primärvård")), 
+    ferrtrans_available = if_else(!is.na(P_TRANSFERRIN) & !is.na(S_FERRITIN), 1, 0)
   )
 
 
@@ -112,12 +113,12 @@ rsdata <- rsdata %>%
 
 rsdataindex <- rsdata %>%
   filter(TYPE == "INDEX") %>%
-  group_by(PATIENTREFERENCE) %>%
+  group_by(patientreference) %>%
   arrange(indexdtm) %>%
   slice(1) %>% # 2 dups
   ungroup() %>%
   transmute(
-    PATIENTREFERENCE = PATIENTREFERENCE,
+    patientreference = patientreference,
     indexdtmindex = indexdtm,
     ef_catindex = ef_cat,
     efcrt_catindex = efcrt_cat,
@@ -131,7 +132,7 @@ rsdataindex <- rsdata %>%
 rsdata <- left_join(
   rsdata,
   rsdataindex,
-  by = "PATIENTREFERENCE"
+  by = "patientreference"
 ) %>%
   mutate(
     # most current qrs, lbbb, nyha
@@ -152,8 +153,8 @@ rsdata <- left_join(
       TYPE == "FOLLOWUP" ~ 2,
       TYPE == "YEARLY_FOLLOWUP" ~ 3
     ),
-    tmp_timeadmission = as.numeric(indexdtm - indexdtmindex),
-    ttype = if_else(tmp_timeadmission >= 1.5 * 365 & TYPE == "YEARLY_FOLLOWUP", 4, ttype),
+    diff_timeadmission = as.numeric(indexdtm - indexdtmindex),
+    ttype = if_else(diff_timeadmission >= 1.5 * 365 & TYPE == "YEARLY_FOLLOWUP", 4, ttype),
     ttype = factor(ttype,
       levels = 1:4,
       labels = c("Index", "Uppföljning 3 månader", "Uppföljning 1 år", "Uppföljning 2+ år")
@@ -163,7 +164,7 @@ rsdata <- left_join(
 # check dups --------------------------------------------------------------
 
 koll2 <- rsdata %>%
-  group_by(PATIENTREFERENCE, ttype, indexyear) %>%
+  group_by(patientreference, ttype, indexyear) %>%
   slice(2) %>%
   ungroup() %>%
   count(indexyear, ttype)
