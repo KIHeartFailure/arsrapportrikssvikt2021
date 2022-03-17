@@ -101,7 +101,7 @@ qifunc <- function(qi = qitmp, startime = global_startdtm, stoptime = global_sto
 
 
   if (unit == "center") {
-    cexmy <- .5
+    cexmy <- .6
   }
   if (unit == "region") {
     cexmy <- .72
@@ -131,9 +131,9 @@ qifunc <- function(qi = qitmp, startime = global_startdtm, stoptime = global_sto
   abline(v = ul * 100, col = global_colslimit[1], lty = 2, lwd = 1)
 
   if (unit == "center") {
-    axis(2, at = b, labels = all$unit, line = 1.8, tick = FALSE, cex.axis = cexmy, las = 2, gap.axis = -10000000)
+    axis(2, at = b, labels = all$unit, line = 2.6, tick = FALSE, cex.axis = cexmy, las = 2, gap.axis = -10000000)
 
-    axis(2, at = b, labels = all$ntot, line = 0.4, tick = FALSE, cex.axis = cexmy, las = 2, hadj = 0.5, gap.axis = -10000000)
+    axis(2, at = b, labels = all$ntot, line = 0.7, tick = FALSE, cex.axis = cexmy, las = 2, hadj = 0.5, gap.axis = -10000000)
 
     axis(2, at = b, labels = all$per, line = -24, tick = FALSE, cex.axis = cexmy, las = 2, hadj = 0.5, gap.axis = -10000000)
   }

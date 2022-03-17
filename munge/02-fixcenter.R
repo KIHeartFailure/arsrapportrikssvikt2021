@@ -68,7 +68,10 @@ rsdata <- rsdata %>%
 rsdata <- rsdata %>%
   mutate(
     center = case_when(
-      center == "Sahlgrenska Universitetssjukhuset - Sahlgrenska" ~ "Sahlgrenska Universitetssjukhuset",
+      center %in% c("Sahlgrenska Universitetssjukhuset - Sahlgrenska", 
+                    "Sahlgrenska Universitetssjukhuset - Östra", 
+                    "Sahlgrenska Universitetssjukhuset - Mölndal") ~ 
+                      "Sahlgrenska Universitetssjukhuset",
       TRUE ~ center
     ),
     region = factor(region),

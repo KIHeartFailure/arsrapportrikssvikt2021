@@ -1,7 +1,7 @@
 
 \blandscape
 
-```{r, cache=cacheon, fig.cap=paste0("Riket, alla ", nrow(qiinfo), " kvalitetsindikatorer ",  global_year), fig.width=9, fig.height=6}
+```{r allki, cache=cacheon, fig.cap=paste0("Riket, alla ", nrow(qiinfo), " kvalitetsindikatorer ",  global_year), fig.width=9, fig.height=6}
 
 summaryqifunchelper <- function(qi) {
   if (!!sym(qi) == "qi_followreg3m") {
@@ -118,7 +118,7 @@ axis(1,
 
 axis(1,
   at = b[22],
-  labels = "3 månaders uppföljningen", line = 6.1, tick = FALSE, cex.axis = cexmy, gap.axis = -10000000, las = 1
+  labels = "3 månaders uppföljning", line = 6.1, tick = FALSE, cex.axis = cexmy, gap.axis = -10000000, las = 1
 )
 
 posarrow <- -47.5

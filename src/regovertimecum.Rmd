@@ -1,4 +1,4 @@
-```{r, cache=cacheon, fig.cap="Kumulativt antal unika patienter"}
+```{r regkum, cache=cacheon, fig.cap="Kumulativt antal unika patienter"}
 
 tot <- rsdata %>%
   filter(indexyear %in% paste(seq(2003, global_year, 1))) %>%

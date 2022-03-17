@@ -1,4 +1,4 @@
-```{r, cache=cacheon, fig.cap="Registrering över tid", fig.width=9.5, fig.height=7}
+```{r reg, cache=cacheon, fig.cap="Registrering över tid", fig.width=9.5, fig.height=7}
 
 tot <- rsdata %>%
   filter(indexyear %in% paste(seq((global_year - 6), global_year, 1))) %>%
