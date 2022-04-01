@@ -185,7 +185,7 @@ qifunc(type = "Index")
 
 # Kvalitetsindikatorer
 
-Kvalitetsindikatorerna rapporterat LVEF, NT-proBNP, NYHA klass och Hälsotillstånd tillika planerad uppföljning vid hjärtsviktsmottagning är definierat vid indextillfället. Behandlingsindikatorer, inklusive fysisk träning, är definierat vid uppföljningsbesöket vid 3 månader efter index. 
+Kvalitetsindikatorerna rapporterat LVEF, NT-proBNP, NYHA klass och Livskvalitetsscore tillika planerad uppföljning vid hjärtsviktsmottagning är definierat vid indextillfället. Behandlingsindikatorer, inklusive fysisk träning, är definierat vid uppföljningsbesöket vid 3 månader efter index. 
 
 Kvalitetsindikatorn uppföljningsbesök vid 3 månader rapporterat är definierat utifrån indexbesök inom tidsspannet `r paste0(global_year - 1, "-07-01 - ", global_year, "-07-01")`.
   
