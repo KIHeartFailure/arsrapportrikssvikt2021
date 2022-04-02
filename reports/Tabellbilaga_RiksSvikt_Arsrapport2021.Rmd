@@ -98,18 +98,14 @@ för första gången under det aktuella året, antingen i RiksSvikt eller i pati
 
 *Täckningsgraden för 2021 baseras på icke kvalitetsgranskade uppgifter från Socialstyrelsen. Definitionen av täckningsgraden tillåter förekomst i RiksSvikt efter förekomst i patientregistret vilket medför att täckningsgraden inte är komplett för 2021. Täckningsgraden för 2021 bör därför betraktas som preliminär.* 
 
-TÄCKNINGSGRAD ÄNNU EJ TILLGÄNGLIG. FÅS FRÅN SOCIALSTYRELSEN I APRIL.
+```{r, child = "../src/tg.Rmd"}
 
-<!--
-#```{r, child = "../src/tg.Rmd"}
+```
 
-#```
+```{r, child = "../src/tg_bar.Rmd"}
 
-#```{r, child = "../src/tg_bar.Rmd"}
+```
 
-#```
- --> 
- 
 \clearpage
 
 # Registrering

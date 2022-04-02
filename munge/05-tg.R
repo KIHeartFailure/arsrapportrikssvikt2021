@@ -1,5 +1,5 @@
 
-inc2019 <- inc2019 %>%
+inc <- inc %>%
   rename(
     ninc = Antal...2,
     totinc = Antal...8,
@@ -7,7 +7,7 @@ inc2019 <- inc2019 %>%
   ) %>%
   select(X1, ninc, totinc, pinc)
 
-prev2019 <- prev2019 %>%
+prev <- prev %>%
   rename(
     nprev = Antal...2,
     totprev = Antal...4,
@@ -16,8 +16,8 @@ prev2019 <- prev2019 %>%
   select(X1, nprev, totprev, pprev)
 
 tg_lan <- full_join(
-  inc2019,
-  prev2019,
+  inc,
+  prev,
   by = "X1"
 ) %>%
   mutate(isreg = str_detect(X1, "^\\d")) %>%

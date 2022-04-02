@@ -21,8 +21,8 @@ ProjectTemplate::cache("rsdata")
 
 ProjectTemplate::cache("qiinfo")
 
-#ProjectTemplate::cache("tg_lan")
-#ProjectTemplate::cache("tg_overtime")
+ProjectTemplate::cache("tg_lan")
+ProjectTemplate::cache("tg_overtime")
 
 labnams <- c("År", "Övre målnivå", "Undre målnivå", "Okänt")
 ProjectTemplate::cache("labnams")

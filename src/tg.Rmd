@@ -1,4 +1,4 @@
-```{r, cache=cacheon, fig.width=6, fig.height=5, fig.cap=paste0("Täckningsgrad 2003-", global_year)}
+```{r tgtid, cache=cacheon, fig.width=6, fig.height=5, fig.cap=paste0("Täckningsgrad 2003-", global_year)}
 
 cexmy <- 0.7
 # c(bottom, left, top, right) default c(5, 4, 4, 2) + 0.1.
@@ -101,7 +101,7 @@ geo <- tg_lan %>%
   )
 ```
 
-```{r, fig.cap=paste0("Täckningsgrad ", global_year, " uppdelat på region (karta)"), cache=cacheon, fig.show='hold', out.width="50%", fig.subcap=c('Prevalent', 'Incident'), fig.ncol=2}
+```{r tgmap, fig.cap=paste0("Täckningsgrad ", global_year, " uppdelat på region (karta)"), cache=cacheon, fig.show='hold', out.width="50%", fig.subcap=c('Prevalent', 'Incident'), fig.ncol=2}
 
 
 # c(bottom, left, top, right) default c(5, 4, 4, 2) + 0.1.

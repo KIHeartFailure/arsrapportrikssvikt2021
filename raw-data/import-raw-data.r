@@ -11,7 +11,7 @@ newrs <- read_sas("./raw-data/20220314/export/datauttag_arsrapport.sas7bdat")
 
 center <- read_sas("./raw-data/20220314/export/rikssvikt_ou.sas7bdat")
 
-#center <- clean_data(center)
+# center <- clean_data(center)
 
 sexage <- read_sas("./raw-data/20220314/export/rikssvikt_pd_dodsdatum.sas7bdat")
 
@@ -22,25 +22,28 @@ save(file = "./data/rawData_rs.RData", list = c(
 ))
 
 # tg
-# prevtime <- read.xlsx("./raw-data/tg/10981_2021 RiksSvikt - Prev mot Prev 2010-2019 - Match Huvuddiagnos 2021-05-17 Lev2_klar_LB.xlsx", 
-#           sheet = "Län per år")
-# inctime <- read.xlsx("./raw-data/tg/10981_2021 RiksSvikt - Täckningsgrad 2003-2019 - Registrering inom 1 år 2021-05-24 Lev3_klar_LB.xlsx", 
-#                      sheet = "Län per år")
-# prev2019 <- read.xlsx("./raw-data/tg/10981_2021 RiksSvikt - Prev mot Prev 2010-2019 - Match Huvuddiagnos 2021-05-17 Lev2_klar_LB.xlsx", 
-#                       sheet = "2019")
-# inc2019 <- read.xlsx("./raw-data/tg/10981_2021 RiksSvikt - Täckningsgrad 2003-2019 - Registrering inom 1 år 2021-05-24 Lev3_klar_LB.xlsx", 
-#                     sheet = "2019")
-# 
-# prev2019 <- prev2019 %>% as_tibble(.name_repair = "unique")
-# inc2019 <- inc2019 %>% as_tibble(.name_repair = "unique")
-# 
-# save(file = "./data/rawData_tg.RData", list = c(
-#   "prevtime", "inctime", "prev2019", "inc2019" 
-# ))
+prevtime <- read.xlsx("./raw-data/tg/2617_2022 RiksSvikt - TG Prev mot Prev - Huvuddiagnos 2010-2021 2022-04-01_klar_LB.xlsx",
+  sheet = "Län per år"
+)
+inctime <- read.xlsx("./raw-data/tg/2617_2022 RiksSvikt - TG Inc mot Inc 2003-2021 - Bryt vid årsskifte 2022-04-01 Lev2_klar_LB.xlsx",
+  sheet = "Län per år"
+)
+prev <- read.xlsx("./raw-data/tg/2617_2022 RiksSvikt - TG Prev mot Prev - Huvuddiagnos 2010-2021 2022-04-01_klar_LB.xlsx",
+  sheet = "2021"
+)
+inc <- read.xlsx("./raw-data/tg/2617_2022 RiksSvikt - TG Inc mot Inc 2003-2021 - Bryt vid årsskifte 2022-04-01 Lev2_klar_LB.xlsx",
+  sheet = "2021"
+)
+
+prev <- prev %>% as_tibble(.name_repair = "unique")
+inc <- inc %>% as_tibble(.name_repair = "unique")
+
+save(file = "./data/rawData_tg.RData", list = c(
+  "prevtime", "inctime", "prev", "inc"
+))
 
 # Get map data ------------------------------------------------------------
 
-swedenmap <- getData("GADM", country="SWE", level=1)
+swedenmap <- getData("GADM", country = "SWE", level = 1)
 
 saveRDS(swedenmap, file = "./data/swedenmap.rds")
-
