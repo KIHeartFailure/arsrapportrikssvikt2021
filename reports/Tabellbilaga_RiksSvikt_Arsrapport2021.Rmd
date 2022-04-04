@@ -91,12 +91,12 @@ R koden som genererat tabellbilagan till årsrapporten finns: https://github.com
 
 **Nämnare prevalent täckningsgrad:** Individer fyllda 18 år och vid liv första januari det aktuella året, med någon registrering med hjärtsvikt som huvuddiagnos (I11.0, I13.0, I13.2, I25.5, I42.0, I42.6, I42.7, I50.0, I50.1, I50.9) i patientregistret fram till och med sista december det aktuella året.
 
+*Täckningsgraden för 2021 baseras på icke kvalitetsgranskade uppgifter från Socialstyrelsen. Definitionen av täckningsgraden tillåter förekomst i RiksSvikt efter förekomst i patientregistret vilket medför att täckningsgraden inte är komplett för 2021. Täckningsgraden för 2021 bör därför betraktas som preliminär.* 
+
 **Täljare incident täckningsgrad:** Individer i RiksSvikt, fyllda 18 år och med första registrering under det aktuella året eller med första registrering inom 1 år från första hjärtsviktdiagnos i patientregistret.
 
 **Nämnare incident täckningsgrad:** Individer som registrerats med hjärtsvikt (I11.0, I13.0, I13.2, I25.5, I42.0, I42.6, I42.7, I50.0, I50.1, I50.9) 
 för första gången under det aktuella året, antingen i RiksSvikt eller i patientregistret.
-
-*Täckningsgraden för 2021 baseras på icke kvalitetsgranskade uppgifter från Socialstyrelsen. Definitionen av täckningsgraden tillåter förekomst i RiksSvikt efter förekomst i patientregistret vilket medför att täckningsgraden inte är komplett för 2021. Täckningsgraden för 2021 bör därför betraktas som preliminär.* 
 
 ```{r, child = "../src/tg.Rmd"}
 
@@ -285,7 +285,7 @@ qinametmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(qiname)
 
 ## Kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
 
-**Täljare:** Totalt hälsotillstånd har angetts vid indextillfället.  
+**Täljare:** Patientens skattade hälsotillstånd (livskvalitetsscore enligt EQ-5D) har angetts vid indextillfället.  
 
 **Nämnare:** Alla patienter med ett indextillfälle.
 
@@ -866,9 +866,9 @@ qinametmp <- qiinfo %>% filter(qivar == qitmp) %>% pull(qiname)
 
 ## Kvalitetsindikator `r paste0(qiinfo %>% filter(qivar == qitmp) %>% pull(qino), ". ", qinametmp)` 
 
-**Täljare:** Deltagande i organiserad fysisk träning har skett. 
+**Täljare:** Deltagande i organiserad fysisk träning för HF har skett. 
 
-**Nämnare:** Patienter där uppgift om deltagande i organiserad fysisk träning har rapporterats. 
+**Nämnare:** Patienter där uppgift om deltagande i organiserad fysisk träning för HF har rapporterats. 
 
 *Kvalitetsindikatorn är definierad vid uppföljning vid 3 månader efter index.*
 

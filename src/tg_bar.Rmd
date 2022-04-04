@@ -69,7 +69,7 @@ tgfunc <- function(tgtype) {
 }
 ```
 
-```{r tgbar, fig.cap=paste0("Täckningsgrad ", global_year, " uppdelat på region"), cache=cacheon, fig.show='hold', out.width="50%", fig.subcap=c('Prevalent', 'Incident'), fig.ncol=2}
+```{r tgbar, fig.cap=paste0("Täckningsgrad ", global_year, " (prevalent) och ", global_year -1, " (incident) uppdelat på region"), cache=cacheon, fig.show='hold', out.width="50%", fig.subcap=c('Prevalent', 'Incident'), fig.ncol=2}
 
 tgfunc(tgtype = "prev")
 tgfunc("inc")
